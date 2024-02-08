@@ -1,3 +1,5 @@
+import com.example.mapp.main.MatrixHandler.Companion.inverseMatrix
+
 fun main(args: Array<String>) {
     println("Hello World!")
 
@@ -8,7 +10,7 @@ fun main(args: Array<String>) {
     printArray(array)
     println()
 
-    getRefactoredMatrix(array)
+    inverseMatrix(array).let { if (it != null) printArray(it) }
 
     printArray(array)
 }

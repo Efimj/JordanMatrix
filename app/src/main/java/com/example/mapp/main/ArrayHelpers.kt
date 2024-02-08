@@ -62,8 +62,5 @@ fun getRefactoredMatrix(array: Array<Array<Double>>) {
         }
         countIterations++
 
-//        val swapE = array[0][rowI]
-//        array[0][rowI] = array[rowI][0]
-//        array[rowI][0] = swapE
     }
 }
