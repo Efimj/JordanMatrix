@@ -1,3 +1,6 @@
+import ArrayHelper.Companion.fillTwoDimArrayRandomly
+import ArrayHelper.Companion.generateTwoDimArray
+import ArrayHelper.Companion.printArray
 import com.example.mapp.main.MatrixHandler.Companion.inverseMatrix
 
 fun main(args: Array<String>) {
