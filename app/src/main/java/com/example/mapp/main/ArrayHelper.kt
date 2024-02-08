@@ -70,7 +70,7 @@ class ArrayHelper {
             for (row in array) {
                 for (element in row) {
                     val stringToOutput = element.toString()
-                    if (stringToOutput.first() != '-') print(" ")
+                    if (stringToOutput.first() != '-') output += " "
                     output += stringToOutput + separator
                     repeat(maxSymbolsElement - stringToOutput.length - if (stringToOutput.first() != '-') 1 else 0) {
                         output += " "
