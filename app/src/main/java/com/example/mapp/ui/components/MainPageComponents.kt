@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.example.mapp.viewModel.SimpleMainScreenViewModel
+import com.example.mapp.viewModel.MainScreenViewModel
 import kotlinx.coroutines.CoroutineScope
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -24,7 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 fun PageContent(
     scope: CoroutineScope,
     sheetState: BottomSheetScaffoldState,
-    viewModel: SimpleMainScreenViewModel
+    viewModel: MainScreenViewModel
 ) {
     Column(
         modifier = Modifier
@@ -34,11 +34,26 @@ fun PageContent(
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         MatrixSizeSetter(viewModel)
+        MatrixActions(viewModel)
     }
 }
 
 @Composable
-private fun MatrixSizeSetter(viewModel: SimpleMainScreenViewModel) {
+private fun MatrixActions(viewModel: MainScreenViewModel) {
+    Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+        Text(
+            "Actions",
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.SemiBold
+        )
+        Button(onClick = viewModel::inverseRandomMatrix) {
+            Text("Inverse the matrix")
+        }
+    }
+}
+
+@Composable
+private fun MatrixSizeSetter(viewModel: MainScreenViewModel) {
     val isRelated = rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(isRelated.value, viewModel.states.value.matrixRows) {
@@ -50,7 +65,7 @@ private fun MatrixSizeSetter(viewModel: SimpleMainScreenViewModel) {
     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
         Text(
             "Set the matrix",
-            style = MaterialTheme.typography.headlineMedium,
+            style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.SemiBold
         )
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
@@ -94,7 +109,7 @@ private fun MatrixSizeSetter(viewModel: SimpleMainScreenViewModel) {
 
 @Composable
 fun SheetContent(
-    viewModel: SimpleMainScreenViewModel
+    viewModel: MainScreenViewModel
 ) {
     Column(
         modifier = Modifier

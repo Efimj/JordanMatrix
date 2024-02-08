@@ -55,5 +55,30 @@ class ArrayHelper {
                 println()
             }
         }
+
+        fun <T> arrayToString(array: Array<Array<T>>, separator: String = "   "): String {
+            var maxSymbolsElement = 0
+            for (row in array) {
+                for (element in row) {
+                    element.toString().let {
+                        maxSymbolsElement = maxSymbolsElement.coerceAtLeast(it.length)
+                    }
+                }
+            }
+
+            var output = ""
+            for (row in array) {
+                for (element in row) {
+                    val stringToOutput = element.toString()
+                    if (stringToOutput.first() != '-') print(" ")
+                    output += stringToOutput + separator
+                    repeat(maxSymbolsElement - stringToOutput.length - if (stringToOutput.first() != '-') 1 else 0) {
+                        output += " "
+                    }
+                }
+                output += "\n"
+            }
+            return output
+        }
     }
 }

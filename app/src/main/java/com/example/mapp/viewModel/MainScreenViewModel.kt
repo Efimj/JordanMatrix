@@ -1,8 +1,12 @@
 package com.example.mapp.viewModel
 
+import ArrayHelper.Companion.arrayToString
+import ArrayHelper.Companion.fillTwoDimArrayRandomly
+import ArrayHelper.Companion.generateTwoDimArray
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.mapp.main.MatrixHandler
 
 data class MainScreenStates(
     val output: String = "none",
@@ -11,7 +15,7 @@ data class MainScreenStates(
 
     )
 
-class SimpleMainScreenViewModel : ViewModel() {
+class MainScreenViewModel : ViewModel() {
     private val _states = mutableStateOf(MainScreenStates())
     val states: State<MainScreenStates> = _states
 
@@ -27,5 +31,19 @@ class SimpleMainScreenViewModel : ViewModel() {
 
         if (matrixColumns >= 1)
             _states.value = _states.value.copy(matrixColumns = matrixColumns)
+    }
+
+    fun inverseRandomMatrix() {
+        val array = generateTwoDimArray(states.value.matrixRows, states.value.matrixColumns, 0.0)
+        fillTwoDimArrayRandomly(array, -5.0, +5.0)
+
+        var newOutput = "${states.value.output}\nArray:\n"
+        newOutput += arrayToString(array)
+        newOutput += "\n" + "Inverse:" + "\n"
+
+        MatrixHandler.inverseMatrix(array).let {
+            if (it != null) newOutput += arrayToString(it) else newOutput += "error"
+        }
+        _states.value = states.value.copy(output = newOutput)
     }
 }
