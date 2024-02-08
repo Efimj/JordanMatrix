@@ -11,4 +11,6 @@ data class MainScreenStates(
 class SimpleMainScreenViewModel: ViewModel() {
     private val _states = mutableStateOf(MainScreenStates())
     val states: State<MainScreenStates> = _states
+
+
 }
