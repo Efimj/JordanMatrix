@@ -39,6 +39,14 @@ class ArrayHelper {
             }
         }
 
+        fun roundArray(array: Array<Double>, decimalPlaces: Int) {
+            val factor = Math.pow(10.0, decimalPlaces.toDouble())
+
+            for (i in array.indices) {
+                array[i] = Math.round(array[i] * factor) / factor
+            }
+        }
+
         fun <T> printArray(array: Array<Array<T>>, separator: String = "   ") {
             var maxSymbolsElement = 0
             for (row in array) {
@@ -60,6 +68,25 @@ class ArrayHelper {
                     }
                 }
                 println()
+            }
+        }
+
+        fun <T> printArray(array: Array<T>, separator: String = "   ") {
+            var maxSymbolsElement = 0
+            for (element in array) {
+                element.toString().let {
+                    maxSymbolsElement = maxSymbolsElement.coerceAtLeast(it.length)
+                }
+            }
+            for (element in array) {
+                val stringToOutput = element.toString()
+                if (stringToOutput.first() != '-') print(" ")
+                print(stringToOutput + separator)
+                repeat(maxSymbolsElement - stringToOutput.length - if (stringToOutput.first() != '-') 1 else 0) {
+                    print(
+                        " "
+                    )
+                }
             }
         }
 

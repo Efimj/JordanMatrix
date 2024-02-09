@@ -4,6 +4,7 @@ import ArrayHelper.Companion.printArray
 import ArrayHelper.Companion.roundArray
 import com.example.mapp.main.MatrixHandler.Companion.getMatrixRank
 import com.example.mapp.main.MatrixHandler.Companion.inverseMatrix
+import com.example.mapp.main.MatrixHandler.Companion.solveLinearSystem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -102,7 +103,7 @@ class MatrixHandlerUnitTest {
     }
 
     @Test
-    fun getMatrixRank1() {
+    fun getMatrixRankTest1() {
         println("getMatrixRank1")
         val input = arrayOf(
             arrayOf(1.0, 2.0, 3.0, 4.0),
@@ -124,7 +125,7 @@ class MatrixHandlerUnitTest {
     }
 
     @Test
-    fun getMatrixRank2() {
+    fun getMatrixRankTest2() {
         println("getMatrixRank2")
         val input = arrayOf(
             arrayOf(2.0, 5.0, 4.0),
@@ -147,7 +148,7 @@ class MatrixHandlerUnitTest {
     }
 
     @Test
-    fun getMatrixRank3() {
+    fun getMatrixRankTest3() {
         println("getMatrixRank3")
         val input = arrayOf(
             arrayOf(1.0, 2.0),
@@ -171,7 +172,7 @@ class MatrixHandlerUnitTest {
     }
 
     @Test
-    fun getMatrixRank4() {
+    fun getMatrixRankTest4() {
         println("getMatrixRank4")
         val input = arrayOf(
             arrayOf(6.0, 2.0, 5.0),
@@ -194,7 +195,7 @@ class MatrixHandlerUnitTest {
     }
 
     @Test
-    fun getMatrixRank5() {
+    fun getMatrixRankTest5() {
         println("getMatrixRank5")
         val input = arrayOf(
             arrayOf(-1.0, 5.0, 4.0),
@@ -217,7 +218,7 @@ class MatrixHandlerUnitTest {
     }
 
     @Test
-    fun getMatrixRank6() {
+    fun getMatrixRankTest6() {
         println("getMatrixRank6")
         val input = arrayOf(
             arrayOf(1.0, 2.0, 3.0, 4.0),
@@ -238,5 +239,55 @@ class MatrixHandlerUnitTest {
         println()
 
         assertEquals(correct, output)
+    }
+
+    @Test
+    fun solveLinearSystemTest1() {
+        println("solveLinearSystemTest1")
+        val input = arrayOf(
+            arrayOf(5.0, -3.0, 7.0),
+            arrayOf(-1.0, 4.0, 3.0),
+            arrayOf(6.0, -2.0, 5.0)
+        )
+
+        val constants = arrayOf(13.0, 13.0, 12.0)
+        val correct = arrayOf(1.0, 2.0, 2.0)
+
+        val output = solveLinearSystem(input, constants) ?: return
+        roundArray(output, 3)
+
+        println("Correct")
+        printArray(correct)
+        println()
+        println("Output")
+        printArray(output)
+        println()
+
+        assertTrue(correct.contentDeepEquals(output))
+    }
+
+    @Test
+    fun solveLinearSystemTest2() {
+        println("solveLinearSystemTest2")
+        val input = arrayOf(
+            arrayOf(6.0, 2.0, 5.0),
+            arrayOf(-3.0, 4.0, -1.0),
+            arrayOf(1.0, 4.0, 3.0)
+        )
+
+        val constants = arrayOf(1.0, 6.0, 6.0)
+        val correct = arrayOf(-1.0, 1.0, 1.0)
+
+        val output = solveLinearSystem(input, constants) ?: return
+        roundArray(output, 3)
+
+        println("Correct")
+        printArray(correct)
+        println()
+        println("Output")
+        printArray(output)
+        println()
+
+        assertTrue(correct.contentDeepEquals(output))
     }
 }

@@ -62,21 +62,21 @@ class MatrixHandler {
             var rank = 0
 
             for (col in 0 until numCols) {
-                // Знаходження ненульового елемента в стовпці col
+                // Finding a non-zero element in col
                 var nonZeroRow = rank
                 while (nonZeroRow < numRows && augmentedMatrix[nonZeroRow][col] == 0.0) {
                     nonZeroRow++
                 }
 
                 if (nonZeroRow == numRows) {
-                    continue // Всі рядки під колом col мають нульові значення, переходимо до наступного стовпця
+                    continue // All lines under the col circle have zero values, we move to the next column
                 }
 
-                // Обмін рядками, щоб мати ненульовий елемент на позначеній позиції
+                // Swap strings to have a non-null element at the indicated position
                 augmentedMatrix[rank] to augmentedMatrix[nonZeroRow]
                 augmentedMatrix[nonZeroRow] to augmentedMatrix[rank]
 
-                // Зрізання стовпця до ненульового елемента, щоб усі інші рядки мали нульові значення
+                // Truncate the column to a non-null element so that all other rows have null values
                 for (i in rank + 1 until numRows) {
                     val factor = augmentedMatrix[i][col] / augmentedMatrix[rank][col]
                     for (j in col until numCols) {
@@ -88,6 +88,25 @@ class MatrixHandler {
             }
 
             return rank
+        }
+
+        fun solveLinearSystem(matrix: Array<Array<Double>>, constants: Array<Double>): Array<Double>? {
+            val n = matrix.size
+
+            // Calculation of the inverse matrix
+            val inverse = inverseMatrix(matrix) ?: return null
+
+            // Calculation of the solution vector
+            val solution = DoubleArray(n)
+            for (i in 0 until n) {
+                var sum = 0.0
+                for (j in 0 until n) {
+                    sum += inverse[i][j] * constants[j]
+                }
+                solution[i] = sum
+            }
+
+            return solution.toTypedArray()
         }
 
         // Helper function to check if a matrix is square
