@@ -2,6 +2,7 @@ package com.example.mapp.pages.MainPage
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -26,15 +27,17 @@ fun MatrixActions(
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.SemiBold
         )
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = { viewModel.inverseRandomMatrix(); scope.launch { sheetState.bottomSheetState.expand() } }) {
-            Text("Inverse the matrix")
-        }
-        Button(
-            modifier = Modifier.fillMaxWidth(),
-            onClick = { viewModel.getRandomMatrixRank(); scope.launch { sheetState.bottomSheetState.expand() } }) {
-            Text("Get matrix rank")
+        Row(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+            Button(
+                modifier = Modifier.weight(1f),
+                onClick = { viewModel.inverseRandomMatrix(); scope.launch { sheetState.bottomSheetState.expand() } }) {
+                Text("Inverse the matrix")
+            }
+            Button(
+                modifier = Modifier.weight(1f),
+                onClick = { viewModel.getRandomMatrixRank(); scope.launch { sheetState.bottomSheetState.expand() } }) {
+                Text("Get matrix rank")
+            }
         }
         Button(
             modifier = Modifier.fillMaxWidth(),

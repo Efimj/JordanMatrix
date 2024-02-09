@@ -56,7 +56,7 @@ class MainScreenViewModel : ViewModel() {
         val matrix = getRandomMatrix()
 
         var newOutput = states.value.output
-        newOutput += "\n--------Matrix inverse-------\n"
+        newOutput += "\n-------- Matrix inverse -------\n"
         newOutput += "Matrix:\n"
         newOutput += arrayToString(matrix)
         newOutput += "\n" + "Inverse:" + "\n"
@@ -76,7 +76,7 @@ class MainScreenViewModel : ViewModel() {
         val matrix = getRandomMatrix()
 
         var newOutput = states.value.output
-        newOutput += "\n--------Matrix rank-------\n"
+        newOutput += "\n-------- Matrix rank -------\n"
         newOutput += "Matrix:\n"
         newOutput += arrayToString(matrix)
         newOutput += "\n" + "Rank:" + "\n"
@@ -94,13 +94,14 @@ class MainScreenViewModel : ViewModel() {
             getRandomMatrixNumber(),
             getRandomMatrixNumber()
         )
+        roundArray(constants, 3)
 
         var newOutput = states.value.output
-        newOutput += "\n--------Solve matrix-------\n"
+        newOutput += "\n-------- Solve matrix -------\n"
         newOutput += "Matrix:\n"
         newOutput += arrayToString(matrix)
-        newOutput += "Constants:\n"
-        printArray(constants)
+        newOutput += "\n" + "Constants:" + "\n"
+        newOutput += arrayToString(constants)
         newOutput += "\n" + "Solve:" + "\n"
 
         val output = MatrixHandler.solveLinearSystem(matrix, constants) ?: return

@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mapp.pages.MainPage.MatrixActions
@@ -40,6 +41,13 @@ fun PageContent(
             .padding(20.dp),
         verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = "Showcase",
+            style = MaterialTheme.typography.headlineLarge,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Bold
+        )
         MatrixSizeSetter(viewModel)
         MatrixMinMaxValuesSetter(viewModel)
         MatrixActions(viewModel, sheetState)
