@@ -3,6 +3,7 @@ package com.example.mapp.viewModel
 import ArrayHelper.Companion.arrayToString
 import ArrayHelper.Companion.fillTwoDimArrayRandomly
 import ArrayHelper.Companion.generateTwoDimArray
+import ArrayHelper.Companion.roundArray
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -35,15 +36,24 @@ class MainScreenViewModel : ViewModel() {
 
     fun inverseRandomMatrix() {
         val array = generateTwoDimArray(states.value.matrixRows, states.value.matrixColumns, 0.0)
-        fillTwoDimArrayRandomly(array, -5.0, +5.0)
+        fillTwoDimArrayRandomly(array, -5.0, +5.0, 3)
 
         var newOutput = "${states.value.output}\nArray:\n"
         newOutput += arrayToString(array)
         newOutput += "\n" + "Inverse:" + "\n"
 
         MatrixHandler.inverseMatrix(array).let {
-            if (it != null) newOutput += arrayToString(it) else newOutput += "error"
+            if (it != null) {
+                roundArray(it, 3)
+                newOutput += arrayToString(it)
+            } else {
+                newOutput += "error"
+            }
         }
         _states.value = states.value.copy(output = newOutput)
+    }
+
+    fun clearOutput() {
+        _states.value = states.value.copy(output = "")
     }
 }

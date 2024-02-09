@@ -15,7 +15,6 @@ import com.example.mapp.viewModel.MainScreenViewModel
 fun MainPage(viewModel: MainScreenViewModel = viewModel()) {
     val sheetState =
         rememberBottomSheetScaffoldState()
-    val scope = rememberCoroutineScope()
 
     BottomSheetScaffold(
         modifier = Modifier.fillMaxSize(),
@@ -27,6 +26,6 @@ fun MainPage(viewModel: MainScreenViewModel = viewModel()) {
     )
 
     {
-        PageContent(scope, sheetState, viewModel)
+        PageContent(sheetState, viewModel)
     }
 }

@@ -7,19 +7,26 @@ class ArrayHelper {
             return Array(rows) { Array(cols) { initialValue } }
         }
 
-        fun fillTwoDimArrayRandomly(array: Array<Array<Double>>, minValue: Double, maxValue: Double) {
+        fun fillTwoDimArrayRandomly(
+            array: Array<Array<Double>>,
+            minValue: Double,
+            maxValue: Double,
+            round: Int? = null
+        ) {
             require(minValue < maxValue) { "minValue < maxValue" }
 
             for (i in array.indices) {
                 for (j in array[i].indices) {
                     var randomValue: Double
                     do {
-                        randomValue = round(Random.nextDouble(minValue, maxValue) * 100) / 100
+                        randomValue = Random.nextDouble(minValue, maxValue)
                     } while (randomValue == 0.0)
 
                     array[i][j] = randomValue
                 }
             }
+            if (round != null)
+                roundArray(array, round)
         }
 
         fun roundArray(array: Array<Array<Double>>, decimalPlaces: Int) {
