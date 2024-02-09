@@ -2,7 +2,9 @@ package com.example.mapp
 
 import ArrayHelper.Companion.printArray
 import ArrayHelper.Companion.roundArray
+import com.example.mapp.main.MatrixHandler.Companion.getMatrixRank
 import com.example.mapp.main.MatrixHandler.Companion.inverseMatrix
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -23,8 +25,8 @@ class MatrixHandlerUnitTest {
             arrayOf(0.237, 0.086, -0.183)
         )
 
-        val output = inverseMatrix(input)?:return
-        roundArray(output,3)
+        val output = inverseMatrix(input) ?: return
+        roundArray(output, 3)
 
         println("Correct")
         printArray(correct)
@@ -58,8 +60,8 @@ class MatrixHandlerUnitTest {
 //            arrayOf(-0.5, -0.687, 0.937)
 //        )
 
-        val output = inverseMatrix(input)?:return
-        roundArray(output,3)
+        val output = inverseMatrix(input) ?: return
+        roundArray(output, 3)
 
         println("Correct")
         printArray(correct)
@@ -86,8 +88,8 @@ class MatrixHandlerUnitTest {
             arrayOf(0.25, 0.25, -0.25)
         )
 
-        val output = inverseMatrix(input)?:return
-        roundArray(output,3)
+        val output = inverseMatrix(input) ?: return
+        roundArray(output, 3)
 
         println("Correct")
         printArray(correct)
@@ -97,5 +99,144 @@ class MatrixHandlerUnitTest {
         println()
 
         assertTrue(correct.contentDeepEquals(output))
+    }
+
+    @Test
+    fun getMatrixRank1() {
+        println("getMatrixRank1")
+        val input = arrayOf(
+            arrayOf(1.0, 2.0, 3.0, 4.0),
+            arrayOf(2.0, 4.0, 6.0, 8.0),
+        )
+
+        val correct = 1
+
+        val output = input.getMatrixRank()
+
+        println("Correct")
+        println(correct)
+        println()
+        println("Output")
+        println(output)
+        println()
+
+        assertEquals(correct, output)
+    }
+
+    @Test
+    fun getMatrixRank2() {
+        println("getMatrixRank2")
+        val input = arrayOf(
+            arrayOf(2.0, 5.0, 4.0),
+            arrayOf(-3.0, 1.0, -2.0),
+            arrayOf(-1.0, 6.0, 2.0),
+        )
+
+        val correct = 2
+
+        val output = input.getMatrixRank()
+
+        println("Correct")
+        println(correct)
+        println()
+        println("Output")
+        println(output)
+        println()
+
+        assertEquals(correct, output)
+    }
+
+    @Test
+    fun getMatrixRank3() {
+        println("getMatrixRank3")
+        val input = arrayOf(
+            arrayOf(1.0, 2.0),
+            arrayOf(3.0, 6.0),
+            arrayOf(5.0, 10.0),
+            arrayOf(4.0, 8.0),
+        )
+
+        val correct = 1
+
+        val output = input.getMatrixRank()
+
+        println("Correct")
+        println(correct)
+        println()
+        println("Output")
+        println(output)
+        println()
+
+        assertEquals(correct, output)
+    }
+
+    @Test
+    fun getMatrixRank4() {
+        println("getMatrixRank4")
+        val input = arrayOf(
+            arrayOf(6.0, 2.0, 5.0),
+            arrayOf(-3.0, 4.0, -1.0),
+            arrayOf(1.0, 4.0, 3.0),
+        )
+
+        val correct = 3
+
+        val output = input.getMatrixRank()
+
+        println("Correct")
+        println(correct)
+        println()
+        println("Output")
+        println(output)
+        println()
+
+        assertEquals(correct, output)
+    }
+
+    @Test
+    fun getMatrixRank5() {
+        println("getMatrixRank5")
+        val input = arrayOf(
+            arrayOf(-1.0, 5.0, 4.0),
+            arrayOf(-2.0, 7.0, 5.0),
+            arrayOf(3.0, 4.0, 1.0),
+        )
+
+        val correct = 3
+
+        val output = input.getMatrixRank()
+
+        println("Correct")
+        println(correct)
+        println()
+        println("Output")
+        println(output)
+        println()
+
+        assertEquals(correct, output)
+    }
+
+    @Test
+    fun getMatrixRank6() {
+        println("getMatrixRank6")
+        val input = arrayOf(
+            arrayOf(1.0, 2.0, 3.0, 4.0),
+            arrayOf(-2.0, 5.0, -1.0, 3.0),
+            arrayOf(2.0, 4.0, 6.0, 8.0),
+            arrayOf(-1.0, 7.0, 2.0, 7.0),
+        )
+
+        val correct = 2
+
+        val output = input.getMatrixRank()
+
+        println("Correct")
+        println(correct)
+        println()
+        println("Output")
+        println(output)
+        println()
+
+        assertEquals(correct, output)
     }
 }
