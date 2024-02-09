@@ -1,4 +1,4 @@
-package com.example.mapp.pages
+package com.example.mapp.pages.MainPage
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*
@@ -7,7 +7,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.mapp.ui.components.PageContent
-import com.example.mapp.ui.components.SheetContent
 import com.example.mapp.viewModel.MainScreenViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -2,23 +2,23 @@ package com.example.mapp.main
 
 class MatrixHandler {
     companion object {
-        // Пошук оберненої матриці для довільної квадратної матриці
+        // Finding the inverse of an arbitrary square matrix
         fun inverseMatrix(matrix: Array<Array<Double>>): Array<Array<Double>>? {
             val n = matrix.size
 
-            // Перевірка, чи матриця є квадратною
+            // Checking if a matrix is square
             if (!isSquareMatrix(matrix)) {
                 return null
             }
 
-            // Створення одиничної матриці
+            // Creating a unit matrix
             val identityMatrix = Array(n) { i ->
                 Array(n) { j ->
                     if (i == j) 1.0 else 0.0
                 }
             }
 
-            // Копія вхідної матриці для уникнення змін у вхідних даних
+            // A copy of the input matrix to avoid changes in the input data
             val augmentedMatrix = matrix.mapIndexed { index, row ->
                 row + identityMatrix[index]
             }
@@ -27,10 +27,10 @@ class MatrixHandler {
                 val pivot = augmentedMatrix[i][i]
 
                 if (pivot == 0.0) {
-                    return null // Матриця не має оберненої матриці
+                    return null // The matrix does not have an inverse matrix
                 }
 
-                // Кроки Звичайних Жорданових виключень
+                // Steps of Normal Jordan Exceptions
                 for (j in 0 until 2 * n) {
                     augmentedMatrix[i][j] /= pivot
                 }
@@ -45,7 +45,7 @@ class MatrixHandler {
                 }
             }
 
-            // Витягнення оберненої матриці з розширеної матриці
+            // Extracting the inverse matrix from the expanded matrix
             val inverse = augmentedMatrix.map { row ->
                 row.slice(n until row.size).toTypedArray()
             }.toTypedArray()
@@ -53,7 +53,7 @@ class MatrixHandler {
             return inverse
         }
 
-        // Допоміжна функція для перевірки, чи матриця є квадратною
+        // Helper function to check if a matrix is square
         fun isSquareMatrix(matrix: Array<Array<Double>>): Boolean {
             val numRows = matrix.size
             return numRows > 0 && matrix.all { it.size == numRows }
