@@ -1,4 +1,4 @@
-package com.example.mapp.pages.MainPage
+package com.example.matrix.pages.MainPage
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,40 +17,40 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.example.mapp.viewModel.MainScreenViewModel
+import com.example.matrix.viewModel.MainScreenViewModel
 
 @Composable
-fun MatrixSizeSetter(viewModel: MainScreenViewModel) {
+fun MatrixMinMaxValuesSetter(viewModel: MainScreenViewModel) {
     val isRelated = rememberSaveable { mutableStateOf(false) }
 
-    LaunchedEffect(isRelated.value, viewModel.states.value.matrixRows) {
+    LaunchedEffect(isRelated.value, viewModel.states.value.matrixMinValue) {
         if (isRelated.value) {
-            viewModel.setMatrixColumns(viewModel.states.value.matrixRows.toString())
+            viewModel.setMatrixMaxValue((-viewModel.states.value.matrixMinValue).toString())
         }
     }
 
     Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
         Text(
-            "Set the matrix",
+            "Random number range",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.SemiBold
         )
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
             OutlinedTextField(
                 modifier = Modifier.weight(1f),
-                value = viewModel.states.value.matrixRows.toString(),
-                onValueChange = viewModel::setMatrixRows,
+                value = viewModel.states.value.matrixMinValue.toString(),
+                onValueChange = viewModel::setMatrixMinValue,
                 label = {
-                    Text(text = "Rows")
+                    Text(text = "Min")
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
             OutlinedTextField(
                 modifier = Modifier.weight(1f),
-                value = viewModel.states.value.matrixColumns.toString(),
-                onValueChange = viewModel::setMatrixColumns,
+                value = viewModel.states.value.matrixMaxValue.toString(),
+                onValueChange = viewModel::setMatrixMaxValue,
                 label = {
-                    Text(text = "Columns")
+                    Text(text = "Max")
                 },
                 enabled = !isRelated.value,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)

@@ -1,15 +1,14 @@
-package com.example.mapp.viewModel
+package com.example.matrix.viewModel
 
 import ArrayHelper.Companion.arrayToString
 import ArrayHelper.Companion.fillTwoDimArrayRandomly
 import ArrayHelper.Companion.generateTwoDimArray
-import ArrayHelper.Companion.printArray
 import ArrayHelper.Companion.roundArray
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.mapp.main.MatrixHandler
-import com.example.mapp.main.MatrixHandler.Companion.getMatrixRank
+import com.example.matrix.main.MatrixHandler
+import com.example.matrix.main.MatrixHandler.Companion.getMatrixRank
 import kotlin.random.Random
 
 data class MainScreenStates(

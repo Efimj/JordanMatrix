@@ -1,4 +1,4 @@
-package com.example.mapp
+package com.example.matrix
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

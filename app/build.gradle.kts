@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mapp"
+    namespace = "com.example.matrix"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.mapp"
+        applicationId = "com.example.matrix"
         minSdk = 27
         targetSdk = 34
         versionCode = 1

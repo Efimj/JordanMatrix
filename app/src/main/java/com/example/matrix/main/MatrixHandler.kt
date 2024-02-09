@@ -1,4 +1,4 @@
-package com.example.mapp.main
+package com.example.matrix.main
 
 class MatrixHandler {
     companion object {

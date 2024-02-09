@@ -1,4 +1,4 @@
-package com.example.mapp
+package com.example.matrix
 
 import org.junit.Test
 

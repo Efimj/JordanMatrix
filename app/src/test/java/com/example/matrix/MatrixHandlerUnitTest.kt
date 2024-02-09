@@ -1,10 +1,10 @@
-package com.example.mapp
+package com.example.matrix
 
 import ArrayHelper.Companion.printArray
 import ArrayHelper.Companion.roundArray
-import com.example.mapp.main.MatrixHandler.Companion.getMatrixRank
-import com.example.mapp.main.MatrixHandler.Companion.inverseMatrix
-import com.example.mapp.main.MatrixHandler.Companion.solveLinearSystem
+import com.example.matrix.main.MatrixHandler.Companion.getMatrixRank
+import com.example.matrix.main.MatrixHandler.Companion.inverseMatrix
+import com.example.matrix.main.MatrixHandler.Companion.solveLinearSystem
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test

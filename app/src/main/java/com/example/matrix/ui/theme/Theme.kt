@@ -1,4 +1,4 @@
-package com.example.mapp.ui.theme
+package com.example.matrix.ui.theme
 
 import android.app.Activity
 import android.os.Build

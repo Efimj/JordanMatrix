@@ -1,4 +1,4 @@
-package com.example.mapp.pages.MainPage
+package com.example.matrix.pages.MainPage
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.LinearEasing
@@ -18,8 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.mapp.ui.components.TypewriteText
-import com.example.mapp.viewModel.MainScreenViewModel
+import com.example.matrix.ui.components.TypewriteText
+import com.example.matrix.viewModel.MainScreenViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 

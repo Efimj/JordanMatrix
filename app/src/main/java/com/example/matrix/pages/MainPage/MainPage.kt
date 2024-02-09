@@ -1,13 +1,12 @@
-package com.example.mapp.pages.MainPage
+package com.example.matrix.pages.MainPage
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.mapp.ui.components.PageContent
-import com.example.mapp.viewModel.MainScreenViewModel
+import com.example.matrix.ui.components.PageContent
+import com.example.matrix.viewModel.MainScreenViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

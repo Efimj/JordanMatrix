@@ -1,4 +1,4 @@
-package com.example.mapp.pages.MainPage
+package com.example.matrix.pages.MainPage
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,7 +10,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.mapp.viewModel.MainScreenViewModel
+import com.example.matrix.viewModel.MainScreenViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

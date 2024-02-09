@@ -1,4 +1,4 @@
-package com.example.mapp.ui.components
+package com.example.matrix.ui.components
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.Box
