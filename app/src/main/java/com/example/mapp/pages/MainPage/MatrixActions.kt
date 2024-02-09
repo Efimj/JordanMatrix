@@ -36,5 +36,10 @@ fun MatrixActions(
             onClick = { viewModel.getRandomMatrixRank(); scope.launch { sheetState.bottomSheetState.expand() } }) {
             Text("Get matrix rank")
         }
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { viewModel.getSolveRandomMatrix(); scope.launch { sheetState.bottomSheetState.expand() } }) {
+            Text("Solve random matrix")
+        }
     }
 }

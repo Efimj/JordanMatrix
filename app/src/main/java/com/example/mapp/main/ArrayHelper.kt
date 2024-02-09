@@ -114,5 +114,25 @@ class ArrayHelper {
             }
             return output
         }
+
+        fun <T> arrayToString(array: Array<T>, separator: String = "   "): String {
+            var maxSymbolsElement = 0
+            for (element in array) {
+                element.toString().let {
+                    maxSymbolsElement = maxSymbolsElement.coerceAtLeast(it.length)
+                }
+            }
+
+            var output = ""
+            for (element in array) {
+                val stringToOutput = element.toString()
+                if (stringToOutput.first() != '-') output += " "
+                output += stringToOutput + separator
+                repeat(maxSymbolsElement - stringToOutput.length - if (stringToOutput.first() != '-') 1 else 0) {
+                    output += " "
+                }
+            }
+            return output
+        }
     }
 }

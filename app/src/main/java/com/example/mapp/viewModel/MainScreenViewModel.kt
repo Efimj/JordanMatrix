@@ -3,12 +3,14 @@ package com.example.mapp.viewModel
 import ArrayHelper.Companion.arrayToString
 import ArrayHelper.Companion.fillTwoDimArrayRandomly
 import ArrayHelper.Companion.generateTwoDimArray
+import ArrayHelper.Companion.printArray
 import ArrayHelper.Companion.roundArray
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.mapp.main.MatrixHandler
 import com.example.mapp.main.MatrixHandler.Companion.getMatrixRank
+import kotlin.random.Random
 
 data class MainScreenStates(
     val output: String = "none",
@@ -51,32 +53,68 @@ class MainScreenViewModel : ViewModel() {
     }
 
     fun inverseRandomMatrix() {
-        val array = generateTwoDimArray(states.value.matrixRows, states.value.matrixColumns, 0.0)
-        fillTwoDimArrayRandomly(
-            array,
-            states.value.matrixMinValue.toDouble(),
-            states.value.matrixMaxValue.toDouble(),
-            3
-        )
+        val matrix = getRandomMatrix()
 
         var newOutput = states.value.output
-        newOutput += "\n------------------------------\n"
-        newOutput += "Array:\n"
-        newOutput += arrayToString(array)
+        newOutput += "\n--------Matrix inverse-------\n"
+        newOutput += "Matrix:\n"
+        newOutput += arrayToString(matrix)
         newOutput += "\n" + "Inverse:" + "\n"
 
-        MatrixHandler.inverseMatrix(array).let {
-            if (it != null) {
+        MatrixHandler.inverseMatrix(matrix).let {
+            newOutput += if (it != null) {
                 roundArray(it, 3)
-                newOutput += arrayToString(it)
+                arrayToString(it)
             } else {
-                newOutput += "error"
+                "error"
             }
         }
         _states.value = states.value.copy(output = newOutput)
     }
 
     fun getRandomMatrixRank() {
+        val matrix = getRandomMatrix()
+
+        var newOutput = states.value.output
+        newOutput += "\n--------Matrix rank-------\n"
+        newOutput += "Matrix:\n"
+        newOutput += arrayToString(matrix)
+        newOutput += "\n" + "Rank:" + "\n"
+
+        matrix.getMatrixRank().let {
+            newOutput += it
+        }
+        _states.value = states.value.copy(output = newOutput)
+    }
+
+    fun getSolveRandomMatrix() {
+        val matrix = getRandomMatrix()
+        val constants = arrayOf(
+            getRandomMatrixNumber(),
+            getRandomMatrixNumber(),
+            getRandomMatrixNumber()
+        )
+
+        var newOutput = states.value.output
+        newOutput += "\n--------Solve matrix-------\n"
+        newOutput += "Matrix:\n"
+        newOutput += arrayToString(matrix)
+        newOutput += "Constants:\n"
+        printArray(constants)
+        newOutput += "\n" + "Solve:" + "\n"
+
+        val output = MatrixHandler.solveLinearSystem(matrix, constants) ?: return
+        roundArray(output, 3)
+
+        newOutput += arrayToString(output)
+
+        _states.value = states.value.copy(output = newOutput)
+    }
+
+    private fun getRandomMatrixNumber() =
+        Random.nextDouble(states.value.matrixMinValue.toDouble(), states.value.matrixMaxValue.toDouble())
+
+    private fun getRandomMatrix(): Array<Array<Double>> {
         val array = generateTwoDimArray(states.value.matrixRows, states.value.matrixColumns, 0.0)
         fillTwoDimArrayRandomly(
             array,
@@ -84,17 +122,7 @@ class MainScreenViewModel : ViewModel() {
             states.value.matrixMaxValue.toDouble(),
             3
         )
-
-        var newOutput = states.value.output
-        newOutput += "\n------------------------------\n"
-        newOutput += "Array:\n"
-        newOutput += arrayToString(array)
-        newOutput += "\n" + "Rank:" + "\n"
-
-        array.getMatrixRank().let {
-            newOutput += it
-        }
-        _states.value = states.value.copy(output = newOutput)
+        return array
     }
 
     fun clearOutput() {
