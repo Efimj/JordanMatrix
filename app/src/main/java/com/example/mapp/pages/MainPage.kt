@@ -1,4 +1,4 @@
-package com.example.mapp.ui.pages
+package com.example.mapp.pages
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*

@@ -13,8 +13,9 @@ data class MainScreenStates(
     val output: String = "none",
     val matrixRows: Int = 3,
     val matrixColumns: Int = 3,
-
-    )
+    val matrixMinValue: Int = -5,
+    val matrixMaxValue: Int = 5,
+)
 
 class MainScreenViewModel : ViewModel() {
     private val _states = mutableStateOf(MainScreenStates())
@@ -34,9 +35,28 @@ class MainScreenViewModel : ViewModel() {
             _states.value = _states.value.copy(matrixColumns = matrixColumns)
     }
 
+    fun setMatrixMinValue(valueString: String) {
+        val matrixRows = valueString.toIntOrNull() ?: return
+
+        if (matrixRows < 0)
+            _states.value = _states.value.copy(matrixMinValue = matrixRows)
+    }
+
+    fun setMatrixMaxValue(valueString: String) {
+        val matrixColumns = valueString.toIntOrNull() ?: return
+
+        if (matrixColumns > 0)
+            _states.value = _states.value.copy(matrixMaxValue = matrixColumns)
+    }
+
     fun inverseRandomMatrix() {
         val array = generateTwoDimArray(states.value.matrixRows, states.value.matrixColumns, 0.0)
-        fillTwoDimArrayRandomly(array, -5.0, +5.0, 3)
+        fillTwoDimArrayRandomly(
+            array,
+            states.value.matrixMinValue.toDouble(),
+            states.value.matrixMaxValue.toDouble(),
+            3
+        )
 
         var newOutput = "${states.value.output}\nArray:\n"
         newOutput += arrayToString(array)

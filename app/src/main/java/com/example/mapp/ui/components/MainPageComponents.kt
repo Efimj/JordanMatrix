@@ -35,9 +35,10 @@ fun PageContent(
             .verticalScroll(rememberScrollState())
             .fillMaxSize()
             .padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp)
+        verticalArrangement = Arrangement.spacedBy(15.dp)
     ) {
         MatrixSizeSetter(viewModel)
+        MatrixMinMaxValuesSetter(viewModel)
         MatrixActions(viewModel, sheetState)
     }
 }
@@ -120,6 +121,61 @@ private fun MatrixSizeSetter(viewModel: MainScreenViewModel) {
 }
 
 @Composable
+private fun MatrixMinMaxValuesSetter(viewModel: MainScreenViewModel) {
+    val isRelated = rememberSaveable { mutableStateOf(false) }
+
+    LaunchedEffect(isRelated.value, viewModel.states.value.matrixMinValue) {
+        if (isRelated.value) {
+            viewModel.setMatrixMaxValue((-viewModel.states.value.matrixMinValue).toString())
+        }
+    }
+
+    Column(verticalArrangement = Arrangement.spacedBy(5.dp)) {
+        Text(
+            "Random number range",
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.SemiBold
+        )
+        Row(horizontalArrangement = Arrangement.spacedBy(10.dp), verticalAlignment = Alignment.CenterVertically) {
+            OutlinedTextField(
+                modifier = Modifier.weight(1f),
+                value = viewModel.states.value.matrixMinValue.toString(),
+                onValueChange = viewModel::setMatrixMinValue,
+                label = {
+                    Text(text = "Min")
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+            OutlinedTextField(
+                modifier = Modifier.weight(1f),
+                value = viewModel.states.value.matrixMaxValue.toString(),
+                onValueChange = viewModel::setMatrixMaxValue,
+                label = {
+                    Text(text = "Max")
+                },
+                enabled = !isRelated.value,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+            Switch(
+                checked = isRelated.value,
+                onCheckedChange = { isRelated.value = !isRelated.value },
+                thumbContent = if (isRelated.value) {
+                    {
+                        Icon(
+                            imageVector = Icons.Outlined.Link,
+                            contentDescription = null,
+                            modifier = Modifier.size(SwitchDefaults.IconSize),
+                        )
+                    }
+                } else {
+                    null
+                }
+            )
+        }
+    }
+}
+
+@Composable
 fun SheetContent(
     viewModel: MainScreenViewModel
 ) {
@@ -173,7 +229,7 @@ fun SheetContent(
                         onClick = { viewModel.clearOutput(); }) {
                         Text("Clear")
                     }
-                    Button(
+                    OutlinedButton(
                         onClick = {
                             skipAnimation.value = true
                             scope.launch {
