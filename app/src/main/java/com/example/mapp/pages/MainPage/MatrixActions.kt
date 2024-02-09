@@ -31,5 +31,10 @@ fun MatrixActions(
             onClick = { viewModel.inverseRandomMatrix(); scope.launch { sheetState.bottomSheetState.expand() } }) {
             Text("Inverse the matrix")
         }
+        Button(
+            modifier = Modifier.fillMaxWidth(),
+            onClick = { viewModel.getRandomMatrixRank(); scope.launch { sheetState.bottomSheetState.expand() } }) {
+            Text("Get matrix rank")
+        }
     }
 }

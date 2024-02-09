@@ -8,6 +8,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.mapp.main.MatrixHandler
+import com.example.mapp.main.MatrixHandler.Companion.getMatrixRank
 
 data class MainScreenStates(
     val output: String = "none",
@@ -58,7 +59,9 @@ class MainScreenViewModel : ViewModel() {
             3
         )
 
-        var newOutput = "${states.value.output}\nArray:\n"
+        var newOutput = states.value.output
+        newOutput += "\n------------------------------\n"
+        newOutput += "Array:\n"
         newOutput += arrayToString(array)
         newOutput += "\n" + "Inverse:" + "\n"
 
@@ -69,6 +72,27 @@ class MainScreenViewModel : ViewModel() {
             } else {
                 newOutput += "error"
             }
+        }
+        _states.value = states.value.copy(output = newOutput)
+    }
+
+    fun getRandomMatrixRank() {
+        val array = generateTwoDimArray(states.value.matrixRows, states.value.matrixColumns, 0.0)
+        fillTwoDimArrayRandomly(
+            array,
+            states.value.matrixMinValue.toDouble(),
+            states.value.matrixMaxValue.toDouble(),
+            3
+        )
+
+        var newOutput = states.value.output
+        newOutput += "\n------------------------------\n"
+        newOutput += "Array:\n"
+        newOutput += arrayToString(array)
+        newOutput += "\n" + "Rank:" + "\n"
+
+        array.getMatrixRank().let {
+            newOutput += it
         }
         _states.value = states.value.copy(output = newOutput)
     }
