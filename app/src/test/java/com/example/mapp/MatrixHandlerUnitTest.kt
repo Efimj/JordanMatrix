@@ -290,4 +290,29 @@ class MatrixHandlerUnitTest {
 
         assertTrue(correct.contentDeepEquals(output))
     }
+
+    @Test
+    fun variantTest() {
+        println("variantTest")
+        val input = arrayOf(
+            arrayOf(2.0, -1.0, 3.0),
+            arrayOf(1.0, 3.0, -2.0),
+            arrayOf(3.0, 1.0, -1.0)
+        )
+
+        val constants = arrayOf(4.0, 2.0, 3.0)
+        val correct = arrayOf(1.0, 1.0, 1.0)
+
+        val output = solveLinearSystem(input, constants) ?: return
+        roundArray(output, 3)
+
+        println("Correct")
+        printArray(correct)
+        println()
+        println("Output")
+        printArray(output)
+        println()
+
+        assertTrue(correct.contentDeepEquals(output))
+    }
 }
