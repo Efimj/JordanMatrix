@@ -1,13 +1,20 @@
 package com.example.matrix.main
 
+import ArrayHelper.Companion.arrayToString
+import ArrayHelper.Companion.roundArray
+
 class MatrixHandler {
     companion object {
         // Finding the inverse of an arbitrary square matrix
-        fun inverseMatrix(matrix: Array<Array<Double>>): Array<Array<Double>>? {
+        fun inverseMatrix(
+            matrix: Array<Array<Double>>,
+            getProtocol: (protocol: String) -> Unit = {}
+        ): Array<Array<Double>>? {
             val n = matrix.size
 
             // Checking if a matrix is square
             if (!isSquareMatrix(matrix)) {
+                getProtocol("matrix isn't square")
                 return null
             }
 
@@ -23,10 +30,14 @@ class MatrixHandler {
                 row + identityMatrix[index]
             }
 
+            var protocol = ""
+
             for (i in 0 until n) {
                 val pivot = augmentedMatrix[i][i]
+                protocol += "[$i, $i] = $pivot\n"
 
                 if (pivot == 0.0) {
+                    getProtocol("matrix doesnt have an inverse matrix")
                     return null // The matrix does not have an inverse matrix
                 }
 
@@ -43,15 +54,29 @@ class MatrixHandler {
                         }
                     }
                 }
+
+                val currentMatrix = getInverse(augmentedMatrix, n)
+                roundArray(currentMatrix, 3)
+
+                protocol += "step: \n$i\n"
+                protocol += "matrix:\n" + arrayToString(currentMatrix)
+                protocol += "\n"
+
             }
 
             // Extracting the inverse matrix from the expanded matrix
-            val inverse = augmentedMatrix.map { row ->
-                row.slice(n until row.size).toTypedArray()
-            }.toTypedArray()
+            val inverse = getInverse(augmentedMatrix, n)
+            getProtocol(protocol)
 
             return inverse
         }
+
+        private fun getInverse(
+            augmentedMatrix: List<Array<Double>>,
+            n: Int
+        ) = augmentedMatrix.map { row ->
+            row.slice(n until row.size).toTypedArray()
+        }.toTypedArray()
 
         fun Array<Array<Double>>.getMatrixRank(): Int {
             val augmentedMatrix = this.map { it.clone() }.toTypedArray()

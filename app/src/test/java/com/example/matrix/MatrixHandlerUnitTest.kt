@@ -26,14 +26,19 @@ class MatrixHandlerUnitTest {
             arrayOf(0.237, 0.086, -0.183)
         )
 
-        val output = inverseMatrix(input) ?: return
-        roundArray(output, 3)
+        var protocol = ""
+
+        val output = inverseMatrix(input) { protocol = it } ?: return
+        roundArray(output, 2)
 
         println("Correct")
         printArray(correct)
         println()
         println("Output")
         printArray(output)
+        println()
+        println("Protocol")
+        println(protocol)
         println()
 
         assertTrue(correct.contentDeepEquals(output))
@@ -61,7 +66,9 @@ class MatrixHandlerUnitTest {
 //            arrayOf(-0.5, -0.687, 0.937)
 //        )
 
-        val output = inverseMatrix(input) ?: return
+        var protocol = ""
+
+        val output = inverseMatrix(input) { protocol = it } ?: return
         roundArray(output, 3)
 
         println("Correct")
@@ -69,6 +76,9 @@ class MatrixHandlerUnitTest {
         println()
         println("Output")
         printArray(output)
+        println()
+        println("Protocol")
+        println(protocol)
         println()
 
         assertTrue(correct.contentDeepEquals(output))
