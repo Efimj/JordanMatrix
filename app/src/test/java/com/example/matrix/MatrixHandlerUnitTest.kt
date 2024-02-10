@@ -29,19 +29,31 @@ class MatrixHandlerUnitTest {
         var protocol = ""
 
         val output = inverseMatrix(input) { protocol = it } ?: return
-        roundArray(output, 2)
+        roundArray(output, 3)
 
-        println("Correct")
-        printArray(correct)
+        makeReportToInverse(input, output, correct, protocol)
+
+        assertTrue(correct.contentDeepEquals(output))
+    }
+
+    private fun makeReportToInverse(
+        input: Array<Array<Double>>,
+        output: Array<Array<Double>>,
+        correct: Array<Array<Double>>,
+        protocol: String
+    ) {
+        println("Input")
+        printArray(input)
         println()
         println("Output")
         printArray(output)
         println()
+        println("Correct")
+        printArray(correct)
+        println()
         println("Protocol")
         println(protocol)
         println()
-
-        assertTrue(correct.contentDeepEquals(output))
     }
 
     @Test
@@ -71,15 +83,7 @@ class MatrixHandlerUnitTest {
         val output = inverseMatrix(input) { protocol = it } ?: return
         roundArray(output, 3)
 
-        println("Correct")
-        printArray(correct)
-        println()
-        println("Output")
-        printArray(output)
-        println()
-        println("Protocol")
-        println(protocol)
-        println()
+        makeReportToInverse(input, output, correct, protocol)
 
         assertTrue(correct.contentDeepEquals(output))
     }
@@ -99,15 +103,12 @@ class MatrixHandlerUnitTest {
             arrayOf(0.25, 0.25, -0.25)
         )
 
-        val output = inverseMatrix(input) ?: return
+        var protocol = ""
+
+        val output = inverseMatrix(input) { protocol = it } ?: return
         roundArray(output, 3)
 
-        println("Correct")
-        printArray(correct)
-        println()
-        println("Output")
-        printArray(output)
-        println()
+        makeReportToInverse(input, output, correct, protocol)
 
         assertTrue(correct.contentDeepEquals(output))
     }
@@ -124,14 +125,21 @@ class MatrixHandlerUnitTest {
 
         val output = input.getMatrixRank()
 
-        println("Correct")
-        println(correct)
+        makeReportToRank(input, output, correct)
+
+        assertEquals(correct, output)
+    }
+
+    private fun makeReportToRank(input: Array<Array<Double>>, output: Int, correct: Int) {
+        println("Input")
+        println(input)
         println()
         println("Output")
         println(output)
         println()
-
-        assertEquals(correct, output)
+        println("Correct")
+        println(correct)
+        println()
     }
 
     @Test
@@ -147,12 +155,7 @@ class MatrixHandlerUnitTest {
 
         val output = input.getMatrixRank()
 
-        println("Correct")
-        println(correct)
-        println()
-        println("Output")
-        println(output)
-        println()
+        makeReportToRank(input, output, correct)
 
         assertEquals(correct, output)
     }
@@ -171,12 +174,7 @@ class MatrixHandlerUnitTest {
 
         val output = input.getMatrixRank()
 
-        println("Correct")
-        println(correct)
-        println()
-        println("Output")
-        println(output)
-        println()
+        makeReportToRank(input, output, correct)
 
         assertEquals(correct, output)
     }
@@ -194,12 +192,7 @@ class MatrixHandlerUnitTest {
 
         val output = input.getMatrixRank()
 
-        println("Correct")
-        println(correct)
-        println()
-        println("Output")
-        println(output)
-        println()
+        makeReportToRank(input, output, correct)
 
         assertEquals(correct, output)
     }
@@ -217,12 +210,7 @@ class MatrixHandlerUnitTest {
 
         val output = input.getMatrixRank()
 
-        println("Correct")
-        println(correct)
-        println()
-        println("Output")
-        println(output)
-        println()
+        makeReportToRank(input, output, correct)
 
         assertEquals(correct, output)
     }
@@ -241,12 +229,7 @@ class MatrixHandlerUnitTest {
 
         val output = input.getMatrixRank()
 
-        println("Correct")
-        println(correct)
-        println()
-        println("Output")
-        println(output)
-        println()
+        makeReportToRank(input, output, correct)
 
         assertEquals(correct, output)
     }
@@ -266,14 +249,25 @@ class MatrixHandlerUnitTest {
         val output = solveLinearSystem(input, constants) ?: return
         roundArray(output, 3)
 
-        println("Correct")
-        printArray(correct)
+        makeReportToSolve(input, output, correct)
+
+        assertTrue(correct.contentDeepEquals(output))
+    }
+
+    private fun makeReportToSolve(
+        input: Array<Array<Double>>,
+        output: Array<Double>,
+        correct: Array<Double>
+    ) {
+        println("Input")
+        printArray(input)
         println()
         println("Output")
         printArray(output)
         println()
-
-        assertTrue(correct.contentDeepEquals(output))
+        println("Correct")
+        printArray(correct)
+        println()
     }
 
     @Test
@@ -291,12 +285,7 @@ class MatrixHandlerUnitTest {
         val output = solveLinearSystem(input, constants) ?: return
         roundArray(output, 3)
 
-        println("Correct")
-        printArray(correct)
-        println()
-        println("Output")
-        printArray(output)
-        println()
+        makeReportToSolve(input, output, correct)
 
         assertTrue(correct.contentDeepEquals(output))
     }
@@ -316,12 +305,7 @@ class MatrixHandlerUnitTest {
         val output = solveLinearSystem(input, constants) ?: return
         roundArray(output, 3)
 
-        println("Correct")
-        printArray(correct)
-        println()
-        println("Output")
-        printArray(output)
-        println()
+        makeReportToSolve(input, output, correct)
 
         assertTrue(correct.contentDeepEquals(output))
     }
