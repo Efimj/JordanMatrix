@@ -132,7 +132,7 @@ class MatrixHandlerUnitTest {
 
     private fun makeReportToRank(input: Array<Array<Double>>, output: Int, correct: Int) {
         println("Input")
-        println(input)
+        printArray(input)
         println()
         println("Output")
         println(output)
@@ -246,10 +246,12 @@ class MatrixHandlerUnitTest {
         val constants = arrayOf(13.0, 13.0, 12.0)
         val correct = arrayOf(1.0, 2.0, 2.0)
 
-        val output = solveLinearSystem(input, constants) ?: return
+        var protocol = ""
+
+        val output = solveLinearSystem(input, constants) { protocol = it } ?: return
         roundArray(output, 3)
 
-        makeReportToSolve(input, output, correct)
+        makeReportToSolve(input, output, correct, protocol)
 
         assertTrue(correct.contentDeepEquals(output))
     }
@@ -257,7 +259,8 @@ class MatrixHandlerUnitTest {
     private fun makeReportToSolve(
         input: Array<Array<Double>>,
         output: Array<Double>,
-        correct: Array<Double>
+        correct: Array<Double>,
+        protocol: String
     ) {
         println("Input")
         printArray(input)
@@ -267,6 +270,9 @@ class MatrixHandlerUnitTest {
         println()
         println("Correct")
         printArray(correct)
+        println()
+        println("Protocol")
+        println(protocol)
         println()
     }
 
@@ -282,10 +288,12 @@ class MatrixHandlerUnitTest {
         val constants = arrayOf(1.0, 6.0, 6.0)
         val correct = arrayOf(-1.0, 1.0, 1.0)
 
-        val output = solveLinearSystem(input, constants) ?: return
+        var protocol = ""
+
+        val output = solveLinearSystem(input, constants) { protocol = it } ?: return
         roundArray(output, 3)
 
-        makeReportToSolve(input, output, correct)
+        makeReportToSolve(input, output, correct, protocol)
 
         assertTrue(correct.contentDeepEquals(output))
     }
@@ -302,10 +310,12 @@ class MatrixHandlerUnitTest {
         val constants = arrayOf(4.0, 2.0, 3.0)
         val correct = arrayOf(1.0, 1.0, 1.0)
 
-        val output = solveLinearSystem(input, constants) ?: return
+        var protocol = ""
+
+        val output = solveLinearSystem(input, constants) { protocol = it } ?: return
         roundArray(output, 3)
 
-        makeReportToSolve(input, output, correct)
+        makeReportToSolve(input, output, correct, protocol)
 
         assertTrue(correct.contentDeepEquals(output))
     }

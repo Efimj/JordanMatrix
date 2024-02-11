@@ -115,22 +115,34 @@ class MatrixHandler {
             return rank
         }
 
-        fun solveLinearSystem(matrix: Array<Array<Double>>, constants: Array<Double>): Array<Double>? {
+        fun solveLinearSystem(
+            matrix: Array<Array<Double>>,
+            constants: Array<Double>,
+            getProtocol: (protocol: String) -> Unit = {}
+        ): Array<Double>? {
+            var protocol = ""
             val n = matrix.size
 
             // Calculation of the inverse matrix
-            val inverse = inverseMatrix(matrix) ?: return null
+            val inverse = inverseMatrix(matrix) { protocol = it } ?: return null
+
+            protocol += "\nsolution vector:\n"
 
             // Calculation of the solution vector
             val solution = DoubleArray(n)
             for (i in 0 until n) {
+                protocol += "X[$i] = "
                 var sum = 0.0
                 for (j in 0 until n) {
                     sum += inverse[i][j] * constants[j]
+                    protocol += "${inverse[i][j]} * ${constants[j]}"
+                    if (j < n - 1) protocol += " + "
                 }
                 solution[i] = sum
+                protocol += " = $sum\n"
             }
 
+            getProtocol(protocol)
             return solution.toTypedArray()
         }
 
