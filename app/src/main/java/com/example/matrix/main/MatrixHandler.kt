@@ -1,6 +1,7 @@
 package com.example.matrix.main
 
 import ArrayHelper.Companion.arrayToString
+import ArrayHelper.Companion.cloneArray
 import ArrayHelper.Companion.roundArray
 
 class MatrixHandler {
@@ -69,6 +70,45 @@ class MatrixHandler {
             getProtocol(protocol)
 
             return inverse
+        }
+
+        fun inverseMatrix(
+            matrix: Array<Array<Double>>,
+        ): Array<Array<Double>> {
+            var newMatrix = cloneArray(matrix)
+
+            // Matrix row walk
+            for (r in newMatrix.indices) {
+                val newMatrix1 = cloneArray(newMatrix)
+                newMatrix1[r][r] = 1.0
+
+                // Changing string characters other than element position
+                for (c in newMatrix[r].indices) {
+                    if (r != c)
+                        newMatrix1[r][c] = -newMatrix1[r][c]
+                }
+
+                // Calculation of side elements
+                for (r1 in newMatrix.indices) {
+                    for (c1 in newMatrix[r1].indices) {
+                        if (r1 != r && c1 != r)
+                            newMatrix1[r1][c1] =
+                                newMatrix[r1][c1] * newMatrix[r][r] - newMatrix[r1][r] * newMatrix[r][c1]
+                    }
+                }
+
+                // Dividing a matrix by element
+                for (r1 in newMatrix.indices) {
+                    for (c1 in newMatrix[r1].indices) {
+                        runCatching {
+                            newMatrix1[r1][c1] = newMatrix1[r1][c1] / newMatrix[r][r]
+                        }
+                    }
+                }
+                newMatrix = newMatrix1
+            }
+
+            return newMatrix
         }
 
         private fun getInverse(

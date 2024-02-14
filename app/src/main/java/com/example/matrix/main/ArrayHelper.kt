@@ -90,6 +90,16 @@ class ArrayHelper {
             }
         }
 
+        fun cloneArray(array: Array<Array<Double>>): Array<Array<Double>> {
+            val newArray = generateTwoDimArray(rows = array.size, cols = array[array.size - 1].size, 0.0)
+            for (i in array.indices) {
+                for (j in array[i].indices) {
+                    newArray[i][j] = array[i][j]
+                }
+            }
+            return newArray
+        }
+
         fun <T> arrayToString(array: Array<Array<T>>, separator: String = "   "): String {
             var maxSymbolsElement = 0
             for (row in array) {
