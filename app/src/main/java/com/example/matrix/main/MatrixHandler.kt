@@ -6,107 +6,67 @@ import ArrayHelper.Companion.roundArray
 
 class MatrixHandler {
     companion object {
+
+        /**
+         * One step to get inverse matrix by simple Jordan Elimination.
+         */
+        private fun simpleJordanEliminationStep(
+            matrix: Array<Array<Double>>,
+            row: Int,
+            column: Int = row
+        ): Array<Array<Double>> {
+            val newMatrix = cloneArray(matrix)
+            newMatrix[row][column] = 1.0
+
+            // Changing string characters other than element position
+            for (c in matrix[row].indices) {
+                if (row != c)
+                    newMatrix[row][c] = -newMatrix[row][c]
+            }
+
+            // Calculation of side elements
+            for (r1 in matrix.indices) {
+                for (c1 in matrix[r1].indices) {
+                    if (r1 != row && c1 != row)
+                        newMatrix[r1][c1] =
+                            matrix[r1][c1] * matrix[row][column] - matrix[r1][column] * matrix[row][c1]
+                }
+            }
+
+            // Dividing a matrix by element
+            for (r1 in matrix.indices) {
+                for (c1 in matrix[r1].indices) {
+                    runCatching {
+                        newMatrix[r1][c1] = newMatrix[r1][c1] / matrix[row][column]
+                    }
+                }
+            }
+            return newMatrix
+        }
+
         // Finding the inverse of an arbitrary square matrix
         fun inverseMatrix(
             matrix: Array<Array<Double>>,
             getProtocol: (protocol: String) -> Unit = {}
         ): Array<Array<Double>>? {
-            val n = matrix.size
-
-            // Checking if a matrix is square
             if (!isSquareMatrix(matrix)) {
                 getProtocol("matrix isn't square")
                 return null
             }
 
-            // Creating a unit matrix
-            val identityMatrix = Array(n) { i ->
-                Array(n) { j ->
-                    if (i == j) 1.0 else 0.0
-                }
-            }
-
-            // A copy of the input matrix to avoid changes in the input data
-            val augmentedMatrix = matrix.mapIndexed { index, row ->
-                row + identityMatrix[index]
-            }
+            var newMatrix = cloneArray(matrix)
 
             var protocol = ""
 
-            for (i in 0 until n) {
-                val pivot = augmentedMatrix[i][i]
-                protocol += "[$i, $i] = $pivot\n"
-
-                if (pivot == 0.0) {
-                    getProtocol("matrix doesnt have an inverse matrix")
-                    return null // The matrix does not have an inverse matrix
-                }
-
-                // Steps of Normal Jordan Exceptions
-                for (j in 0 until 2 * n) {
-                    augmentedMatrix[i][j] /= pivot
-                }
-
-                for (k in 0 until n) {
-                    if (k != i) {
-                        val factor = augmentedMatrix[k][i]
-                        for (j in 0 until 2 * n) {
-                            augmentedMatrix[k][j] -= factor * augmentedMatrix[i][j]
-                        }
-                    }
-                }
-
-                val currentMatrix = getInverse(augmentedMatrix, n)
-                roundArray(currentMatrix, 3)
-
-                protocol += "step: \n$i\n"
-                protocol += "matrix:\n" + arrayToString(currentMatrix)
-                protocol += "\n"
-
-            }
-
-            // Extracting the inverse matrix from the expanded matrix
-            val inverse = getInverse(augmentedMatrix, n)
-            getProtocol(protocol)
-
-            return inverse
-        }
-
-        fun inverseMatrix(
-            matrix: Array<Array<Double>>,
-        ): Array<Array<Double>> {
-            var newMatrix = cloneArray(matrix)
-
             // Matrix row walk
             for (r in newMatrix.indices) {
-                val newMatrix1 = cloneArray(newMatrix)
-                newMatrix1[r][r] = 1.0
-
-                // Changing string characters other than element position
-                for (c in newMatrix[r].indices) {
-                    if (r != c)
-                        newMatrix1[r][c] = -newMatrix1[r][c]
-                }
-
-                // Calculation of side elements
-                for (r1 in newMatrix.indices) {
-                    for (c1 in newMatrix[r1].indices) {
-                        if (r1 != r && c1 != r)
-                            newMatrix1[r1][c1] =
-                                newMatrix[r1][c1] * newMatrix[r][r] - newMatrix[r1][r] * newMatrix[r][c1]
-                    }
-                }
-
-                // Dividing a matrix by element
-                for (r1 in newMatrix.indices) {
-                    for (c1 in newMatrix[r1].indices) {
-                        runCatching {
-                            newMatrix1[r1][c1] = newMatrix1[r1][c1] / newMatrix[r][r]
-                        }
-                    }
-                }
-                newMatrix = newMatrix1
+                newMatrix = simpleJordanEliminationStep(newMatrix, r)
+                protocol += "step: \n$r\n"
+                protocol += "matrix:\n" + arrayToString(newMatrix)
+                protocol += "\n"
             }
+
+            getProtocol(protocol)
 
             return newMatrix
         }

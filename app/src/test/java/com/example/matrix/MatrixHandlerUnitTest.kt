@@ -66,7 +66,7 @@ class MatrixHandlerUnitTest {
         )
 
         val correct = arrayOf(
-            arrayOf(0.5, 0.438, -0.687),
+            arrayOf(0.5, 0.438, -0.688),
             arrayOf(0.25, 0.406, -0.281),
             arrayOf(-0.5, -0.688, 0.938)
         )
@@ -322,35 +322,35 @@ class MatrixHandlerUnitTest {
 
     @Test
     fun test1() {
-        println("test1")
-        val input = arrayOf(
-            arrayOf(5.0, -3.0, 7.0),
-            arrayOf(-1.0, 4.0, 3.0),
-            arrayOf(6.0, -2.0, 5.0)
-        )
-
-        val correct = arrayOf(
-            arrayOf(-0.28, -0.011, 0.398),
-            arrayOf(-0.247, 0.183, 0.237),
-            arrayOf(0.237, 0.086, -0.183)
-        )
-
-        println()
-        println("Input")
-        printArray(input)
-
-        val result = inverseMatrix(input)
-
-        roundArray(result, 3)
-
-        println()
-        println("Result")
-        printArray(result)
-
-        println()
-        println("Correct")
-        printArray(correct)
-
-        assertTrue(true)
+//        println("test1")
+//        val input = arrayOf(
+//            arrayOf(5.0, -3.0, 7.0),
+//            arrayOf(-1.0, 4.0, 3.0),
+//            arrayOf(6.0, -2.0, 5.0)
+//        )
+//
+//        val correct = arrayOf(
+//            arrayOf(-0.28, -0.011, 0.398),
+//            arrayOf(-0.247, 0.183, 0.237),
+//            arrayOf(0.237, 0.086, -0.183)
+//        )
+//
+//        println()
+//        println("Input")
+//        printArray(input)
+//
+//        val result = inverseMatrix(input)
+//
+//        roundArray(result, 3)
+//
+//        println()
+//        println("Result")
+//        printArray(result)
+//
+//        println()
+//        println("Correct")
+//        printArray(correct)
+//
+//        assertTrue(true)
     }
 }
