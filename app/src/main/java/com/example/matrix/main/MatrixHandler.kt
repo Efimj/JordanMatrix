@@ -14,7 +14,7 @@ class MatrixHandler {
             matrix: Array<Array<Double>>,
             row: Int,
             column: Int = row
-        ): Array<Array<Double>> {
+        ): Array<Array<Double>>? {
             val newMatrix = cloneArray(matrix)
             newMatrix[row][column] = 1.0
 
@@ -36,8 +36,10 @@ class MatrixHandler {
             // Dividing a matrix by element
             for (r1 in matrix.indices) {
                 for (c1 in matrix[r1].indices) {
-                    runCatching {
+                    try {
                         newMatrix[r1][c1] = newMatrix[r1][c1] / matrix[row][column]
+                    } catch (e: Exception) {
+                        return null
                     }
                 }
             }
@@ -60,9 +62,15 @@ class MatrixHandler {
 
             // Matrix row walk
             for (r in newMatrix.indices) {
-                newMatrix = simpleJordanEliminationStep(newMatrix, r)
                 protocol += "step: \n$r\n"
-                protocol += "matrix:\n" + arrayToString(newMatrix)
+                val result = simpleJordanEliminationStep(newMatrix, r)
+                if (result == null) {
+
+                    protocol += "matrix:\n" + "none for [${r}][${r}]"
+                } else {
+                    newMatrix = result
+                    protocol += "matrix:\n" + arrayToString(newMatrix)
+                }
                 protocol += "\n"
             }
 
@@ -71,44 +79,14 @@ class MatrixHandler {
             return newMatrix
         }
 
-        private fun getInverse(
-            augmentedMatrix: List<Array<Double>>,
-            n: Int
-        ) = augmentedMatrix.map { row ->
-            row.slice(n until row.size).toTypedArray()
-        }.toTypedArray()
-
         fun Array<Array<Double>>.getMatrixRank(): Int {
-            val augmentedMatrix = this.map { it.clone() }.toTypedArray()
-
-            val numRows = augmentedMatrix.size
-            val numCols = augmentedMatrix[0].size
-
+            val maxRank = this.first().size.coerceAtMost(this.size)
             var rank = 0
 
-            for (col in 0 until numCols) {
-                // Finding a non-zero element in col
-                var nonZeroRow = rank
-                while (nonZeroRow < numRows && augmentedMatrix[nonZeroRow][col] == 0.0) {
-                    nonZeroRow++
-                }
-
-                if (nonZeroRow == numRows) {
-                    continue // All lines under the col circle have zero values, we move to the next column
-                }
-
-                // Swap strings to have a non-null element at the indicated position
-                augmentedMatrix[rank] to augmentedMatrix[nonZeroRow]
-                augmentedMatrix[nonZeroRow] to augmentedMatrix[rank]
-
-                // Truncate the column to a non-null element so that all other rows have null values
-                for (i in rank + 1 until numRows) {
-                    val factor = augmentedMatrix[i][col] / augmentedMatrix[rank][col]
-                    for (j in col until numCols) {
-                        augmentedMatrix[i][j] -= factor * augmentedMatrix[rank][j]
-                    }
-                }
-
+            var newMatrix = cloneArray(this)
+            for (i in 0..<maxRank) {
+                if (newMatrix[i][i] == 0.0) continue
+                newMatrix = simpleJordanEliminationStep(newMatrix, i, i) ?: continue
                 rank++
             }
 
@@ -146,7 +124,9 @@ class MatrixHandler {
             return solution.toTypedArray()
         }
 
-        // Helper function to check if a matrix is square
+        /**
+         * Helper function to check if a matrix is square.
+         */
         fun isSquareMatrix(matrix: Array<Array<Double>>): Boolean {
             val numRows = matrix.size
             return numRows > 0 && matrix.all { it.size == numRows }
