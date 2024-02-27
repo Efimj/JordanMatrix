@@ -26,18 +26,24 @@ class ModifiedMatrixHandler {
             arrayOf(5.5, 3.5, 1.5, 2.0, 36.0),
         )
 
-        val output = searchOptimalSolve(matrix = inputMatrix)
+        val xPositions = arrayOf(-2, 2, 3, 4)
+
+        val output = searchOptimalSolve(matrix = inputMatrix, xPositions = xPositions)
 
         println("Output")
         println(output.result)
         output.matrix.let {
             if (it == null) return
             printArray(it)
-
         }
 
         println("Correct")
         printArray(correct)
+        println("XPoses")
+        output.xPos.let {
+            if (it == null) return
+            printArray(it)
+        }
 
         Assert.assertTrue(correct.contentDeepEquals(output.matrix))
     }

@@ -38,7 +38,7 @@ class ModifiedMatrixHandler {
                     try {
                         newMatrix[r1][c1] = newMatrix[r1][c1] / matrix[row][column]
                     } catch (e: Exception) {
-//                        return null
+                        return null
                     }
                 }
             }
@@ -54,16 +54,20 @@ class ModifiedMatrixHandler {
 
         data class OptimalSolveResult(
             val matrix: Array<Array<Double>>?,
-            val result: SolveResult
+            val result: SolveResult,
+            val xPos: Array<Int>?,
         )
 
         /**
-         * @property matrix is input matrix.
+         * @param matrix is input matrix.
+         * @param xPositions is
          */
         fun searchOptimalSolve(
             matrix: Array<Array<Double>>,
+            xPositions: Array<Int> = Array(matrix.first().size) { 1 },
         ): OptimalSolveResult {
             var newMatrix = cloneArray(matrix)
+            var xPos = cloneArray(xPositions)
 
             while (true) {
                 var negativeZElementColumn = -1
@@ -79,7 +83,8 @@ class ModifiedMatrixHandler {
                     roundArray(newMatrix, 2)
                     return OptimalSolveResult(
                         matrix = newMatrix,
-                        result = SolveResult.Solved
+                        result = SolveResult.Solved,
+                        xPos = xPos
                     )
                 }
 
@@ -94,7 +99,8 @@ class ModifiedMatrixHandler {
                     roundArray(newMatrix, 2)
                     return OptimalSolveResult(
                         matrix = newMatrix,
-                        result = SolveResult.NoRestrictionsAbove
+                        result = SolveResult.NoRestrictionsAbove,
+                        xPos = xPos
                     )
                 }
 
@@ -105,8 +111,33 @@ class ModifiedMatrixHandler {
                 )
                     ?: return OptimalSolveResult(
                         matrix = null,
-                        result = SolveResult.NoSolve
+                        result = SolveResult.NoSolve,
+                        xPos = xPos
                     )
+
+                for (index in xPos.indices) {
+                    if (xPos[index] == negativeZElementColumn + 1) {
+                        xPos[index] = -MNVindex - 1
+                        println()
+                        println("${xPos[index]}  r ${MNVindex} c ${negativeZElementColumn} >")
+                        break
+                    }
+                    if (xPos[index] == -MNVindex - 1) {
+                        xPos[index] = negativeZElementColumn + 1
+                        println()
+                        println("${xPos[index]}  r ${MNVindex} c ${negativeZElementColumn} <")
+                        break
+                    }
+                }
+
+                // -2  2  3  4
+                // -2 -1  3  4
+                //  1 -1  3  4
+                //  1 -1 -2  4
+                //  1 -1  4 -2
+
+                printArray(xPos)
+                println()
 
                 newMatrix = result
             }

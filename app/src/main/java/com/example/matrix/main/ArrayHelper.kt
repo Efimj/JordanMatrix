@@ -100,6 +100,14 @@ class ArrayHelper {
             return newArray
         }
 
+        fun cloneArray(array: Array<Int>): Array<Int> {
+            val newArray = Array(array.size) { 0 }
+            for (i in array.indices) {
+                newArray[i] = array[i]
+            }
+            return newArray
+        }
+
         fun <T> arrayToString(array: Array<Array<T>>, separator: String = "   "): String {
             var maxSymbolsElement = 0
             for (row in array) {
