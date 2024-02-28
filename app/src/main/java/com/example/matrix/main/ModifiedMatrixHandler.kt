@@ -80,6 +80,7 @@ class ModifiedMatrixHandler {
             Solved,
             NoSolve,
             NoRestrictionsAbove,
+            ContradictoryRestrictions,
         }
 
         data class OptimalSolveResult(
@@ -97,7 +98,7 @@ class ModifiedMatrixHandler {
          * @param matrix is input matrix.
          * @param xPositions is
          */
-        fun searchOptimalSolve(
+        fun searchOptimalSolveMaximum(
             matrix: Array<Array<Double>>,
             xy: XYPositions,
         ): OptimalSolveResult {
@@ -156,6 +157,92 @@ class ModifiedMatrixHandler {
 
                 xyPos.rows[MNVindex] = temp1
                 xyPos.cols[negativeZElementColumn] = temp2
+
+                newMatrix = result
+            }
+        }
+
+        fun searchReferenceSolution(
+            matrix: Array<Array<Double>>,
+            xy: XYPositions,
+        ): OptimalSolveResult {
+            var newMatrix = cloneArray(matrix)
+            val xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
+
+            while (true) {
+                var negativeSingleElementRow = -1
+                val singleValues = newMatrix.map { it.last() }.toTypedArray()
+                for (i in singleValues.indices) {
+                    if (singleValues[i] < 0) {
+                        negativeSingleElementRow = i
+                        break
+                    }
+                }
+
+                if (negativeSingleElementRow < 0) {
+                    roundArray(newMatrix, 2)
+                    return OptimalSolveResult(
+                        matrix = newMatrix,
+                        result = SolveResult.Solved,
+                        xyPos = xyPos
+                    )
+                }
+
+                var elementColumn: Int? = null
+                for (i in newMatrix.first().indices) {
+                    if (newMatrix[negativeSingleElementRow][i] < 0.0) {
+                        elementColumn = i
+                        break
+                    }
+                }
+
+                if (elementColumn == null) {
+                    roundArray(newMatrix, 2)
+                    return OptimalSolveResult(
+                        matrix = newMatrix,
+                        result = SolveResult.ContradictoryRestrictions,
+                        xyPos = xyPos
+                    )
+                }
+
+                fun minimalPositive(matrix: Array<Array<Double>>, colNumber: Int): Double? {
+                    if (colNumber < 0 || colNumber >= matrix[0].size) {
+                        return null
+                    }
+
+                    var minimalPositiveValue: Double? = null
+
+                    for (row in matrix.indices) {
+                        val currentValue = matrix[row][colNumber]
+
+                        if (currentValue >= 0 && (minimalPositiveValue == null || currentValue < minimalPositiveValue)) {
+                            minimalPositiveValue = currentValue
+                        }
+                    }
+
+                    return minimalPositiveValue
+                }
+
+
+                val MNVindex = minimalPositive(newMatrix, elementColumn)!!.toInt()
+
+                val result = modifiedJordanEliminationStep(
+                    matrix = newMatrix,
+                    row = MNVindex,
+                    column = elementColumn
+                )
+                    ?: return OptimalSolveResult(
+                        matrix = null,
+                        result = SolveResult.NoSolve,
+                        xyPos = xyPos
+                    )
+
+
+                val temp1 = xyPos.cols[elementColumn]
+                val temp2 = xyPos.rows[MNVindex]
+
+                xyPos.rows[MNVindex] = temp1
+                xyPos.cols[elementColumn] = temp2
 
                 newMatrix = result
             }
