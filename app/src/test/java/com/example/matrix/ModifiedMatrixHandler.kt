@@ -196,4 +196,85 @@ class ModifiedMatrixHandler {
         Assert.assertTrue(correct.contentDeepEquals(output.matrix))
         Assert.assertTrue(correctX.contentDeepEquals(res))
     }
+
+    @Test
+    fun testV1() {
+        println("findReferenceSolutionV1")
+
+        val inputMatrix = arrayOf(
+            arrayOf(1.0, -1.0, 1.0, 1.0, 2.0),
+            arrayOf(1.0, -1.0, 1.0, -1.0, 2.0),
+            arrayOf(-1.0, -1.0, 1.0, 1.0, -2.0),
+            arrayOf(-1.0, 8.0, -1.0, -4.0, 0.0)
+        )
+
+        val correct = arrayOf(
+            arrayOf(-1.0, 0.0, 0.0, 2.0, 0.0),
+            arrayOf(1.0, -1.0, 1.0, -1.0, 2.0),
+            arrayOf(1.0, -2.0, 2.0, 0.0, 0.0),
+            arrayOf(1.0, 7.0, 0.0, -5.0, 2.0),
+        )
+        val correctX = arrayOf(2.0, 0.0, 0.0, 0.0)
+
+        val xy = ModifiedMatrixHandler.Companion.XYPositions(
+            cols = arrayOf("x1", "x2", "x3", "x4"),
+            rows = arrayOf("y1", "y2", "y3")
+        )
+
+        val output = searchReferenceSolution(matrix = inputMatrix, xy = xy)
+        val res = findXresults(output)
+        println("Output")
+        println(output.result)
+        output.matrix.let {
+            if (it == null) return
+            printArray(it)
+        }
+
+        println("Correct")
+        printArray(correct)
+        println("XPoses")
+        printArray(res)
+        println()
+        println("CorrectX")
+        printArray(correctX)
+        println()
+
+        Assert.assertTrue(correct.contentDeepEquals(output.matrix))
+        Assert.assertTrue(correctX.contentDeepEquals(res))
+
+        println()
+        println("Optimal solution")
+
+        val correct2 = arrayOf(
+            arrayOf(0.5, -1.0, 1.0, 0.5, 0.0),
+            arrayOf(-0.5, 0.0, 0.0, 0.5, 2.0),
+            arrayOf(1.0, -2.0, 2.0, 0.0, 0.0),
+            arrayOf(1.5, 4.0, 3.0, 2.5, 2.0),
+        )
+        val correctX2 = arrayOf(2.0, 0.0, 0.0, 0.0)
+
+        val output2 = searchOptimalSolveMaximum(matrix = output.matrix!!, xy = output.xyPos)
+        val res2 = findXresults(output2)
+        println("Output")
+        println(output2.result)
+        output2.matrix.let {
+            if (it == null) return
+            printArray(it)
+        }
+
+        println("Correct")
+        printArray(correct2)
+        println("XPoses")
+        printArray(res2)
+        println()
+        println("CorrectX")
+        printArray(correctX2)
+        println()
+        println("minimum: -${correct2.last().last()}")
+        println()
+
+        Assert.assertTrue(correct2.contentDeepEquals(output2.matrix))
+        Assert.assertTrue(correctX2.contentDeepEquals(res2))
+
+    }
 }

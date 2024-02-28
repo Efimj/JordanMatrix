@@ -80,6 +80,7 @@ class ModifiedMatrixHandler {
             Solved,
             NoSolve,
             NoRestrictionsAbove,
+            NoRestrictionsBelow,
             ContradictoryRestrictions,
         }
 
@@ -136,6 +137,70 @@ class ModifiedMatrixHandler {
                     return OptimalSolveResult(
                         matrix = newMatrix,
                         result = SolveResult.NoRestrictionsAbove,
+                        xyPos = xyPos
+                    )
+                }
+
+                val result = modifiedJordanEliminationStep(
+                    matrix = newMatrix,
+                    row = MNVindex,
+                    column = negativeZElementColumn
+                )
+                    ?: return OptimalSolveResult(
+                        matrix = null,
+                        result = SolveResult.NoSolve,
+                        xyPos = xyPos
+                    )
+
+
+                val temp1 = xyPos.cols[negativeZElementColumn]
+                val temp2 = xyPos.rows[MNVindex]
+
+                xyPos.rows[MNVindex] = temp1
+                xyPos.cols[negativeZElementColumn] = temp2
+
+                newMatrix = result
+            }
+        }
+
+        fun searchOptimalSolveMinimum(
+            matrix: Array<Array<Double>>,
+            xy: XYPositions,
+        ): OptimalSolveResult {
+            var newMatrix = cloneArray(matrix)
+            var xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
+
+            while (true) {
+                var negativeZElementColumn = -1
+                val zValues = newMatrix.last().dropLast(1)
+                for (i in zValues.indices) {
+                    if (zValues[i] > 0) {
+                        negativeZElementColumn = i
+                        break
+                    }
+                }
+
+                if (negativeZElementColumn < 0) {
+                    roundArray(newMatrix, 2)
+                    return OptimalSolveResult(
+                        matrix = newMatrix,
+                        result = SolveResult.Solved,
+                        xyPos = xyPos
+                    )
+                }
+
+                var MNVindex: Int? = null
+                for (i in newMatrix.indices) {
+                    if (newMatrix[i][negativeZElementColumn] <= 0.0) continue
+                    if (MNVindex == null || newMatrix[i][negativeZElementColumn] > newMatrix[MNVindex][negativeZElementColumn])
+                        MNVindex = i
+                }
+
+                if (MNVindex == null) {
+                    roundArray(newMatrix, 2)
+                    return OptimalSolveResult(
+                        matrix = newMatrix,
+                        result = SolveResult.NoRestrictionsBelow,
                         xyPos = xyPos
                     )
                 }
