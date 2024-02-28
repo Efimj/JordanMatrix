@@ -17,51 +17,6 @@ class ModifiedMatrixHandler {
             arrayOf(1.0, 1.0, -1.0, -2.0, 6.0),
             arrayOf(-1.0, -1.0, -1.0, 1.0, -5.0),
             arrayOf(2.0, -1.0, 3.0, 4.0, 10.0),
-            arrayOf(-1.0, -2.0, 1.0, 1.0, 0.0)
-        )
-
-        val correct = arrayOf(
-            arrayOf(1.0, 0.0, -2.0, -1.0, 1.0),
-            arrayOf(-1.0, 1.0, 1.0, -1.0, 5.0),
-            arrayOf(2.0, -3.0, 1.0, 6.0, 0.0),
-            arrayOf(-1.0, -1.0, 2.0, 0.0, 5.0),
-        )
-        val correctX = arrayOf(5.0, 0.0, 0.0, 0.0)
-
-        val xy = ModifiedMatrixHandler.Companion.XYPositions(
-            cols = arrayOf("x1", "x2", "x3", "x4"),
-            rows = arrayOf("y1", "y2", "y3")
-        )
-
-        val output = searchReferenceSolution(matrix = inputMatrix, xy = xy)
-        val res = findXresults(output)
-        println("Output")
-        println(output.result)
-        output.matrix.let {
-            if (it == null) return
-            printArray(it)
-        }
-
-        println("Correct")
-        printArray(correct)
-        println("XPoses")
-        printArray(res)
-        println()
-        println("CorrectX")
-        printArray(correctX)
-
-        Assert.assertTrue(correct.contentDeepEquals(output.matrix))
-        Assert.assertTrue(correctX.contentDeepEquals(res))
-    }
-
-    @Test
-    fun findReferenceSolutionT2() {
-        println("findReferenceSolutionT2")
-
-        val inputMatrix = arrayOf(
-            arrayOf(1.0, 1.0, -1.0, -2.0, 6.0),
-            arrayOf(-1.0, -1.0, -1.0, 1.0, -5.0),
-            arrayOf(2.0, -1.0, 3.0, 4.0, 10.0),
             arrayOf(-2.0, 3.0, 0.0, -3.0, 0.0)
         )
 
@@ -94,6 +49,53 @@ class ModifiedMatrixHandler {
         println()
         println("CorrectX")
         printArray(correctX)
+        println()
+
+        Assert.assertTrue(correct.contentDeepEquals(output.matrix))
+        Assert.assertTrue(correctX.contentDeepEquals(res))
+    }
+
+    @Test
+    fun findReferenceSolutionT2() {
+        println("findReferenceSolutionT2")
+
+        val inputMatrix = arrayOf(
+            arrayOf(1.0, 1.0, -1.0, -2.0, 6.0),
+            arrayOf(-1.0, -1.0, -1.0, 1.0, -5.0),
+            arrayOf(2.0, -1.0, 3.0, 4.0, 10.0),
+            arrayOf(-1.0, -2.0, 1.0, 1.0, 0.0)
+        )
+
+        val correct = arrayOf(
+            arrayOf(1.0, 0.0, -2.0, -1.0, 1.0),
+            arrayOf(-1.0, 1.0, 1.0, -1.0, 5.0),
+            arrayOf(2.0, -3.0, 1.0, 6.0, 0.0),
+            arrayOf(-1.0, -1.0, 2.0, 0.0, 5.0),
+        )
+        val correctX = arrayOf(5.0, 0.0, 0.0, 0.0)
+
+        val xy = ModifiedMatrixHandler.Companion.XYPositions(
+            cols = arrayOf("x1", "x2", "x3", "x4"),
+            rows = arrayOf("y1", "y2", "y3")
+        )
+
+        val output = searchReferenceSolution(matrix = inputMatrix, xy = xy)
+        val res = findXresults(output)
+        println("Output")
+        println(output.result)
+        output.matrix.let {
+            if (it == null) return
+            printArray(it)
+        }
+
+        println("Correct")
+        printArray(correct)
+        println("XPoses")
+        printArray(res)
+        println()
+        println("CorrectX")
+        printArray(correctX)
+        println()
 
         Assert.assertTrue(correct.contentDeepEquals(output.matrix))
         Assert.assertTrue(correctX.contentDeepEquals(res))
@@ -139,6 +141,57 @@ class ModifiedMatrixHandler {
         println()
         println("CorrectX")
         printArray(correctX)
+        println()
+        println("Maximum: ${correct.last().last()}")
+        println()
+
+        Assert.assertTrue(correct.contentDeepEquals(output.matrix))
+        Assert.assertTrue(correctX.contentDeepEquals(res))
+    }
+
+    @Test
+    fun findOptimalSolveT2() {
+        println("findOptimalSolveT2")
+
+        val inputMatrix = arrayOf(
+            arrayOf(1.0, 0.0, -2.0, -1.0, 1.0),
+            arrayOf(-1.0, 1.0, 1.0, -1.0, 5.0),
+            arrayOf(2.0, -3.0, 1.0, 6.0, 0.0),
+            arrayOf(-2.0, 5.0, 2.0, -5.0, 10.0)
+        )
+
+        val correct = arrayOf(
+            arrayOf(-0.5, 1.5, -2.5, -4.0, 1.0),
+            arrayOf(0.5, -0.5, 1.5, 2.0, 5.0),
+            arrayOf(0.5, -1.5, 0.5, 3.0, 0.0),
+            arrayOf(1.0, 2.0, 3.0, 1.0, 10.0),
+        )
+        val correctX = arrayOf(5.0, 0.00, 0.00, 0.00)
+
+        val xy = ModifiedMatrixHandler.Companion.XYPositions(
+            cols = arrayOf("y2", "x2", "x3", "x4"),
+            rows = arrayOf("y1", "x1", "y3")
+        )
+
+        val output = searchOptimalSolveMaximum(matrix = inputMatrix, xy = xy)
+        val res = findXresults(output)
+        println("Output")
+        println(output.result)
+        output.matrix.let {
+            if (it == null) return
+            printArray(it)
+        }
+
+        println("Correct")
+        printArray(correct)
+        println("XPoses")
+        printArray(res)
+        println()
+        println("CorrectX")
+        printArray(correctX)
+        println()
+        println("minimum: -${correct.last().last()}")
+        println()
 
         Assert.assertTrue(correct.contentDeepEquals(output.matrix))
         Assert.assertTrue(correctX.contentDeepEquals(res))
