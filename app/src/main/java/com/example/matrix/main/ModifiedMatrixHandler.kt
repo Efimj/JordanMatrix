@@ -46,6 +46,36 @@ class ModifiedMatrixHandler {
             return newMatrix
         }
 
+        fun findXresults(
+            output: OptimalSolveResult,
+        ): Array<Double> {
+            val res = Array(output.xyPos.cols.size) { 0.0 }
+            for (index in output.xyPos.cols.indices) {
+                if (output.xyPos.cols[index].startsWith("x")) {
+                    val digitAfterX = output.xyPos.cols[index].substringAfter("x")
+                    try {
+                        val result = digitAfterX.toInt()
+                        res[result - 1] = 0.0
+                    } catch (e: NumberFormatException) {
+                        println("NumberFormatException")
+                    }
+                }
+            }
+
+            for (index in output.xyPos.rows.indices) {
+                if (output.xyPos.rows[index].startsWith("x")) {
+                    val digitAfterX = output.xyPos.rows[index].substringAfter("x")
+                    try {
+                        val result = digitAfterX.toInt()
+                        res[result - 1] = output.matrix?.get(index)?.last()!!
+                    } catch (e: NumberFormatException) {
+                        println("NumberFormatException")
+                    }
+                }
+            }
+            return res
+        }
+
         enum class SolveResult {
             Solved,
             NoSolve,
@@ -55,7 +85,12 @@ class ModifiedMatrixHandler {
         data class OptimalSolveResult(
             val matrix: Array<Array<Double>>?,
             val result: SolveResult,
-            val xPos: Array<Int>?,
+            val xyPos: XYPositions,
+        )
+
+        data class XYPositions(
+            val cols: Array<String>,    // Top
+            val rows: Array<String>,    // Left
         )
 
         /**
@@ -64,10 +99,10 @@ class ModifiedMatrixHandler {
          */
         fun searchOptimalSolve(
             matrix: Array<Array<Double>>,
-            xPositions: Array<Int> = Array(matrix.first().size) { 1 },
+            xy: XYPositions,
         ): OptimalSolveResult {
             var newMatrix = cloneArray(matrix)
-            var xPos = cloneArray(xPositions)
+            var xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
 
             while (true) {
                 var negativeZElementColumn = -1
@@ -84,7 +119,7 @@ class ModifiedMatrixHandler {
                     return OptimalSolveResult(
                         matrix = newMatrix,
                         result = SolveResult.Solved,
-                        xPos = xPos
+                        xyPos = xyPos
                     )
                 }
 
@@ -100,7 +135,7 @@ class ModifiedMatrixHandler {
                     return OptimalSolveResult(
                         matrix = newMatrix,
                         result = SolveResult.NoRestrictionsAbove,
-                        xPos = xPos
+                        xyPos = xyPos
                     )
                 }
 
@@ -112,32 +147,15 @@ class ModifiedMatrixHandler {
                     ?: return OptimalSolveResult(
                         matrix = null,
                         result = SolveResult.NoSolve,
-                        xPos = xPos
+                        xyPos = xyPos
                     )
 
-                for (index in xPos.indices) {
-                    if (xPos[index] == negativeZElementColumn + 1) {
-                        xPos[index] = -MNVindex - 1
-                        println()
-                        println("${xPos[index]}  r ${MNVindex} c ${negativeZElementColumn} >")
-                        break
-                    }
-                    if (xPos[index] == -MNVindex - 1) {
-                        xPos[index] = negativeZElementColumn + 1
-                        println()
-                        println("${xPos[index]}  r ${MNVindex} c ${negativeZElementColumn} <")
-                        break
-                    }
-                }
 
-                // -2  2  3  4
-                // -2 -1  3  4
-                //  1 -1  3  4
-                //  1 -1 -2  4
-                //  1 -1  4 -2
+                val temp1 = xyPos.cols[negativeZElementColumn]
+                val temp2 = xyPos.rows[MNVindex]
 
-                printArray(xPos)
-                println()
+                xyPos.rows[MNVindex] = temp1
+                xyPos.cols[negativeZElementColumn] = temp2
 
                 newMatrix = result
             }

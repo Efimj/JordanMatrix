@@ -2,6 +2,8 @@ package com.example.matrix
 
 import ArrayHelper.Companion.printArray
 import com.example.matrix.main.MatrixHandler
+import com.example.matrix.main.ModifiedMatrixHandler
+import com.example.matrix.main.ModifiedMatrixHandler.Companion.findXresults
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.modifiedJordanEliminationStep
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.searchOptimalSolve
 import org.junit.Assert
@@ -26,9 +28,12 @@ class ModifiedMatrixHandler {
             arrayOf(5.5, 3.5, 1.5, 2.0, 36.0),
         )
 
-        val xPositions = arrayOf(-2, 2, 3, 4)
+        val xy = ModifiedMatrixHandler.Companion.XYPositions(
+            cols = arrayOf("y2", "x2", "x3", "x4"),
+            rows = arrayOf("y1", "x1", "y3")
+        )
 
-        val output = searchOptimalSolve(matrix = inputMatrix, xPositions = xPositions)
+        val output = searchOptimalSolve(matrix = inputMatrix, xy = xy)
 
         println("Output")
         println(output.result)
@@ -40,10 +45,10 @@ class ModifiedMatrixHandler {
         println("Correct")
         printArray(correct)
         println("XPoses")
-        output.xPos.let {
-            if (it == null) return
-            printArray(it)
-        }
+
+        val res = findXresults(output)
+
+        printArray(res)
 
         Assert.assertTrue(correct.contentDeepEquals(output.matrix))
     }
