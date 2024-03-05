@@ -2,6 +2,7 @@ package com.example.matrix.main
 
 import ArrayHelper.Companion.cloneArray
 import ArrayHelper.Companion.printArray
+import ArrayHelper.Companion.removeColumn
 import ArrayHelper.Companion.roundArray
 
 class ModifiedMatrixHandler {
@@ -47,7 +48,7 @@ class ModifiedMatrixHandler {
         }
 
         fun findXresults(
-            output: OptimalSolveResult,
+            output: Solve,
         ): Array<Double> {
             val res = Array(output.xyPos.cols.size) { 0.0 }
             for (index in output.xyPos.cols.indices) {
@@ -76,7 +77,7 @@ class ModifiedMatrixHandler {
             return res
         }
 
-        enum class SolveResult {
+        enum class Result {
             Solved,
             NoSolve,
             NoRestrictionsAbove,
@@ -84,9 +85,9 @@ class ModifiedMatrixHandler {
             ContradictoryRestrictions,
         }
 
-        data class OptimalSolveResult(
+        data class Solve(
             val matrix: Array<Array<Double>>?,
-            val result: SolveResult,
+            val result: Result,
             val xyPos: XYPositions,
         )
 
@@ -102,7 +103,7 @@ class ModifiedMatrixHandler {
         fun searchOptimalSolveMaximum(
             matrix: Array<Array<Double>>,
             xy: XYPositions,
-        ): OptimalSolveResult {
+        ): Solve {
             var newMatrix = cloneArray(matrix)
             var xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
 
@@ -118,9 +119,9 @@ class ModifiedMatrixHandler {
 
                 if (negativeZElementColumn < 0) {
                     roundArray(newMatrix, 2)
-                    return OptimalSolveResult(
+                    return Solve(
                         matrix = newMatrix,
-                        result = SolveResult.Solved,
+                        result = Result.Solved,
                         xyPos = xyPos
                     )
                 }
@@ -134,9 +135,9 @@ class ModifiedMatrixHandler {
 
                 if (MNVindex == null) {
                     roundArray(newMatrix, 2)
-                    return OptimalSolveResult(
+                    return Solve(
                         matrix = newMatrix,
-                        result = SolveResult.NoRestrictionsAbove,
+                        result = Result.NoRestrictionsAbove,
                         xyPos = xyPos
                     )
                 }
@@ -146,9 +147,9 @@ class ModifiedMatrixHandler {
                     row = MNVindex,
                     column = negativeZElementColumn
                 )
-                    ?: return OptimalSolveResult(
+                    ?: return Solve(
                         matrix = null,
-                        result = SolveResult.NoSolve,
+                        result = Result.NoSolve,
                         xyPos = xyPos
                     )
 
@@ -166,7 +167,7 @@ class ModifiedMatrixHandler {
         fun searchOptimalSolveMinimum(
             matrix: Array<Array<Double>>,
             xy: XYPositions,
-        ): OptimalSolveResult {
+        ): Solve {
             var newMatrix = cloneArray(matrix)
             var xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
 
@@ -182,9 +183,9 @@ class ModifiedMatrixHandler {
 
                 if (negativeZElementColumn < 0) {
                     roundArray(newMatrix, 2)
-                    return OptimalSolveResult(
+                    return Solve(
                         matrix = newMatrix,
-                        result = SolveResult.Solved,
+                        result = Result.Solved,
                         xyPos = xyPos
                     )
                 }
@@ -198,9 +199,9 @@ class ModifiedMatrixHandler {
 
                 if (MNVindex == null) {
                     roundArray(newMatrix, 2)
-                    return OptimalSolveResult(
+                    return Solve(
                         matrix = newMatrix,
-                        result = SolveResult.NoRestrictionsBelow,
+                        result = Result.NoRestrictionsBelow,
                         xyPos = xyPos
                     )
                 }
@@ -210,9 +211,9 @@ class ModifiedMatrixHandler {
                     row = MNVindex,
                     column = negativeZElementColumn
                 )
-                    ?: return OptimalSolveResult(
+                    ?: return Solve(
                         matrix = null,
-                        result = SolveResult.NoSolve,
+                        result = Result.NoSolve,
                         xyPos = xyPos
                     )
 
@@ -230,7 +231,7 @@ class ModifiedMatrixHandler {
         fun searchReferenceSolution(
             matrix: Array<Array<Double>>,
             xy: XYPositions,
-        ): OptimalSolveResult {
+        ): Solve {
             var newMatrix = cloneArray(matrix)
             val xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
 
@@ -246,9 +247,9 @@ class ModifiedMatrixHandler {
 
                 if (negativeSingleElementRow < 0) {
                     roundArray(newMatrix, 2)
-                    return OptimalSolveResult(
+                    return Solve(
                         matrix = newMatrix,
-                        result = SolveResult.Solved,
+                        result = Result.Solved,
                         xyPos = xyPos
                     )
                 }
@@ -263,9 +264,9 @@ class ModifiedMatrixHandler {
 
                 if (elementColumn == null) {
                     roundArray(newMatrix, 2)
-                    return OptimalSolveResult(
+                    return Solve(
                         matrix = newMatrix,
-                        result = SolveResult.ContradictoryRestrictions,
+                        result = Result.ContradictoryRestrictions,
                         xyPos = xyPos
                     )
                 }
@@ -296,9 +297,9 @@ class ModifiedMatrixHandler {
                     row = MNVindex,
                     column = elementColumn
                 )
-                    ?: return OptimalSolveResult(
+                    ?: return Solve(
                         matrix = null,
-                        result = SolveResult.NoSolve,
+                        result = Result.NoSolve,
                         xyPos = xyPos
                     )
 
@@ -311,6 +312,87 @@ class ModifiedMatrixHandler {
 
                 newMatrix = result
             }
+        }
+
+        fun removeNullLines(
+            matrix: Array<Array<Double>>,
+            xy: XYPositions,
+        ): Solve {
+            var newMatrix = cloneArray(matrix)
+            var xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
+
+            while (xyPos.rows.any { it == "0" }) {
+                val rowIndex = findRowWithZero(xyPos.rows)
+                    ?: return Solve(
+                        matrix = newMatrix,
+                        result = Result.Solved,
+                        xyPos = xyPos
+                    )
+
+                var currentColumn: Int? = null
+                for (column in newMatrix[rowIndex].indices) {
+                    if (newMatrix[rowIndex][column] > 0) {
+                        currentColumn = column
+                        break
+                    }
+                }
+
+                if (currentColumn == null) return Solve(
+                    matrix = newMatrix,
+                    result = Result.ContradictoryRestrictions,
+                    xyPos = xyPos
+                )
+
+                var currentRow: Int? = null
+                for (row in matrix.indices) {
+                    val currentValue = matrix[row][currentColumn]
+
+                    if (currentValue >= 0 && (currentRow == null || currentValue < currentRow)) {
+                        currentRow = currentValue.toInt()
+                    }
+                }
+
+                val result = modifiedJordanEliminationStep(
+                    matrix = newMatrix,
+                    row = currentRow!!,
+                    column = currentColumn
+                )
+                    ?: return Solve(
+                        matrix = null,
+                        result = Result.NoSolve,
+                        xyPos = xyPos
+                    )
+
+                val temp1 = xyPos.cols[currentColumn]
+                val temp2 = xyPos.rows[currentRow]
+
+                xyPos.rows[currentRow] = temp1
+                xyPos.cols[currentColumn] = temp2
+
+                println("${currentRow} ${currentColumn}")
+                printArray(newMatrix)
+                println()
+                newMatrix = removeColumn(result, currentColumn)
+                printArray(newMatrix)
+                println()
+
+                xyPos =
+                    xyPos.copy(cols = xyPos.cols.filterIndexed { index, _ -> index != currentColumn }.toTypedArray())
+            }
+            return Solve(
+                matrix = newMatrix,
+                result = Result.Solved,
+                xyPos = xyPos
+            )
+        }
+
+        fun findRowWithZero(matrix: Array<String>): Int? {
+            for ((index, row) in matrix.withIndex()) {
+                if ("0" == row) {
+                    return index
+                }
+            }
+            return null
         }
     }
 }
