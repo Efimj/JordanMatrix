@@ -107,10 +107,7 @@ class ModifiedMatrixHandler {
             var newMatrix = cloneArray(matrix)
             val xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
 
-            var x = 0
-
-            while (x < 10) {
-                x++
+            while (true) {
                 var negativeZElementColumn = -1
                 val zValues = newMatrix.last().dropLast(1)
                 for (i in zValues.indices) {
@@ -163,11 +160,6 @@ class ModifiedMatrixHandler {
 
                 newMatrix = result
             }
-            return Solve(
-                matrix = null,
-                result = Result.NoSolve,
-                xyPos = xyPos
-            )
         }
 
         fun minimalPositiveRow(matrix: Array<Array<Double>>, currentColumn: Int): Int? {
