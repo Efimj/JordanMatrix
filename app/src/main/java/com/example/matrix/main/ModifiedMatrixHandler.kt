@@ -321,7 +321,18 @@ class ModifiedMatrixHandler {
             var newMatrix = cloneArray(matrix)
             var xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
 
-            while (xyPos.rows.any { it == "0" }) {
+            //xyPos.rows.any { it == "0" } || xyPos.cols.any { it == "0" }
+            while (true) {
+
+                println("rows")
+                printArray(xyPos.rows)
+                println()
+                println("cols")
+                printArray(xyPos.cols)
+                println()
+                printArray(newMatrix)
+                println()
+
                 val rowIndex = findRowWithZero(xyPos.rows)
                     ?: return Solve(
                         matrix = newMatrix,
@@ -344,13 +355,15 @@ class ModifiedMatrixHandler {
                 )
 
                 var currentRow: Int? = null
-                for (row in matrix.indices) {
-                    val currentValue = matrix[row][currentColumn]
-
-                    if (currentValue >= 0 && (currentRow == null || currentValue < currentRow)) {
-                        currentRow = currentValue.toInt()
+                for (row in newMatrix.indices) {
+                    if (row == rowIndex) continue
+                    val currentValue = newMatrix[row][currentColumn]
+                    if (currentValue >= 0 && (currentRow == null || currentValue < newMatrix[currentRow][currentColumn])) {
+                        currentRow = row
                     }
                 }
+                println("row ${currentRow} col ${currentColumn}")
+                println()
 
                 val result = modifiedJordanEliminationStep(
                     matrix = newMatrix,
@@ -363,21 +376,21 @@ class ModifiedMatrixHandler {
                         xyPos = xyPos
                     )
 
+                newMatrix = result
+
                 val temp1 = xyPos.cols[currentColumn]
                 val temp2 = xyPos.rows[currentRow]
 
                 xyPos.rows[currentRow] = temp1
                 xyPos.cols[currentColumn] = temp2
 
-                println("${currentRow} ${currentColumn}")
-                printArray(newMatrix)
-                println()
-                newMatrix = removeColumn(result, currentColumn)
-                printArray(newMatrix)
-                println()
+                if (xyPos.cols[currentColumn] == "0") {
+                    newMatrix = removeColumn(newMatrix, currentColumn)
+                    xyPos =
+                        xyPos.copy(cols = xyPos.cols.filterIndexed { index, _ -> index != currentColumn }
+                            .toTypedArray())
+                }
 
-                xyPos =
-                    xyPos.copy(cols = xyPos.cols.filterIndexed { index, _ -> index != currentColumn }.toTypedArray())
             }
             return Solve(
                 matrix = newMatrix,
@@ -388,7 +401,7 @@ class ModifiedMatrixHandler {
 
         fun findRowWithZero(matrix: Array<String>): Int? {
             for ((index, row) in matrix.withIndex()) {
-                if ("0" == row) {
+                if (row == "0") {
                     return index
                 }
             }

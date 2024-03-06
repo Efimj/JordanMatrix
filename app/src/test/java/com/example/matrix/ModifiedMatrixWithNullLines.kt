@@ -35,5 +35,8 @@ class ModifiedMatrixWithNullLines {
             if (it == null) return
             printArray(it)
         }
+        printArray(result.xyPos.rows)
+        println()
+        printArray(result.xyPos.cols)
     }
 }
