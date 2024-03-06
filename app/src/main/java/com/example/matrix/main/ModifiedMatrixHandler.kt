@@ -107,7 +107,10 @@ class ModifiedMatrixHandler {
             var newMatrix = cloneArray(matrix)
             val xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
 
-            while (true) {
+            var x = 0
+
+            while (x < 10) {
+                x++
                 var negativeZElementColumn = -1
                 val zValues = newMatrix.last().dropLast(1)
                 for (i in zValues.indices) {
@@ -149,9 +152,22 @@ class ModifiedMatrixHandler {
                     )
 
                 switchXAfterwordElimination(xyPos, minimalPositiveRow, negativeZElementColumn)
+                println()
+                println("Before")
+                printArray(newMatrix)
+                println()
+                println("${minimalPositiveRow} ${negativeZElementColumn}")
+                println()
+                printArray(result)
+                println()
 
                 newMatrix = result
             }
+            return Solve(
+                matrix = null,
+                result = Result.NoSolve,
+                xyPos = xyPos
+            )
         }
 
         fun minimalPositiveRow(matrix: Array<Array<Double>>, currentColumn: Int): Int? {
@@ -160,12 +176,15 @@ class ModifiedMatrixHandler {
             }
 
             var minimalPositiveIndex: Int? = null
-            var minimalPositiveValue = 0.0
+            var minimalPositiveValue = Double.MAX_VALUE
 
             for (row in 0..matrix.size - 2) {
-                val currentValue = matrix[row][matrix[row].size - 1] / matrix[row][currentColumn]
+                if (matrix[row][currentColumn] == 0.0) continue
+                if (matrix[row][matrix[row].size - 1] == 0.0 && matrix[row][currentColumn] < 0) continue
 
-                if (minimalPositiveIndex == null || currentValue < minimalPositiveValue) {
+                val currentValue = matrix[row][matrix[row].size - 1] / matrix[row][currentColumn]
+                if (currentValue < 0) continue
+                if (currentValue < minimalPositiveValue) {
                     minimalPositiveIndex = row
                     minimalPositiveValue = currentValue
                 }
