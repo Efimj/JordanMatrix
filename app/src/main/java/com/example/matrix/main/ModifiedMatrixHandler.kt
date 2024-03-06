@@ -105,7 +105,7 @@ class ModifiedMatrixHandler {
             xy: XYPositions,
         ): Solve {
             var newMatrix = cloneArray(matrix)
-            var xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
+            val xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
 
             while (true) {
                 var negativeZElementColumn = -1
@@ -126,14 +126,9 @@ class ModifiedMatrixHandler {
                     )
                 }
 
-                var MNVindex: Int? = null
-                for (i in newMatrix.indices) {
-                    if (newMatrix[i][negativeZElementColumn] <= 0.0) continue
-                    if (MNVindex == null || newMatrix[i][negativeZElementColumn] > newMatrix[MNVindex][negativeZElementColumn])
-                        MNVindex = i
-                }
+                val minimalPositiveRow = minimalPositiveRow(newMatrix, negativeZElementColumn)
 
-                if (MNVindex == null) {
+                if (minimalPositiveRow == null) {
                     roundArray(newMatrix, 2)
                     return Solve(
                         matrix = newMatrix,
@@ -144,7 +139,7 @@ class ModifiedMatrixHandler {
 
                 val result = modifiedJordanEliminationStep(
                     matrix = newMatrix,
-                    row = MNVindex,
+                    row = minimalPositiveRow,
                     column = negativeZElementColumn
                 )
                     ?: return Solve(
@@ -153,79 +148,30 @@ class ModifiedMatrixHandler {
                         xyPos = xyPos
                     )
 
-
-                val temp1 = xyPos.cols[negativeZElementColumn]
-                val temp2 = xyPos.rows[MNVindex]
-
-                xyPos.rows[MNVindex] = temp1
-                xyPos.cols[negativeZElementColumn] = temp2
+                switchXAfterwordElimination(xyPos, minimalPositiveRow, negativeZElementColumn)
 
                 newMatrix = result
             }
         }
 
-        fun searchOptimalSolveMinimum(
-            matrix: Array<Array<Double>>,
-            xy: XYPositions,
-        ): Solve {
-            var newMatrix = cloneArray(matrix)
-            var xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
-
-            while (true) {
-                var negativeZElementColumn = -1
-                val zValues = newMatrix.last().dropLast(1)
-                for (i in zValues.indices) {
-                    if (zValues[i] > 0) {
-                        negativeZElementColumn = i
-                        break
-                    }
-                }
-
-                if (negativeZElementColumn < 0) {
-                    roundArray(newMatrix, 2)
-                    return Solve(
-                        matrix = newMatrix,
-                        result = Result.Solved,
-                        xyPos = xyPos
-                    )
-                }
-
-                var MNVindex: Int? = null
-                for (i in newMatrix.indices) {
-                    if (newMatrix[i][negativeZElementColumn] <= 0.0) continue
-                    if (MNVindex == null || newMatrix[i][negativeZElementColumn] > newMatrix[MNVindex][negativeZElementColumn])
-                        MNVindex = i
-                }
-
-                if (MNVindex == null) {
-                    roundArray(newMatrix, 2)
-                    return Solve(
-                        matrix = newMatrix,
-                        result = Result.NoRestrictionsBelow,
-                        xyPos = xyPos
-                    )
-                }
-
-                val result = modifiedJordanEliminationStep(
-                    matrix = newMatrix,
-                    row = MNVindex,
-                    column = negativeZElementColumn
-                )
-                    ?: return Solve(
-                        matrix = null,
-                        result = Result.NoSolve,
-                        xyPos = xyPos
-                    )
-
-
-                val temp1 = xyPos.cols[negativeZElementColumn]
-                val temp2 = xyPos.rows[MNVindex]
-
-                xyPos.rows[MNVindex] = temp1
-                xyPos.cols[negativeZElementColumn] = temp2
-
-                newMatrix = result
+        fun minimalPositiveRow(matrix: Array<Array<Double>>, currentColumn: Int): Int? {
+            if (currentColumn < 0 || currentColumn >= matrix[0].size) {
+                return null
             }
+
+            var minimalPositiveIndex: Int? = null
+            var minimalPositiveValue = 0.0
+
+            for (row in 0..matrix.size - 2) {
+                val currentValue = matrix[row][matrix[row].size - 1] / matrix[row][currentColumn]
+
+                if (minimalPositiveIndex == null || currentValue < minimalPositiveValue) {
+                    minimalPositiveIndex = row
+                    minimalPositiveValue = currentValue
+                }
+            }
+
+            return minimalPositiveIndex
         }
 
         fun searchReferenceSolution(
@@ -271,30 +217,11 @@ class ModifiedMatrixHandler {
                     )
                 }
 
-                fun minimalPositive(matrix: Array<Array<Double>>, colNumber: Int): Double? {
-                    if (colNumber < 0 || colNumber >= matrix[0].size) {
-                        return null
-                    }
-
-                    var minimalPositiveValue: Double? = null
-
-                    for (row in matrix.indices) {
-                        val currentValue = matrix[row][colNumber]
-
-                        if (currentValue >= 0 && (minimalPositiveValue == null || currentValue < minimalPositiveValue)) {
-                            minimalPositiveValue = currentValue
-                        }
-                    }
-
-                    return minimalPositiveValue
-                }
-
-
-                val MNVindex = minimalPositive(newMatrix, elementColumn)!!.toInt()
+                val minimalPositiveRow = minimalPositiveRow(newMatrix, elementColumn)!!
 
                 val result = modifiedJordanEliminationStep(
                     matrix = newMatrix,
-                    row = MNVindex,
+                    row = minimalPositiveRow,
                     column = elementColumn
                 )
                     ?: return Solve(
@@ -304,14 +231,22 @@ class ModifiedMatrixHandler {
                     )
 
 
-                val temp1 = xyPos.cols[elementColumn]
-                val temp2 = xyPos.rows[MNVindex]
-
-                xyPos.rows[MNVindex] = temp1
-                xyPos.cols[elementColumn] = temp2
+                switchXAfterwordElimination(xyPos, minimalPositiveRow, elementColumn)
 
                 newMatrix = result
             }
+        }
+
+        private fun switchXAfterwordElimination(
+            xyPos: XYPositions,
+            row: Int,
+            column: Int,
+        ) {
+            val temp1 = xyPos.cols[column]
+            val temp2 = xyPos.rows[row]
+
+            xyPos.rows[row] = temp1
+            xyPos.cols[column] = temp2
         }
 
         fun removeNullLines(
@@ -321,17 +256,7 @@ class ModifiedMatrixHandler {
             var newMatrix = cloneArray(matrix)
             var xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
 
-            //xyPos.rows.any { it == "0" } || xyPos.cols.any { it == "0" }
             while (true) {
-
-                println("rows")
-                printArray(xyPos.rows)
-                println()
-                println("cols")
-                printArray(xyPos.cols)
-                println()
-                printArray(newMatrix)
-                println()
 
                 val rowIndex = findRowWithZero(xyPos.rows)
                     ?: return Solve(
@@ -354,20 +279,11 @@ class ModifiedMatrixHandler {
                     xyPos = xyPos
                 )
 
-                var currentRow: Int? = null
-                for (row in newMatrix.indices) {
-                    if (row == rowIndex) continue
-                    val currentValue = newMatrix[row][currentColumn]
-                    if (currentValue >= 0 && (currentRow == null || currentValue < newMatrix[currentRow][currentColumn])) {
-                        currentRow = row
-                    }
-                }
-                println("row ${currentRow} col ${currentColumn}")
-                println()
+                val minimalPositiveRow = minimalPositiveRow(newMatrix, currentColumn)!!
 
                 val result = modifiedJordanEliminationStep(
                     matrix = newMatrix,
-                    row = currentRow!!,
+                    row = minimalPositiveRow,
                     column = currentColumn
                 )
                     ?: return Solve(
@@ -378,11 +294,8 @@ class ModifiedMatrixHandler {
 
                 newMatrix = result
 
-                val temp1 = xyPos.cols[currentColumn]
-                val temp2 = xyPos.rows[currentRow]
+                switchXAfterwordElimination(xyPos, minimalPositiveRow, currentColumn)
 
-                xyPos.rows[currentRow] = temp1
-                xyPos.cols[currentColumn] = temp2
 
                 if (xyPos.cols[currentColumn] == "0") {
                     newMatrix = removeColumn(newMatrix, currentColumn)
@@ -392,11 +305,6 @@ class ModifiedMatrixHandler {
                 }
 
             }
-            return Solve(
-                matrix = newMatrix,
-                result = Result.Solved,
-                xyPos = xyPos
-            )
         }
 
         fun findRowWithZero(matrix: Array<String>): Int? {
