@@ -171,6 +171,10 @@ class ArrayHelper {
             return output
         }
 
+        fun removeRow(matrix: Array<Array<Double>>, rowIndex: Int): Array<Array<Double>> {
+            return matrix.filterIndexed { index, _ -> index != rowIndex }.toTypedArray()
+        }
+
         fun removeColumn(matrix: Array<Array<Double>>, columnIndex: Int): Array<Array<Double>> {
             return matrix.map { row ->
                 row.filterIndexed { index, _ -> index != columnIndex }.toTypedArray()

@@ -3,6 +3,7 @@ package com.example.matrix.main
 import ArrayHelper.Companion.cloneArray
 import ArrayHelper.Companion.printArray
 import ArrayHelper.Companion.removeColumn
+import ArrayHelper.Companion.removeRow
 import ArrayHelper.Companion.roundArray
 
 class ModifiedMatrixHandler {
@@ -317,6 +318,89 @@ class ModifiedMatrixHandler {
                 }
             }
             return null
+        }
+
+        data class SolveWithIndependentVariables(
+            val solve: Solve,
+            val arrayToHandleX: Array<String>
+        )
+
+        fun removeIndependentVariables(
+            matrix: Array<Array<Double>>,
+            xy: XYPositions,
+            independentVariables: Array<String>
+        ): SolveWithIndependentVariables {
+            var newMatrix = cloneArray(matrix)
+            val xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
+            var independents = cloneArray(independentVariables)
+
+            var arrayToHandleX = emptyList<String>()
+
+            while (independents.isNotEmpty()) {
+
+                // Find independent variable
+                val currentIndependentIndex = xyPos.cols.indexOf(independents.first())
+                printArray(independents)
+                println()
+
+                if (currentIndependentIndex == -1) {
+                    println("wss")
+                    return SolveWithIndependentVariables(
+                        solve = Solve(
+                            matrix = newMatrix,
+                            result = Result.Solved,
+                            xyPos = xyPos
+                        ),
+                        arrayToHandleX = arrayToHandleX.toTypedArray()
+                    )
+                }
+
+                val row = 0
+                val result = modifiedJordanEliminationStep(
+                    matrix = newMatrix,
+                    row = row,
+                    column = currentIndependentIndex
+                )
+                    ?: return SolveWithIndependentVariables(
+                        solve = Solve(
+                            matrix = null,
+                            result = Result.NoSolve,
+                            xyPos = xyPos
+                        ),
+                        arrayToHandleX = arrayToHandleX.toTypedArray()
+                    )
+
+                newMatrix = result
+
+                // Switch x to y
+                switchXAfterwordElimination(xyPos, row, currentIndependentIndex)
+
+                // Save handle expression to find x
+                var resultString = ""
+
+                xyPos.cols.forEach {
+                    resultString += (-(newMatrix[row][currentIndependentIndex])).toString()
+                    resultString += it
+                }
+
+                arrayToHandleX = arrayToHandleX.plus(resultString)
+
+                // Removing the current row
+                newMatrix = removeRow(newMatrix, row)
+
+                // Remove independent variable
+                independents =
+                    independents.filterIndexed { index, value -> value != xyPos.rows[row] }
+                        .toTypedArray()
+            }
+            return SolveWithIndependentVariables(
+                solve = Solve(
+                    matrix = newMatrix,
+                    result = Result.Solved,
+                    xyPos = xyPos
+                ),
+                arrayToHandleX = arrayToHandleX.toTypedArray()
+            )
         }
     }
 }

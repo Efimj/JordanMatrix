@@ -2,6 +2,7 @@ package com.example.matrix
 
 import ArrayHelper.Companion.printArray
 import com.example.matrix.main.ModifiedMatrixHandler
+import com.example.matrix.main.ModifiedMatrixHandler.Companion.removeIndependentVariables
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.removeNullLines
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.searchOptimalSolveMaximum
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.searchReferenceSolution
@@ -103,6 +104,100 @@ class ModifiedMatrixWithNullLines {
 
     @Test
     fun T2() {
+        println("T2")
+
+        val inputMatrix = arrayOf(
+            arrayOf(-1.0, -2.0, 1.0),
+            arrayOf(-2.0, -1.0, -4.0),
+            arrayOf(-1.0, 1.0, 1.0),
+            arrayOf(-1.0, 4.0, 13.0),
+            arrayOf(4.0, -1.0, 23.0),
+            arrayOf(3.0, -6.0, 0.0)
+        )
+
+        val correctAfterRemovedIndependentRows = arrayOf(
+            arrayOf(1.0, -1.0, 6.0),
+            arrayOf(3.0, -2.0, 24.0),
+            arrayOf(-2.0, 3.0, 9.0),
+            arrayOf(-5.0, 4.0, -21.0),
+        )
+
+        val xy = ModifiedMatrixHandler.Companion.XYPositions(
+            cols = arrayOf("x1", "x2"),
+            rows = arrayOf("y1", "y2", "y3", "y4", "y5")
+        )
+
+        val independentVars = arrayOf("x1", "x2")
+
+        val resultAfterRemovedNullLines = removeIndependentVariables(inputMatrix, xy, independentVars)
+
+        println()
+        println("Remove independent")
+        println("Output")
+        resultAfterRemovedNullLines.solve.matrix.let {
+            if (it == null) return
+            printArray(it)
+        }
+        println()
+        println("Correct")
+        printArray(correctAfterRemovedIndependentRows)
+        println()
+
+        Assert.assertTrue(correctAfterRemovedIndependentRows.contentDeepEquals(resultAfterRemovedNullLines.solve.matrix))
+//
+//        val correctAfterReference = arrayOf(
+//            arrayOf(-5.0, 4.0, 13.0),
+//            arrayOf(-2.0, -4.0, 6.0),
+//            arrayOf(-9.0, 9.0, 26.0),
+//            arrayOf(-1.0, 2.0, 2.0),
+//            arrayOf(1.0, -1.0, 20.0)
+//        )
+//
+//        val resultAfterReference =
+//            searchReferenceSolution(resultAfterRemovedNullLines.matrix!!, resultAfterRemovedNullLines.xyPos)
+//
+//        println()
+//        println("Reference solve")
+//        println("Output")
+//        resultAfterReference.matrix.let {
+//            if (it == null) return
+//            printArray(it)
+//        }
+//        println()
+//        println("Correct")
+//        printArray(correctAfterReference)
+//        println()
+//
+//        Assert.assertTrue(correctAfterReference.contentDeepEquals(resultAfterReference.matrix))
+//
+//        val correctOptimal = arrayOf(
+//            arrayOf(-3.0, -2.0, 9.0),
+//            arrayOf(-4.0, 2.0, 10.0),
+//            arrayOf(-4.5, -4.5, 17.0),
+//            arrayOf(-0.5, 0.5, 1.0),
+//            arrayOf(0.5, 0.5, 21.0)
+//        )
+//
+//        val resultAfterOptimal =
+//            searchOptimalSolveMaximum(resultAfterReference.matrix!!, resultAfterReference.xyPos)
+//
+//        println()
+//        println("Optimal solve")
+//        println("Output")
+//        resultAfterOptimal.matrix.let {
+//            if (it == null) return
+//            printArray(it)
+//        }
+//        println()
+//        println("Correct")
+//        printArray(correctOptimal)
+//        println()
+//
+//        Assert.assertTrue(correctOptimal.contentDeepEquals(resultAfterOptimal.matrix))
+    }
+
+    @Test
+    fun T3() {
         println("T2")
 
         val inputMatrix = arrayOf(
