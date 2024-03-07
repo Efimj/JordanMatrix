@@ -79,7 +79,7 @@ class ModifiedMatrixWithNullLines {
             arrayOf(-3.0, -2.0, 9.0),
             arrayOf(-4.0, 2.0, 10.0),
             arrayOf(-4.5, -4.5, 17.0),
-            arrayOf(-0.5, -0.5, 1.0),
+            arrayOf(-0.5, 0.5, 1.0),
             arrayOf(0.5, 0.5, 21.0)
         )
 
