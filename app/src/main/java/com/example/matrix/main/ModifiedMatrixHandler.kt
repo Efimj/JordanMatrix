@@ -149,14 +149,6 @@ class ModifiedMatrixHandler {
                     )
 
                 switchXAfterwordElimination(xyPos, minimalPositiveRow, negativeZElementColumn)
-                println()
-                println("Before")
-                printArray(newMatrix)
-                println()
-                println("${minimalPositiveRow} ${negativeZElementColumn}")
-                println()
-                printArray(result)
-                println()
 
                 newMatrix = result
             }

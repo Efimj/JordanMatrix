@@ -197,7 +197,7 @@ class ModifiedMatrixHandler {
         Assert.assertTrue(correctX.contentDeepEquals(res))
     }
 
-//    @Test
+    @Test
     fun testV1() {
         println("findReferenceSolutionV1")
 
@@ -210,10 +210,11 @@ class ModifiedMatrixHandler {
         )
 
         val correct = arrayOf(
-            arrayOf(-1.0, 0.0, 0.0, 2.0, 0.0),
-            arrayOf(1.0, -1.0, 1.0, -1.0, 2.0),
-            arrayOf(1.0, -2.0, 2.0, 0.0, 0.0),
-            arrayOf(1.0, 7.0, 0.0, -5.0, 2.0),
+            arrayOf(1.0, -1.0, 1.0, 1.0, 2.0),
+            arrayOf(-1.0, 0.0, 0.0, -2.0, 0.0),
+            arrayOf(1.0, -2.0, 2.0, 2.0, 0.0),
+            arrayOf(-1.0, 0.0, -2.0, 0.0, 0.0),
+            arrayOf(1.0, 7.0, 0.0, -3.0, 2.0)
         )
         val correctX = arrayOf(2.0, 0.0, 0.0, 0.0)
 
@@ -247,10 +248,11 @@ class ModifiedMatrixHandler {
         println("Optimal solution")
 
         val correct2 = arrayOf(
+            arrayOf(0.5, 0.0, 0.0, -0.5, 2.0),
+            arrayOf(0.0, -2.0, 2.0, 1.0, 0.0),
             arrayOf(0.5, -1.0, 1.0, 0.5, 0.0),
-            arrayOf(-0.5, 0.0, 0.0, 0.5, 2.0),
-            arrayOf(1.0, -2.0, 2.0, 0.0, 0.0),
-            arrayOf(1.5, 4.0, 3.0, 2.5, 2.0),
+            arrayOf(-1.0, 0.0, -2.0, 0.0, 0.0),
+            arrayOf(2.5, 4.0, 3.0, 1.5, 2.0)
         )
         val correctX2 = arrayOf(2.0, 0.0, 0.0, 0.0)
 
