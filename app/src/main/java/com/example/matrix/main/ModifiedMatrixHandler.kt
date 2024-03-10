@@ -331,7 +331,7 @@ class ModifiedMatrixHandler {
             independentVariables: Array<String>
         ): SolveWithIndependentVariables {
             var newMatrix = cloneArray(matrix)
-            val xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
+            var xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
             var independents = cloneArray(independentVariables)
 
             var arrayToHandleX = emptyList<String>()
@@ -380,9 +380,9 @@ class ModifiedMatrixHandler {
 
                 xyPos.cols.forEachIndexed { index, value ->
                     val string = Math.round(newMatrix[row][index] * 100.0) / 100.0
-                    resultString += if(-string<0) {
+                    resultString += if (-string < 0) {
                         (-string).toString()
-                    }else{
+                    } else {
                         "+${-string}"
 
                     }
@@ -398,6 +398,10 @@ class ModifiedMatrixHandler {
                 independents =
                     independents.filterIndexed { index, value -> value != xyPos.rows[row] }
                         .toTypedArray()
+
+                // Remove xy position
+                xyPos = xyPos.copy(rows = xyPos.rows.filterIndexed { index, value -> index != row }.toTypedArray())
+
             }
             return SolveWithIndependentVariables(
                 solve = Solve(

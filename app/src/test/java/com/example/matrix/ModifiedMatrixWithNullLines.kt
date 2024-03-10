@@ -197,11 +197,16 @@ class ModifiedMatrixWithNullLines {
         val variablePattern = Regex("[a-zA-Z]+\\d+")
         return variablePattern.replace(equation) { matchResult ->
             val indexInColumns = xyPositions.cols.indexOf(matchResult.value)
-            if (indexInColumns != -1)
+            if (indexInColumns != -1) {
+                println("indexInColumns")
+
                 return@replace "*0"
+            }
             val indexInRows = xyPositions.rows.indexOf(matchResult.value)
-            if (indexInRows != -1)
+            if (indexInRows == -1) {
+                println("213")
                 return@replace "*0"
+            }
             return@replace "*${matrix[indexInRows][matrix[indexInRows].size - 1]}"
         }
     }
