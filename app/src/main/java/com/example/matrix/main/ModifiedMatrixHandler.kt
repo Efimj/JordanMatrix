@@ -378,9 +378,15 @@ class ModifiedMatrixHandler {
                 // Save handle expression to find x
                 var resultString = ""
 
-                xyPos.cols.forEach {
-                    resultString += (-(newMatrix[row][currentIndependentIndex])).toString()
-                    resultString += it
+                xyPos.cols.forEachIndexed { index, value ->
+                    val string = Math.round(newMatrix[row][index] * 100.0) / 100.0
+                    resultString += if(-string<0) {
+                        (-string).toString()
+                    }else{
+                        "+${-string}"
+
+                    }
+                    resultString += value
                 }
 
                 arrayToHandleX = arrayToHandleX.plus(resultString)

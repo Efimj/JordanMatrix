@@ -143,51 +143,31 @@ class ModifiedMatrixWithNullLines {
         printArray(correctAfterRemovedIndependentRows)
         println()
 
+        println()
+        println("Expressions to find x:")
+        resultAfterRemovedNullLines.arrayToHandleX.forEach {
+            println(it)
+        }
+        println()
+
         Assert.assertTrue(correctAfterRemovedIndependentRows.contentDeepEquals(resultAfterRemovedNullLines.solve.matrix))
-//
-//        val correctAfterReference = arrayOf(
-//            arrayOf(-5.0, 4.0, 13.0),
-//            arrayOf(-2.0, -4.0, 6.0),
-//            arrayOf(-9.0, 9.0, 26.0),
-//            arrayOf(-1.0, 2.0, 2.0),
-//            arrayOf(1.0, -1.0, 20.0)
-//        )
-//
-//        val resultAfterReference =
-//            searchReferenceSolution(resultAfterRemovedNullLines.matrix!!, resultAfterRemovedNullLines.xyPos)
-//
-//        println()
-//        println("Reference solve")
-//        println("Output")
-//        resultAfterReference.matrix.let {
-//            if (it == null) return
-//            printArray(it)
-//        }
-//        println()
-//        println("Correct")
-//        printArray(correctAfterReference)
-//        println()
-//
-//        Assert.assertTrue(correctAfterReference.contentDeepEquals(resultAfterReference.matrix))
-//
-//        val correctOptimal = arrayOf(
-//            arrayOf(-3.0, -2.0, 9.0),
-//            arrayOf(-4.0, 2.0, 10.0),
-//            arrayOf(-4.5, -4.5, 17.0),
-//            arrayOf(-0.5, 0.5, 1.0),
-//            arrayOf(0.5, 0.5, 21.0)
-//        )
-//
-//        val resultAfterOptimal =
-//            searchOptimalSolveMaximum(resultAfterReference.matrix!!, resultAfterReference.xyPos)
-//
-//        println()
-//        println("Optimal solve")
-//        println("Output")
-//        resultAfterOptimal.matrix.let {
-//            if (it == null) return
-//            printArray(it)
-//        }
+
+        val resultAfterReference =
+            searchReferenceSolution(resultAfterRemovedNullLines.solve.matrix!!, resultAfterRemovedNullLines.solve.xyPos)
+
+        val resultAfterOptimal =
+            searchReferenceSolution(resultAfterReference.matrix!!, resultAfterReference.xyPos)
+
+        println()
+        println("Optimal solve")
+        println("Output")
+        resultAfterOptimal.matrix.let {
+            if (it == null) return
+            printArray(it)
+        }
+
+
+
 //        println()
 //        println("Correct")
 //        printArray(correctOptimal)
