@@ -166,6 +166,19 @@ class ModifiedMatrixWithNullLines {
             printArray(it)
         }
 
+        resultAfterRemovedNullLines.arrayToHandleX.reversedArray().forEach { expression ->
+            val variables =
+                getExpressions(equation = expression, matrix = resultAfterOptimal.matrix!!, resultAfterOptimal.xyPos)
+
+            println(variables)
+        }
+
+        println("Rows")
+        printArray(resultAfterOptimal.xyPos.rows)
+        println()
+        println("Cols")
+        printArray(resultAfterOptimal.xyPos.cols)
+        println()
 
 
 //        println()
@@ -174,6 +187,23 @@ class ModifiedMatrixWithNullLines {
 //        println()
 //
 //        Assert.assertTrue(correctOptimal.contentDeepEquals(resultAfterOptimal.matrix))
+    }
+
+    private fun getExpressions(
+        equation: String,
+        matrix: Array<Array<Double>>,
+        xyPositions: ModifiedMatrixHandler.Companion.XYPositions
+    ): String {
+        val variablePattern = Regex("[a-zA-Z]+\\d+")
+        return variablePattern.replace(equation) { matchResult ->
+            val indexInColumns = xyPositions.cols.indexOf(matchResult.value)
+            if (indexInColumns != -1)
+                return@replace "*0"
+            val indexInRows = xyPositions.rows.indexOf(matchResult.value)
+            if (indexInRows != -1)
+                return@replace "*0"
+            return@replace "*${matrix[indexInRows][matrix[indexInRows].size - 1]}"
+        }
     }
 
     @Test
