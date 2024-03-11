@@ -3,6 +3,7 @@ package com.example.matrix.main
 import ArrayHelper.Companion.addRow
 import ArrayHelper.Companion.addValueAtPosition
 import ArrayHelper.Companion.cloneArray
+import ArrayHelper.Companion.printArray
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.Solve
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.Result
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.findXresults
@@ -33,7 +34,7 @@ class IntegerSolveHandler {
                         xyPos = xyPos
                     )
                 }
-                val resultAfterOptimal = ModifiedMatrixHandler.searchReferenceSolution(
+                val resultAfterOptimal = ModifiedMatrixHandler.searchOptimalSolveMaximum(
                     matrix = resultAfterReference.matrix,
                     xy = resultAfterReference.xyPos
                 )
