@@ -180,5 +180,44 @@ class ArrayHelper {
                 row.filterIndexed { index, _ -> index != columnIndex }.toTypedArray()
             }.toTypedArray()
         }
+
+        fun addRow(matrix: Array<Array<Double>>, rowIndex: Int, newRow: Array<Double>): Array<Array<Double>> {
+            require(rowIndex >= 0 && rowIndex <= matrix.size) { "Invalid rowIndex" }
+            require(newRow.size == matrix[0].size) { "New row size must match the matrix column count" }
+
+            val result = mutableListOf<Array<Double>>()
+
+            for (i in 0 until rowIndex) {
+                result.add(matrix[i])
+            }
+
+            result.add(newRow)
+
+            for (i in rowIndex until matrix.size) {
+                result.add(matrix[i])
+            }
+
+            return result.toTypedArray()
+        }
+
+        fun addValueAtPosition(array: Array<String>, position: Int, value: String): Array<String> {
+            if (position < 0 || position > array.size) {
+                throw IndexOutOfBoundsException("Invalid position")
+            }
+
+            val resultArray = Array(array.size + 1) { "" }
+
+            for (i in 0 until position) {
+                resultArray[i] = array[i]
+            }
+
+            resultArray[position] = value
+
+            for (i in position until array.size) {
+                resultArray[i + 1] = array[i]
+            }
+
+            return resultArray
+        }
     }
 }
