@@ -43,6 +43,8 @@ class IntegerSolveHandler {
                 val currentX = findXresults(resultAfterOptimal)
                 val isAllIntegers = currentX.all { it % 1.0 == 0.0 }
 
+                printArray(currentX)
+
                 if (isAllIntegers || resultAfterOptimal.matrix == null) {
                     return resultAfterOptimal
                 }
