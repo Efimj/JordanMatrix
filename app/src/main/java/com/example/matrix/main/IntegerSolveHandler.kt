@@ -4,9 +4,11 @@ import ArrayHelper.Companion.addRow
 import ArrayHelper.Companion.addValueAtPosition
 import ArrayHelper.Companion.cloneArray
 import ArrayHelper.Companion.printArray
+import ArrayHelper.Companion.roundArray
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.Solve
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.Result
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.findXresults
+import kotlin.math.absoluteValue
 
 class IntegerSolveHandler {
     companion object {
@@ -17,7 +19,6 @@ class IntegerSolveHandler {
             var newMatrix = cloneArray(matrix)
             var xyPos = xy.copy(cols = cloneArray(xy.cols), rows = cloneArray(xy.rows))
 
-            var finishd = false
             var counter = 0
 
             do {
@@ -53,21 +54,26 @@ class IntegerSolveHandler {
                     if (index == resultAfterOptimal.matrix[indexNumberWithMaxFractionalPart].size - 1) {
                         newRestriction[index] = -(value % 1.0)
                     } else {
-                        newRestriction[index] = -if (value > 0.0) {
+                        newRestriction[index] = if (value == 0.0) {
+                            0.0
+                        } else -if (value > 0.0) {
                             value % 1.0
                         } else {
-                            1 - (value % 1.0)
+                            1 - (value % 1.0).absoluteValue
                         }
                     }
                 }
 
-                val position = resultAfterOptimal.matrix.size - 2
+                // Round
+                roundArray(newRestriction, 3)
+
+                val position = resultAfterOptimal.matrix.size - 1
                 newMatrix =
-                    addRow(matrix = newMatrix, rowIndex = position, newRow = newRestriction)
+                    addRow(matrix = resultAfterOptimal.matrix, rowIndex = position, newRow = newRestriction)
                 val newRowsX = addValueAtPosition(array = xyPos.rows, position = position, "s${counter}")
                 xyPos = xyPos.copy(rows = newRowsX)
 
-            } while (finishd.not())
+            } while (counter < 15)
             return Solve(
                 matrix = null,
                 result = Result.NoSolve,
