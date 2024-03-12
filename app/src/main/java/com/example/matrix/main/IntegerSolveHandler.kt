@@ -29,6 +29,7 @@ class IntegerSolveHandler {
                     xy = xyPos
                 )
                 if (resultAfterReference.matrix == null) {
+                    println("resultAfterReference.matrix == null")
                     return Solve(
                         matrix = null,
                         result = Result.NoSolve,
@@ -43,9 +44,28 @@ class IntegerSolveHandler {
                 val currentX = findXresults(resultAfterOptimal)
                 val isAllIntegers = currentX.all { it % 1.0 == 0.0 }
 
+
+                println("Reference")
+                printArray(findXresults(resultAfterReference))
+                println()
+                println("Optimal")
                 printArray(currentX)
+                println()
+                println("OLD")
+                printArray(newMatrix)
+                println()
+                println("NEW")
+                printArray(resultAfterOptimal.matrix!!)
+                println("POS")
+                println("rows")
+                printArray(resultAfterOptimal.xyPos.rows)
+                println()
+                println("cols")
+                printArray(resultAfterOptimal.xyPos.cols)
+                println()
 
                 if (isAllIntegers || resultAfterOptimal.matrix == null) {
+                    println("isAllIntegers || resultAfterOptimal.matrix == null")
                     return resultAfterOptimal
                 }
 
@@ -74,6 +94,14 @@ class IntegerSolveHandler {
                     addRow(matrix = resultAfterOptimal.matrix, rowIndex = position, newRow = newRestriction)
                 val newRowsX = addValueAtPosition(array = xyPos.rows, position = position, "s${counter}")
                 xyPos = xyPos.copy(rows = newRowsX)
+
+                println("NEW pos ")
+                println("rows")
+                printArray(resultAfterOptimal.xyPos.rows)
+                println()
+                println("cols")
+                printArray(resultAfterOptimal.xyPos.cols)
+                println()
 
             } while (counter < 15)
             return Solve(
