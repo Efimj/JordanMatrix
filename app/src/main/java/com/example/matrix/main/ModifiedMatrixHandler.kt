@@ -379,15 +379,18 @@ class ModifiedMatrixHandler {
                 var resultString = ""
 
                 xyPos.cols.forEachIndexed { index, value ->
-                    val string = Math.round(newMatrix[row][index] * 100.0) / 100.0
-                    resultString += if (-string < 0) {
-                        (-string).toString()
+                    val string = -(Math.round(newMatrix[row][index] * 100.0) / 100.0)
+                    resultString += if (string < 0) {
+                        string.toString()
                     } else {
-                        "+${-string}"
+                        "+${string}"
 
                     }
                     resultString += value
                 }
+
+                val singleValue = (newMatrix[row][newMatrix[row].size-1])
+                resultString += if(singleValue>0) "+${singleValue}" else singleValue.toString()
 
                 arrayToHandleX = arrayToHandleX.plus(resultString)
 
