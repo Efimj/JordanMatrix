@@ -18,13 +18,23 @@ class ModifiedMatrixIntegerSolution {
             arrayOf(-4.0, -5.0, -1.0, 0.0)
         )
 
+            // in book
+//        val correct = arrayOf(
+//            arrayOf(-0.18, 0.45, 0.00, 2.00),
+//            arrayOf(0.27, -0.18, 0.00, 2.00),
+//            arrayOf(-0.27, -0.82, 1.00, 1.00),
+//            arrayOf(-0.91, 0.27, 0.00, 1.00),
+//            arrayOf(-0.73, -0.18, 0.00, 0.00),
+//            arrayOf(0.36, 0.09, 1.00, 19.00)
+//        )
+
         val correct = arrayOf(
-            arrayOf(-0.18, 0.45, 0.00, 2.00),
-            arrayOf(0.27, -0.18, 0.00, 2.00),
-            arrayOf(-0.27, -0.82, 1.00, 1.00),
+            arrayOf(-0.19, 0.46, 0.00, 2.00),
+            arrayOf(0.28, -0.18, 0.00, 2.00),
+            arrayOf(-0.28, -0.82, 1.00, 1.00),
             arrayOf(-0.91, 0.27, 0.00, 1.00),
-            arrayOf(-0.73, -0.18, 0.00, 0.00),
-            arrayOf(0.36, 0.09, 1.00, 19.00)
+            arrayOf(-0.72, -0.18, 0.00, 0.00),
+            arrayOf(0.37, 0.09, 1.00, 19.00)
         )
 
         val correctX = arrayOf(2.0, 2.0, 1.0)

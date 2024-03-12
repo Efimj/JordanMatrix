@@ -92,8 +92,8 @@ class IntegerSolveHandler {
                 val position = resultAfterOptimal.matrix.size - 1
                 newMatrix =
                     addRow(matrix = resultAfterOptimal.matrix, rowIndex = position, newRow = newRestriction)
-                val newRowsX = addValueAtPosition(array = xyPos.rows, position = position, "s${counter}")
-                xyPos = xyPos.copy(rows = newRowsX)
+                val newRowsX = addValueAtPosition(array = resultAfterOptimal.xyPos.rows, position = position, "s${counter}")
+                xyPos = resultAfterOptimal.xyPos.copy(rows = newRowsX)
 
                 println("NEW pos ")
                 println("rows")
