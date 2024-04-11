@@ -2,6 +2,7 @@ package com.example.matrix
 
 import ArrayHelper.Companion.printArray
 import com.example.matrix.main.DualSimplexSolver.Companion.findDualResultsFor
+import com.example.matrix.main.DualSimplexSolver.Companion.findResultsFor
 import com.example.matrix.main.ModifiedMatrixHandler
 import org.junit.Assert
 import org.junit.Test
@@ -9,7 +10,7 @@ import org.junit.Test
 class DualSimplexSolverTests {
     @Test
     fun dualSimplexSolverTest1() {
-        println("1")
+        println("Test 1")
 
         val inputMatrix = arrayOf(
             arrayOf(1.0, 1.0, -1.0, -2.0, 6.0),
@@ -89,9 +90,6 @@ class DualSimplexSolverTests {
         println("X results")
         printArray(optimalSolveResultX)
         println()
-        println("CorrectX")
-        printArray(correctOptimalU)
-        println()
         println("U results")
         printArray(optimalSolveResultU)
         println()
@@ -104,7 +102,7 @@ class DualSimplexSolverTests {
 
     @Test
     fun dualSimplexSolverTest2() {
-        println("2")
+        println("Test 2")
         val inputMatrix = arrayOf(
             arrayOf(-3.0, 1.0, 4.0, 1.0, 1.0),
             arrayOf(3.0, -2.0, 2.0, -2.0, -9.0),
@@ -128,8 +126,6 @@ class DualSimplexSolverTests {
             arrayOf(1.0, -1.0, 20.0)
         )
 
-        val correctReferencesU = arrayOf(0.0, 0.0, 0.0, -1.0)
-
         val referenceSolve = ModifiedMatrixHandler.searchReferenceSolution(
             matrix = resultAfterRemovedNullLines.matrix!!,
             xy = resultAfterRemovedNullLines.xyPos
@@ -140,18 +136,6 @@ class DualSimplexSolverTests {
             if (it == null) return
             printArray(it)
         }
-
-        val resForDual = findDualResultsFor(output = referenceSolve)
-
-        println("Correct")
-        printArray(correctReferenceSolve)
-        println()
-        println("U results")
-        printArray(resForDual)
-        println()
-        println("Correct U")
-        printArray(correctReferencesU)
-        println()
 
         Assert.assertTrue(correctReferenceSolve.contentDeepEquals(referenceSolve.matrix))
 
@@ -188,11 +172,59 @@ class DualSimplexSolverTests {
         println("minimum: -${correctOptimalSolve.last().last()}")
         println()
 
-        printArray(optimalSolveResult.xyPos.rows)
-        println()
-        printArray(optimalSolveResult.xyPos.cols)
+//        printArray(optimalSolveResult.xyPos.rows)
+//        println()
+//        printArray(optimalSolveResult.xyPos.cols)
 
         Assert.assertTrue(correctOptimalSolve.contentDeepEquals(optimalSolveResult.matrix))
         Assert.assertTrue(correctOptimalU.contentDeepEquals(optimalSolveResultU))
+    }
+
+    @Test
+    fun dualSimplexSolverTestVariant1() {
+        println("Test 3")
+
+        val inputMatrix = arrayOf(
+            arrayOf(2.0, 1.0, 3.0),
+            arrayOf(1.0, 2.0, 5.0),
+            arrayOf(-1.0, -1.0, 0.0),
+        )
+
+        val xy = ModifiedMatrixHandler.Companion.XYPositions(
+            cols = arrayOf("x1", "x2"),
+            rows = arrayOf("0", "y1")
+        )
+
+        val resultAfterRemovedNullLines = ModifiedMatrixHandler.removeNullLines(inputMatrix, xy)
+
+        val referenceSolve = ModifiedMatrixHandler.searchReferenceSolution(
+            matrix = resultAfterRemovedNullLines.matrix!!,
+            xy = resultAfterRemovedNullLines.xyPos
+        )
+
+        val optimalSolveResult =
+            ModifiedMatrixHandler.searchOptimalSolveMaximum(matrix = referenceSolve.matrix!!, xy = referenceSolve.xyPos)
+        println("Output")
+        println(optimalSolveResult.result)
+        optimalSolveResult.matrix.let {
+            if (it == null) return
+            printArray(it)
+        }
+        val optimalSolveResultX = findResultsFor(optimalSolveResult)
+        val optimalSolveResultU = findDualResultsFor(name = "y", output = optimalSolveResult)
+
+        println()
+        println("X results")
+        printArray(optimalSolveResultX)
+        println()
+        println("U results")
+        printArray(optimalSolveResultU)
+        println()
+
+        println()
+        println("maximum: ${optimalSolveResult.matrix!!.last().last()}")
+        println()
+        println("minimum: -${optimalSolveResult.matrix!!.last().last()}")
+        println()
     }
 }

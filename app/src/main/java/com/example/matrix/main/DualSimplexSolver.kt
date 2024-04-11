@@ -23,5 +23,23 @@ class DualSimplexSolver {
             }
             return res
         }
+
+        fun findResultsFor(
+            output: ModifiedMatrixHandler.Companion.Solve,
+        ): Array<Double> {
+            val res = Array(output.xyPos.rows.size) { 0.0 }
+            for (index in output.xyPos.rows.indices) {
+                if (output.xyPos.rows[index].startsWith("x")) {
+                    val digitAfterX = output.xyPos.rows[index].substringAfter("x")
+                    try {
+                        val result = digitAfterX.toInt()
+                        res[result - 1] = output.matrix?.get(index)?.last()!!
+                    } catch (e: NumberFormatException) {
+                        println("NumberFormatException")
+                    }
+                }
+            }
+            return res
+        }
     }
 }
