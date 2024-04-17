@@ -12,6 +12,53 @@ class ModifiedMatrixIntegerSolution {
         println("T1")
 
         val inputMatrix = arrayOf(
+            arrayOf(2.0, 1.0, 6.0),
+            arrayOf(1.0, 3.0, 4.0),
+            arrayOf(-1.0, -4.0, 0.0),
+        )
+
+        val correct = arrayOf(
+            arrayOf(5.06, -2.0, 3.0),
+            arrayOf(1.0, 0.0, 1.0),
+            arrayOf(-3.03, 1.0, 1.0),
+            arrayOf(1.0, 1.0, 5.0)
+        )
+
+        val correctX = arrayOf(1.0, 1.0)
+
+        val xy = ModifiedMatrixHandler.Companion.XYPositions(
+            cols = arrayOf("x1", "x2"),
+            rows = arrayOf("y1", "y2")
+        )
+
+        val result = findIntegerSolve(matrix = inputMatrix, xy = xy)
+
+        val resX = ModifiedMatrixHandler.findXresults(result)
+        println("Output")
+        println(result.result)
+        result.matrix.let {
+            if (it == null) return
+            printArray(it)
+        }
+
+        println("Correct")
+        printArray(correct)
+        println("Output X")
+        printArray(resX)
+        println()
+        println("Correct X")
+        printArray(correctX)
+        println()
+
+        Assert.assertTrue(correct.contentDeepEquals(result.matrix))
+        Assert.assertTrue(correctX.contentDeepEquals(resX))
+    }
+
+    @Test
+    fun T2() {
+        println("T2")
+
+        val inputMatrix = arrayOf(
             arrayOf(3.0, 2.0, 0.0, 10.0),
             arrayOf(1.0, 4.0, 0.0, 11.0),
             arrayOf(3.0, 3.0, 1.0, 13.0),
