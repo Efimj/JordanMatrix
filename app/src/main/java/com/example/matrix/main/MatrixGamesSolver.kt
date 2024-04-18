@@ -11,7 +11,7 @@ class MatrixGamesSolver {
             val xyPositions: XYPositions
         )
 
-        fun solveMatrixGame(matrix: Array<Array<Double>>, xyPositions: XYPositions):MatrixGameSolution {
+        fun solveMatrixGame(matrix: Array<Array<Double>>, xyPositions: XYPositions): MatrixGameSolution {
             val minGamePrice = findMinGamePrice(matrix)
             val maxGamePrice = findMaxGamePrice(matrix)
 
@@ -46,10 +46,10 @@ class MatrixGamesSolver {
             }
 
             val firstPlayersSolution = matrix[minGamePriceIndex]
-            val secondPlayersSolution = emptyList<Double>()
+            val secondPlayersSolution = mutableListOf<Double>()
 
             for (row in matrix.indices) {
-                secondPlayersSolution.plus(matrix[row][maxGamePriceIndex])
+                secondPlayersSolution.add(matrix[row][maxGamePriceIndex])
             }
 
             return MatrixGameSolution(
@@ -63,18 +63,18 @@ class MatrixGamesSolver {
         /**
          * Find the first player's guaranteed payoff.
          */
-        fun findMinGamePrice(matrix: Array<Array<Double>>): Double {
-            val minValuesArray = emptyList<Double>()
+        private fun findMinGamePrice(matrix: Array<Array<Double>>): Double {
+            val minValuesArray = mutableListOf<Double>()
             matrix.forEach {
-                minValuesArray.plus(it.minOrNull() ?: Double.MAX_VALUE)
+                minValuesArray.add(it.minOrNull() ?: Double.MAX_VALUE)
             }
             return minValuesArray.maxOrNull() ?: Double.MIN_VALUE
         }
 
-        fun findMinGamePriceIndex(matrix: Array<Array<Double>>): Int {
-            val minValuesArray = emptyList<Double>()
+        private fun findMinGamePriceIndex(matrix: Array<Array<Double>>): Int {
+            val minValuesArray = mutableListOf<Double>()
             matrix.forEach {
-                minValuesArray.plus(it.minOrNull() ?: Double.MAX_VALUE)
+                minValuesArray.add(it.minOrNull() ?: Double.MAX_VALUE)
             }
             val minValue = minValuesArray.maxOrNull() ?: Double.MIN_VALUE
 
@@ -84,28 +84,31 @@ class MatrixGamesSolver {
         /**
          * Find the maximum payoff for the first player.
          */
-        fun findMaxGamePrice(matrix: Array<Array<Double>>): Double {
-            val maxValuesArray = emptyList<Double>()
-            for (row in matrix.indices) {
-                val maxValue = Double.MIN_VALUE
-                for (column in matrix[row].indices) {
-                    maxValuesArray.plus(maxValue.coerceAtLeast(matrix[row][column]))
-                }
-            }
+        private fun findMaxGamePrice(matrix: Array<Array<Double>>): Double {
+            val maxValuesArray = findColumnsMaxValues(matrix)
             return maxValuesArray.minOrNull() ?: Double.MAX_VALUE
         }
 
-        fun findMaxGamePriceIndex(matrix: Array<Array<Double>>): Int {
-            val maxValuesArray = emptyList<Double>()
-            for (row in matrix.indices) {
-                val maxValue = Double.MIN_VALUE
-                for (column in matrix[row].indices) {
-                    maxValuesArray.plus(maxValue.coerceAtLeast(matrix[row][column]))
-                }
-            }
+        private fun findMaxGamePriceIndex(matrix: Array<Array<Double>>): Int {
+            val maxValuesArray = findColumnsMaxValues(matrix)
             val maxValue = maxValuesArray.minOrNull() ?: Double.MAX_VALUE
-
             return maxValuesArray.indexOf(maxValue)
+        }
+
+        private fun findColumnsMaxValues(matrix: Array<Array<Double>>): MutableList<Double> {
+            val maxValuesArray = mutableListOf<Double>()
+            val columns = matrix[0].size
+
+            for (column in 0 until columns) {
+                var maxValue = Double.MIN_VALUE
+                for (row in matrix.indices) {
+                    maxValue = maxValue.coerceAtLeast(
+                        matrix[row][column]
+                    )
+                }
+                maxValuesArray.add(maxValue)
+            }
+            return maxValuesArray
         }
     }
 }
