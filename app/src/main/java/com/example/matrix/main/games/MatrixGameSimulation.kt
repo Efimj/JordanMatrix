@@ -21,8 +21,8 @@ class MatrixGameSimulation {
             secondPlayersOdds: Array<Double>,
             numberOfGames: Int = 50,
         ): SimulationResult {
-            require(matrix.size == firstPlayersOdds.size)
-            require(matrix.first().size == secondPlayersOdds.size)
+//            require(matrix.size == firstPlayersOdds.size)
+//            require(matrix.first().size == secondPlayersOdds.size)
 
             val firstPlayerDecisionIndexes = mutableListOf<Int>()
             val secondPlayerDecisionIndexes = mutableListOf<Int>()
@@ -100,7 +100,7 @@ class MatrixGameSimulation {
                 .toTypedArray())
             println()
 
-            println("First player")
+            println("Secondary player")
             printArray(secondPlayerDecisions.map { MatrixGameSimulation().round((it.toDouble() / simulation.secondPlayerDecisionIndexes.size.toDouble())) }
                 .toTypedArray())
             println()
