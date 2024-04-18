@@ -55,8 +55,8 @@ class MatrixGamesSolverTests {
             rows = arrayOf("y1", "y2", "y3")
         )
 
-        val correctFirstPlayerSolution = arrayOf(4.0, 3.0, 5.0, 6.0)
-        val correctSecondPlayerSolution = arrayOf(2.0, 1.0, 3.0)
+        val correctFirstPlayerSolution = arrayOf(0.0, 0.0, 1.0)
+        val correctSecondPlayerSolution = arrayOf(0.66, 0.34, 0.0)
 
         val solution = solveMatrixGame(matrix = inputMatrix, xyPositions = inputXYPositions)
 
@@ -69,8 +69,12 @@ class MatrixGamesSolverTests {
         println()
         println("Second player solve")
         printArray(solution.secondPlayersSolution)
+        println()
+        println("Game price")
+        println(solution.gamePrice)
+        println()
 
-//        Assert.assertTrue(correctFirstPlayerSolution.contentDeepEquals(solution.firstPlayersSolution))
-//        Assert.assertTrue(correctSecondPlayerSolution.contentDeepEquals(solution.secondPlayersSolution))
+        Assert.assertTrue(correctFirstPlayerSolution.contentDeepEquals(solution.firstPlayersSolution))
+        Assert.assertTrue(correctSecondPlayerSolution.contentDeepEquals(solution.secondPlayersSolution))
     }
 }

@@ -7,11 +7,19 @@ import kotlin.math.abs
 
 class MatrixGamesSolver {
     companion object {
+        enum class StrategiesType {
+            PureStrategies,
+            MixedStrategies,
+            Undefined
+        }
+
         data class MatrixGameSolution(
             val firstPlayersSolution: Array<Double>,
             val secondPlayersSolution: Array<Double>,
             val outputMatrix: Array<Array<Double>>,
-            val xyPositions: XYPositions
+            val xyPositions: XYPositions,
+            val gamePrice: Double,
+            val strategyType: StrategiesType
         )
 
         fun solveMatrixGame(matrix: Array<Array<Double>>, xyPositions: XYPositions): MatrixGameSolution {
@@ -35,19 +43,31 @@ class MatrixGamesSolver {
         val minimumValue = removeNegativeValues(matrix = handledMatrix)
         handledMatrix = MatrixGamesSolver().generateSimplexMatrix(handledMatrix)
 
-        printArray(handledMatrix)
-
         val referenceSolve = ModifiedMatrixHandler.searchReferenceSolution(matrix = handledMatrix, xy = xyPositions)
-        val optimalSolveResult = ModifiedMatrixHandler.searchOptimalSolveMaximum(matrix = referenceSolve.matrix!!, xy = xyPositions)
+        val optimalSolveResult =
+            ModifiedMatrixHandler.searchOptimalSolveMaximum(matrix = referenceSolve.matrix!!, xy = xyPositions)
 
         val secondPlayersSolution = DualSimplexSolver.findResultsFor(output = optimalSolveResult)
         val firstPlayersSolution = DualSimplexSolver.findDualResultsFor(name = "y", output = optimalSolveResult)
 
+        val lastCellValue = optimalSolveResult.matrix!!.last().last()
+        val gamePrice = 1.0.div(lastCellValue) - abs(minimumValue)
+
+        secondPlayersSolution.forEachIndexed { index, value ->
+            secondPlayersSolution[index] = value * 1.div(lastCellValue)
+        }
+
+        firstPlayersSolution.forEachIndexed { index, value ->
+            firstPlayersSolution[index] = value * 1.div(lastCellValue)
+        }
+
         return MatrixGameSolution(
             firstPlayersSolution = firstPlayersSolution,
             secondPlayersSolution = secondPlayersSolution,
-            outputMatrix = optimalSolveResult.matrix!!,
-            xyPositions = xyPositions
+            outputMatrix = optimalSolveResult.matrix,
+            xyPositions = xyPositions,
+            strategyType = StrategiesType.MixedStrategies,
+            gamePrice = gamePrice
         )
     }
 
@@ -75,6 +95,7 @@ class MatrixGamesSolver {
         matrix: Array<Array<Double>>,
         xyPositions: XYPositions
     ): MatrixGameSolution {
+        val gamePrice = findMinGamePrice(matrix)
         val minGamePriceIndex = findMinGamePriceIndex(matrix)
         val maxGamePriceIndex = findMaxGamePriceIndex(matrix)
 
@@ -84,7 +105,9 @@ class MatrixGamesSolver {
                 firstPlayersSolution = emptyArray(),
                 secondPlayersSolution = emptyArray(),
                 outputMatrix = matrix,
-                xyPositions = xyPositions
+                xyPositions = xyPositions,
+                strategyType = StrategiesType.Undefined,
+                gamePrice = 0.0
             )
         }
 
@@ -99,7 +122,9 @@ class MatrixGamesSolver {
             firstPlayersSolution = firstPlayersSolution,
             secondPlayersSolution = secondPlayersSolution.toTypedArray(),
             outputMatrix = matrix,
-            xyPositions = xyPositions
+            xyPositions = xyPositions,
+            strategyType = StrategiesType.PureStrategies,
+            gamePrice = gamePrice
         )
     }
 
