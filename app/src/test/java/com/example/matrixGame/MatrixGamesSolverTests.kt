@@ -2,7 +2,7 @@ package com.example.matrixGame
 
 import ArrayHelper.Companion.printArray
 import ArrayHelper.Companion.roundArray
-import com.example.matrix.main.MatrixGamesSolver.Companion.solveMatrixGame
+import com.example.matrix.main.games.MatrixGamesSolver.Companion.solveMatrixGame
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.XYPositions
 import org.junit.Assert
 import org.junit.Test
