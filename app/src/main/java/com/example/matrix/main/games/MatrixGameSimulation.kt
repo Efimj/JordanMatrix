@@ -50,7 +50,9 @@ class MatrixGameSimulation {
                 firstPlayerRandom.add(randomFirstPlayer)
                 secondaryPlayerRandom.add(randomSecondaryPlayer)
 
-                firstPlayerGain.add(matrix[firstPlayerDecision][secondPlayerDecision])
+                firstPlayerGain.add(
+                    (firstPlayerGain.lastOrNull() ?: 0.0) + matrix[firstPlayerDecision][secondPlayerDecision]
+                )
                 firstPlayerCumulativeGain.add(firstPlayerGain.last() / number)
             }
 
@@ -67,9 +69,16 @@ class MatrixGameSimulation {
         fun printSimulation(simulation: SimulationResult, xyPositions: XYPositions) {
             println("№     | rand A    | name A   |   rand B   | name B   | gain   | cumulative")
             for ((index, value) in simulation.firstPlayerDecisionIndexes.withIndex()) {
-                print("$index   ${MatrixGameSimulation().round(simulation.firstPlayerRandom[index])}   ${xyPositions.rows[simulation.firstPlayerDecisionIndexes[index]]}")
-                print("   ${MatrixGameSimulation().round(simulation.secondaryPlayerRandom[index])}   ${xyPositions.cols[simulation.secondPlayerDecisionIndexes[index]]}")
-                print("   ${simulation.firstPlayerGain}   ${simulation.cumulativeGain}")
+                print("$index        ${MatrixGameSimulation().round(simulation.firstPlayerRandom[index])}        ${xyPositions.cols[simulation.firstPlayerDecisionIndexes[index]]}")
+                print("          ${MatrixGameSimulation().round(simulation.secondaryPlayerRandom[index])}        ${xyPositions.rows[simulation.secondPlayerDecisionIndexes[index]]}")
+                print(
+                    "        ${MatrixGameSimulation().round(simulation.firstPlayerGain[index])}      ${
+                        MatrixGameSimulation().round(
+                            simulation.cumulativeGain[index]
+                        )
+                    }"
+                )
+                println()
             }
         }
     }

@@ -4,6 +4,8 @@ import ArrayHelper.Companion.printArray
 import ArrayHelper.Companion.roundArray
 import com.example.matrix.main.games.MatrixGamesSolver.Companion.solveMatrixGame
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.XYPositions
+import com.example.matrix.main.games.MatrixGameSimulation.Companion.printSimulation
+import com.example.matrix.main.games.MatrixGameSimulation.Companion.simulateMatrixGame
 import org.junit.Assert
 import org.junit.Test
 import kotlin.math.roundToInt
@@ -232,6 +234,9 @@ class MatrixGamesSolverTests {
         println("Output")
         printArray(solution.outputMatrix)
         println()
+        println("Solution")
+        println(solution.strategyType.name)
+        println()
         println("First player solve")
         printArray(solution.firstPlayersSolution)
         println()
@@ -244,5 +249,102 @@ class MatrixGamesSolverTests {
 
         Assert.assertTrue(correctFirstPlayerSolution.contentDeepEquals(solution.firstPlayersSolution))
         Assert.assertTrue(correctSecondPlayerSolution.contentDeepEquals(solution.secondPlayersSolution))
+    }
+
+    @Test
+    fun matrixGameSolutionTest7() {
+        println()
+        println("matrixGameSolutionTest7 variant 1")
+
+        val inputMatrix = arrayOf(
+            arrayOf(3.0, 1.0, 1.0),
+            arrayOf(2.0, -2.0, 1.0),
+            arrayOf(-1.0, -3.0, -2.0)
+        )
+
+        val inputXYPositions = XYPositions(
+            cols = arrayOf("x1", "x2", "x3"),
+            rows = arrayOf("y1", "y2", "y3")
+        )
+
+        val correctFirstPlayerSolution = arrayOf(3.0, 1.0, 1.0)
+        val correctSecondPlayerSolution = arrayOf(1.0, -2.0, -3.0)
+
+        val solution = solveMatrixGame(matrix = inputMatrix, xyPositions = inputXYPositions)
+
+        roundArray(solution.firstPlayersSolution, 2)
+        roundArray(solution.secondPlayersSolution, 2)
+
+        println()
+        println("Output")
+        printArray(solution.outputMatrix)
+        println()
+        println("Solution")
+        println(solution.strategyType.name)
+        println()
+        println("First player solve")
+        printArray(solution.firstPlayersSolution)
+        println()
+        println("Second player solve")
+        printArray(solution.secondPlayersSolution)
+        println()
+        println("Game price")
+        println(solution.gamePrice.roundToInt())
+        println()
+
+        Assert.assertTrue(correctFirstPlayerSolution.contentDeepEquals(solution.firstPlayersSolution))
+        Assert.assertTrue(correctSecondPlayerSolution.contentDeepEquals(solution.secondPlayersSolution))
+
+        val simulationResult = simulateMatrixGame(
+            matrix = inputMatrix,
+            firstPlayersOdds = solution.firstPlayersSolution,
+            secondPlayersOdds = solution.secondPlayersSolution
+        )
+        printSimulation(simulation = simulationResult, xyPositions = inputXYPositions)
+    }
+
+    @Test
+    fun matrixGameSolutionTest8() {
+        println()
+        println("matrixGameSolutionTest8")
+
+        val inputMatrix = arrayOf(
+            arrayOf(10.0, 7.0),
+            arrayOf(8.0, 11.0),
+        )
+
+        val inputXYPositions = XYPositions(
+            cols = arrayOf("x1", "x2"),
+            rows = arrayOf("y1", "y2")
+        )
+
+        val solution = solveMatrixGame(matrix = inputMatrix, xyPositions = inputXYPositions)
+
+        roundArray(solution.firstPlayersSolution, 2)
+        roundArray(solution.secondPlayersSolution, 2)
+
+        println()
+        println("Output")
+        printArray(solution.outputMatrix)
+        println()
+        println("Solution")
+        println(solution.strategyType.name)
+        println()
+        println("First player solve")
+        printArray(solution.firstPlayersSolution)
+        println()
+        println("Second player solve")
+        printArray(solution.secondPlayersSolution)
+        println()
+        println("Game price")
+        println(solution.gamePrice.roundToInt())
+        println()
+
+        val simulationResult = simulateMatrixGame(
+            matrix = inputMatrix,
+            firstPlayersOdds = solution.firstPlayersSolution,
+            secondPlayersOdds = solution.secondPlayersSolution
+        )
+        printSimulation(simulation = simulationResult, xyPositions = inputXYPositions)
     }
 }
