@@ -5,6 +5,7 @@ import ArrayHelper.Companion.roundArray
 import com.example.matrix.main.games.MatrixGamesSolver.Companion.solveMatrixGame
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.XYPositions
 import com.example.matrix.main.games.MatrixGameSimulation.Companion.printSimulation
+import com.example.matrix.main.games.MatrixGameSimulation.Companion.printSimulationResult
 import com.example.matrix.main.games.MatrixGameSimulation.Companion.simulateMatrixGame
 import org.junit.Assert
 import org.junit.Test
@@ -346,5 +347,6 @@ class MatrixGamesSolverTests {
             secondPlayersOdds = solution.secondPlayersSolution
         )
         printSimulation(simulation = simulationResult, xyPositions = inputXYPositions)
+        printSimulationResult(simulation = simulationResult, xyPositions = inputXYPositions)
     }
 }

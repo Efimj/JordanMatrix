@@ -1,5 +1,6 @@
 package com.example.matrix.main.games
 
+import ArrayHelper.Companion.printArray
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.XYPositions
 import kotlin.random.Random
 
@@ -80,6 +81,33 @@ class MatrixGameSimulation {
                 )
                 println()
             }
+        }
+
+        fun printSimulationResult(simulation: SimulationResult, xyPositions: XYPositions) {
+            val firstPlayerDecisions = mutableListOf<Int>()
+            val secondPlayerDecisions = mutableListOf<Int>()
+
+            for ((index, value) in xyPositions.rows.withIndex()) {
+                firstPlayerDecisions.add(simulation.firstPlayerDecisionIndexes.count { it == index })
+            }
+            for ((index, value) in xyPositions.cols.withIndex()) {
+                secondPlayerDecisions.add(simulation.secondPlayerDecisionIndexes.count { it == index })
+            }
+
+            println()
+            println("First player")
+            printArray(firstPlayerDecisions.map { MatrixGameSimulation().round((it.toDouble() / simulation.firstPlayerDecisionIndexes.size.toDouble())) }
+                .toTypedArray())
+            println()
+
+            println("First player")
+            printArray(secondPlayerDecisions.map { MatrixGameSimulation().round((it.toDouble() / simulation.secondPlayerDecisionIndexes.size.toDouble())) }
+                .toTypedArray())
+            println()
+
+            println("Game price")
+            println(simulation.cumulativeGain.last())
+            println()
         }
     }
 
