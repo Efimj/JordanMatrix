@@ -56,11 +56,11 @@ class MatrixGamesSolver {
         val gamePrice = 1.0.div(lastCellValue) - abs(minimumValue)
 
         secondPlayersSolution.forEachIndexed { index, value ->
-            secondPlayersSolution[index] = value * 1.div(lastCellValue)
+            secondPlayersSolution[index] = value * 1.0.div(lastCellValue)
         }
 
         firstPlayersSolution.forEachIndexed { index, value ->
-            firstPlayersSolution[index] = value * 1.div(lastCellValue)
+            firstPlayersSolution[index] = value * 1.0.div(lastCellValue)
         }
 
         return MatrixGameSolution(

@@ -424,8 +424,8 @@ class MatrixGamesSolverTests {
         )
 
         val inputXYPositions = XYPositions(
-            cols = arrayOf("y1", "y2"),
-            rows = arrayOf("x1", "x2")
+            cols = arrayOf("x1", "x2"),
+            rows = arrayOf("y1", "y2"),
         )
 
         val solution = solveMatrixGame(matrix = inputMatrix, xyPositions = inputXYPositions)
@@ -447,7 +447,7 @@ class MatrixGamesSolverTests {
         printArray(solution.secondPlayersSolution)
         println()
         println("Game price")
-        println(solution.gamePrice.roundToInt())
+        println(solution.gamePrice)
         println()
 
         val simulationResult = simulateMatrixGame(
