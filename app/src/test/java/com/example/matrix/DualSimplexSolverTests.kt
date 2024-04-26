@@ -216,7 +216,7 @@ class DualSimplexSolverTests {
 
     @Test
     fun dualSimplexSolverTestVariant11() {
-        println("Test 3")
+        println("dualSimplexSolverTestVariant11")
 
         val inputMatrix = arrayOf(
             arrayOf(1.0, -1.0, 1.0, 1.0, 2.0),
