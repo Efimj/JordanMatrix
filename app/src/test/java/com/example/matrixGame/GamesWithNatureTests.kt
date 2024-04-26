@@ -28,7 +28,7 @@ class GamesWithNatureTests {
         printArray(inputMatrix)
         println()
         println("Strategy for solve")
-        println(result)
+        println(result + 1)
 
         val expected = 0
 
@@ -52,7 +52,7 @@ class GamesWithNatureTests {
         printArray(inputMatrix)
         println()
         println("Strategy for solve")
-        println(result)
+        println(result + 1)
 
         val expected = 0
 
@@ -76,7 +76,7 @@ class GamesWithNatureTests {
         printArray(inputMatrix)
         println()
         println("Strategy for solve")
-        println(result)
+        println(result + 1)
 
         val expected = 0
 
@@ -100,7 +100,7 @@ class GamesWithNatureTests {
         printArray(inputMatrix)
         println()
         println("Strategy for solve")
-        println(result)
+        println(result + 1)
 
         val expected = 0
 
@@ -124,7 +124,7 @@ class GamesWithNatureTests {
         printArray(inputMatrix)
         println()
         println("Strategy for solve")
-        println(result)
+        println(result + 1)
 
         val expected = 0
 
@@ -148,7 +148,7 @@ class GamesWithNatureTests {
         printArray(inputMatrix)
         println()
         println("Strategy for solve")
-        println(result)
+        println(result + 1)
 
         val expected = 0
 
@@ -172,7 +172,7 @@ class GamesWithNatureTests {
         printArray(inputMatrix)
         println()
         println("Strategy for solve")
-        println(result)
+        println(result + 1)
 
         val expected = 2
 
@@ -196,7 +196,7 @@ class GamesWithNatureTests {
         printArray(inputMatrix)
         println()
         println("Strategy for solve")
-        println(result)
+        println(result + 1)
 
         val expected = 0
 
@@ -220,7 +220,7 @@ class GamesWithNatureTests {
         printArray(inputMatrix)
         println()
         println("Strategy for solve")
-        println(result)
+        println(result + 1)
 
         val expected = 0
 
@@ -244,7 +244,7 @@ class GamesWithNatureTests {
         printArray(inputMatrix)
         println()
         println("Strategy for solve")
-        println(result)
+        println(result + 1)
 
         val expected = 0
 
@@ -268,7 +268,7 @@ class GamesWithNatureTests {
         printArray(inputMatrix)
         println()
         println("Strategy for solve")
-        println(result)
+        println(result + 1)
 
         val expected = 2
 
@@ -292,7 +292,7 @@ class GamesWithNatureTests {
         printArray(inputMatrix)
         println()
         println("Strategy for solve")
-        println(result)
+        println(result + 1)
 
         val expected = 0
 
