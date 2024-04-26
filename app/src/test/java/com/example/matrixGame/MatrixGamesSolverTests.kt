@@ -28,8 +28,8 @@ class MatrixGamesSolverTests {
             rows = arrayOf("y1", "y2", "y3")
         )
 
-        val correctFirstPlayerSolution = arrayOf(4.0, 3.0, 5.0, 6.0)
-        val correctSecondPlayerSolution = arrayOf(2.0, 1.0, 3.0)
+        val correctFirstPlayerSolution = arrayOf(0.0, 0.0, 1.0)
+        val correctSecondPlayerSolution = arrayOf(0.0, 1.0, 0.0, 0.0)
 
         val solution = solveMatrixGame(matrix = inputMatrix, xyPositions = inputXYPositions)
 
@@ -239,8 +239,8 @@ class MatrixGamesSolverTests {
             rows = arrayOf("y1", "y2", "y3")
         )
 
-        val correctFirstPlayerSolution = arrayOf(3.0, 1.0, 1.0)
-        val correctSecondPlayerSolution = arrayOf(1.0, -2.0, -3.0)
+        val correctFirstPlayerSolution = arrayOf(1.0, 0.0, 0.0)
+        val correctSecondPlayerSolution = arrayOf(0.0, 1.0, 0.0)
 
         val solution = solveMatrixGame(matrix = inputMatrix, xyPositions = inputXYPositions)
 
@@ -284,8 +284,8 @@ class MatrixGamesSolverTests {
             rows = arrayOf("y1", "y2", "y3")
         )
 
-        val correctFirstPlayerSolution = arrayOf(3.0, 1.0, 1.0)
-        val correctSecondPlayerSolution = arrayOf(1.0, -2.0, -3.0)
+        val correctFirstPlayerSolution = arrayOf(1.0, 0.0, 0.0)
+        val correctSecondPlayerSolution = arrayOf(0.0, 1.0, 0.0)
 
         val solution = solveMatrixGame(matrix = inputMatrix, xyPositions = inputXYPositions)
 
@@ -419,13 +419,13 @@ class MatrixGamesSolverTests {
         println("matrixGameSolutionTest10")
 
         val inputMatrix = arrayOf(
-            arrayOf( 2.0, 5.0),
-            arrayOf( 8.0, 1.0),
+            arrayOf(2.0, 5.0),
+            arrayOf(8.0, 1.0),
         )
 
         val inputXYPositions = XYPositions(
             cols = arrayOf("y1", "y2"),
-            rows = arrayOf("x1", "x2",)
+            rows = arrayOf("x1", "x2")
         )
 
         val solution = solveMatrixGame(matrix = inputMatrix, xyPositions = inputXYPositions)

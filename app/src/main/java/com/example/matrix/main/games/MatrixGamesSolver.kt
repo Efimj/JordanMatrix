@@ -113,16 +113,16 @@ class MatrixGamesSolver {
             )
         }
 
-        val firstPlayersSolution = matrix[minGamePriceIndex]
-        val secondPlayersSolution = mutableListOf<Double>()
+        val firstPlayersSolution = Array(matrix.size) { 0.0 }
+        firstPlayersSolution[minGamePriceIndex] = 1.0
 
-        for (row in matrix.indices) {
-            secondPlayersSolution.add(matrix[row][maxGamePriceIndex])
-        }
+        val secondPlayersSolution = Array(matrix.first().size) { 0.0 }
+        secondPlayersSolution[maxGamePriceIndex] = 1.0
+
 
         return MatrixGameSolution(
             firstPlayersSolution = firstPlayersSolution,
-            secondPlayersSolution = secondPlayersSolution.toTypedArray(),
+            secondPlayersSolution = secondPlayersSolution,
             outputMatrix = matrix,
             xyPositions = xyPositions,
             strategyType = StrategiesType.PureStrategies,
