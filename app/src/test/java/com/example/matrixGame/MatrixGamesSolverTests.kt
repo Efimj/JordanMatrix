@@ -412,4 +412,50 @@ class MatrixGamesSolverTests {
         printSimulation(simulation = simulationResult, xyPositions = inputXYPositions)
         printSimulationResult(simulation = simulationResult, xyPositions = inputXYPositions)
     }
+
+    @Test
+    fun matrixGameSolutionTest10() {
+        println()
+        println("matrixGameSolutionTest10")
+
+        val inputMatrix = arrayOf(
+            arrayOf( 2.0, 5.0),
+            arrayOf( 8.0, 1.0),
+        )
+
+        val inputXYPositions = XYPositions(
+            cols = arrayOf("y1", "y2"),
+            rows = arrayOf("x1", "x2",)
+        )
+
+        val solution = solveMatrixGame(matrix = inputMatrix, xyPositions = inputXYPositions)
+
+        roundArray(solution.firstPlayersSolution, 2)
+        roundArray(solution.secondPlayersSolution, 2)
+
+        println()
+        println("Output")
+        printArray(solution.outputMatrix)
+        println()
+        println("Solution")
+        println(solution.strategyType.name)
+        println()
+        println("First player solve")
+        printArray(solution.firstPlayersSolution)
+        println()
+        println("Second player solve")
+        printArray(solution.secondPlayersSolution)
+        println()
+        println("Game price")
+        println(solution.gamePrice.roundToInt())
+        println()
+
+        val simulationResult = simulateMatrixGame(
+            matrix = inputMatrix,
+            firstPlayersOdds = solution.firstPlayersSolution,
+            secondPlayersOdds = solution.secondPlayersSolution
+        )
+        printSimulation(simulation = simulationResult, xyPositions = inputXYPositions)
+        printSimulationResult(simulation = simulationResult, xyPositions = inputXYPositions)
+    }
 }

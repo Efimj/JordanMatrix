@@ -158,9 +158,9 @@ class DualSimplexSolverTests {
         println("minimum: -${correctOptimalSolve.last().last()}")
         println()
 
-//        printArray(optimalSolveResult.xyPos.rows)
-//        println()
-//        printArray(optimalSolveResult.xyPos.cols)
+        printArray(optimalSolveResult.xyPos.rows)
+        println()
+        printArray(optimalSolveResult.xyPos.cols)
 
         Assert.assertTrue(correctOptimalSolve.contentDeepEquals(optimalSolveResult.matrix))
         Assert.assertTrue(correctOptimalU.contentDeepEquals(optimalSolveResultU))
@@ -186,6 +186,54 @@ class DualSimplexSolverTests {
         val referenceSolve = ModifiedMatrixHandler.searchReferenceSolution(
             matrix = resultAfterRemovedNullLines.matrix!!,
             xy = resultAfterRemovedNullLines.xyPos
+        )
+
+        val optimalSolveResult =
+            ModifiedMatrixHandler.searchOptimalSolveMaximum(matrix = referenceSolve.matrix!!, xy = referenceSolve.xyPos)
+        println("Output")
+        println(optimalSolveResult.result)
+        optimalSolveResult.matrix.let {
+            if (it == null) return
+            printArray(it)
+        }
+        val optimalSolveResultX = findResultsFor(optimalSolveResult)
+        val optimalSolveResultU = findDualResultsFor(name = "y", output = optimalSolveResult)
+
+        println()
+        println("X results")
+        printArray(optimalSolveResultX)
+        println()
+        println("U results")
+        printArray(optimalSolveResultU)
+        println()
+
+        println()
+        println("maximum: ${optimalSolveResult.matrix!!.last().last()}")
+        println()
+        println("minimum: -${optimalSolveResult.matrix!!.last().last()}")
+        println()
+    }
+
+    @Test
+    fun dualSimplexSolverTestVariant11() {
+        println("Test 3")
+
+        val inputMatrix = arrayOf(
+            arrayOf(1.0, -1.0, 1.0, 1.0, 2.0),
+            arrayOf(1.0, -1.0, 1.0, -1.0, 2.0),
+            arrayOf(-1.0, -1.0, 1.0, 1.0, -2.0),
+            arrayOf(1.0, -1.0, -1.0, 1.0, 2.0),
+            arrayOf(-1.0, 8.0, -1.0, -4.0, 0.0)
+        )
+
+        val xy = ModifiedMatrixHandler.Companion.XYPositions(
+            cols = arrayOf("x1", "x2", "x3", "x4", "x5"),
+            rows = arrayOf("y1", "y2", "y3", "y4", "y5")
+        )
+
+        val referenceSolve = ModifiedMatrixHandler.searchReferenceSolution(
+            matrix = inputMatrix,
+            xy = xy
         )
 
         val optimalSolveResult =

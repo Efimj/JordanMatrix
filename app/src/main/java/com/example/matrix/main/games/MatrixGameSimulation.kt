@@ -33,7 +33,7 @@ class MatrixGameSimulation {
             val firstPlayerRandom = mutableListOf<Double>()
             val secondaryPlayerRandom = mutableListOf<Double>()
 
-            for (number in 0..numberOfGames) {
+            for (number in 1..numberOfGames) {
                 val randomFirstPlayer = Random.nextDouble()
                 val firstPlayerDecision = MatrixGameSimulation().findSegmentIndex(
                     randomNumber = randomFirstPlayer,
@@ -70,7 +70,7 @@ class MatrixGameSimulation {
         fun printSimulation(simulation: SimulationResult, xyPositions: XYPositions) {
             println("№     | rand A    | name A   |   rand B   | name B   | gain   | cumulative")
             for ((index, value) in simulation.firstPlayerDecisionIndexes.withIndex()) {
-                print("$index        ${MatrixGameSimulation().round(simulation.firstPlayerRandom[index])}        ${xyPositions.cols[simulation.firstPlayerDecisionIndexes[index]]}")
+                print("${index+1}        ${MatrixGameSimulation().round(simulation.firstPlayerRandom[index])}        ${xyPositions.cols[simulation.firstPlayerDecisionIndexes[index]]}")
                 print("          ${MatrixGameSimulation().round(simulation.secondaryPlayerRandom[index])}        ${xyPositions.rows[simulation.secondPlayerDecisionIndexes[index]]}")
                 print(
                     "        ${MatrixGameSimulation().round(simulation.firstPlayerGain[index])}      ${

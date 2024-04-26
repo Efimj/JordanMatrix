@@ -1,6 +1,7 @@
 package com.example.matrix.main.games
 
 import ArrayHelper.Companion.cloneArray
+import ArrayHelper.Companion.printArray
 import com.example.matrix.main.DualSimplexSolver
 import com.example.matrix.main.ModifiedMatrixHandler
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.XYPositions
