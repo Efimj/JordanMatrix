@@ -12,7 +12,8 @@ class MatrixGameSimulation {
             val secondPlayerDecisionIndexes: Array<Int>,
             val secondaryPlayerRandom: Array<Double>,
             val firstPlayerGain: Array<Double>,
-            val cumulativeGain: Array<Double>
+            val firstPlayerCumulative: Array<Double>,
+            val firstPlayerAverage: Array<Double>
         )
 
         fun simulateMatrixGame(
@@ -29,6 +30,7 @@ class MatrixGameSimulation {
 
             val firstPlayerGain = mutableListOf<Double>()
             val firstPlayerCumulativeGain = mutableListOf<Double>()
+            val firstPlayerAverageGain = mutableListOf<Double>()
 
             val firstPlayerRandom = mutableListOf<Double>()
             val secondaryPlayerRandom = mutableListOf<Double>()
@@ -51,10 +53,11 @@ class MatrixGameSimulation {
                 firstPlayerRandom.add(randomFirstPlayer)
                 secondaryPlayerRandom.add(randomSecondaryPlayer)
 
-                firstPlayerGain.add(
-                    (firstPlayerGain.lastOrNull() ?: 0.0) + matrix[firstPlayerDecision][secondPlayerDecision]
+                firstPlayerGain.add(matrix[firstPlayerDecision][secondPlayerDecision])
+                firstPlayerCumulativeGain.add(
+                    (firstPlayerCumulativeGain.lastOrNull() ?: 0.0) + matrix[firstPlayerDecision][secondPlayerDecision]
                 )
-                firstPlayerCumulativeGain.add(firstPlayerGain.last() / number)
+                firstPlayerAverageGain.add(firstPlayerCumulativeGain.last() / number)
             }
 
             return SimulationResult(
@@ -63,19 +66,23 @@ class MatrixGameSimulation {
                 secondaryPlayerRandom = secondaryPlayerRandom.toTypedArray(),
                 secondPlayerDecisionIndexes = secondPlayerDecisionIndexes.toTypedArray(),
                 firstPlayerGain = firstPlayerGain.toTypedArray(),
-                cumulativeGain = firstPlayerCumulativeGain.toTypedArray(),
+                firstPlayerCumulative = firstPlayerCumulativeGain.toTypedArray(),
+                firstPlayerAverage = firstPlayerAverageGain.toTypedArray(),
             )
         }
 
         fun printSimulation(simulation: SimulationResult, xyPositions: XYPositions) {
-            println("№     | rand A    | name A   |   rand B   | name B   | gain   | cumulative")
+            println("№     | rand A    | name A   |   rand B   | name B   | gain   |  cumulative  |  average")
             for ((index, value) in simulation.firstPlayerDecisionIndexes.withIndex()) {
-                print("${index+1}        ${MatrixGameSimulation().round(simulation.firstPlayerRandom[index])}        ${xyPositions.cols[simulation.firstPlayerDecisionIndexes[index]]}")
+                print("${index + 1}        ${MatrixGameSimulation().round(simulation.firstPlayerRandom[index])}        ${xyPositions.cols[simulation.firstPlayerDecisionIndexes[index]]}")
                 print("          ${MatrixGameSimulation().round(simulation.secondaryPlayerRandom[index])}        ${xyPositions.rows[simulation.secondPlayerDecisionIndexes[index]]}")
                 print(
-                    "        ${MatrixGameSimulation().round(simulation.firstPlayerGain[index])}      ${
+                    "         ${simulation.firstPlayerGain[index]}"
+                )
+                print(
+                    "        ${MatrixGameSimulation().round(simulation.firstPlayerCumulative[index])}            ${
                         MatrixGameSimulation().round(
-                            simulation.cumulativeGain[index]
+                            simulation.firstPlayerAverage[index]
                         )
                     }"
                 )
@@ -106,7 +113,7 @@ class MatrixGameSimulation {
             println()
 
             println("Game price")
-            println(simulation.cumulativeGain.last())
+            println(simulation.firstPlayerAverage.last())
             println()
         }
     }
