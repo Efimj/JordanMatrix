@@ -119,6 +119,14 @@ class ArrayHelper {
             return newArray
         }
 
+        fun cloneArray(array: Array<Double>): Array<Double> {
+            val newArray = Array(array.size) { 0.0 }
+            for (i in array.indices) {
+                newArray[i] = array[i]
+            }
+            return newArray
+        }
+
         fun cloneArray(array: Array<String>): Array<String> {
             val newArray = Array(array.size) { "" }
             for (i in array.indices) {
@@ -219,6 +227,24 @@ class ArrayHelper {
             }
 
             return resultArray
+        }
+
+        fun addRow(matrix: Array<Array<Double>>, newRowPlaceholder: Double): Array<Array<Double>> {
+            val result = Array(matrix.size + 1) { Array(matrix[0].size) { newRowPlaceholder } }
+            for (i in matrix.indices) {
+                result[i] = matrix[i]
+            }
+            return result
+        }
+
+        fun addColumn(matrix: Array<Array<Double>>, newColumnPlaceholder: Double): Array<Array<Double>> {
+            val result = Array(matrix.size) { Array(matrix[0].size + 1) { newColumnPlaceholder } }
+            for (i in matrix.indices) {
+                for (j in matrix[i].indices) {
+                    result[i][j] = matrix[i][j]
+                }
+            }
+            return result
         }
     }
 }

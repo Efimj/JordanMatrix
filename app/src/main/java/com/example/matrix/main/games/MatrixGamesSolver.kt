@@ -4,6 +4,8 @@ import com.example.matrix.main.other.ArrayHelper.Companion.cloneArray
 import com.example.matrix.main.DualSimplexSolver
 import com.example.matrix.main.ModifiedMatrixHandler
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.XYPositions
+import com.example.matrix.main.other.ArrayHelper.Companion.addColumn
+import com.example.matrix.main.other.ArrayHelper.Companion.addRow
 import kotlin.math.abs
 
 class MatrixGamesSolver {
@@ -188,23 +190,5 @@ class MatrixGamesSolver {
         newMatrix[newMatrix.size - 1][newMatrix[newMatrix.size - 1].size - 1] = 0.0
 
         return newMatrix
-    }
-
-    private fun addRow(matrix: Array<Array<Double>>, newRowPlaceholder: Double): Array<Array<Double>> {
-        val result = Array(matrix.size + 1) { Array(matrix[0].size) { newRowPlaceholder } }
-        for (i in matrix.indices) {
-            result[i] = matrix[i]
-        }
-        return result
-    }
-
-    private fun addColumn(matrix: Array<Array<Double>>, newColumnPlaceholder: Double): Array<Array<Double>> {
-        val result = Array(matrix.size) { Array(matrix[0].size + 1) { newColumnPlaceholder } }
-        for (i in matrix.indices) {
-            for (j in matrix[i].indices) {
-                result[i][j] = matrix[i][j]
-            }
-        }
-        return result
     }
 }
