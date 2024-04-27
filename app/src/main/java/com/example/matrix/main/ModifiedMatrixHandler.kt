@@ -1,10 +1,10 @@
 package com.example.matrix.main
 
-import ArrayHelper.Companion.cloneArray
-import ArrayHelper.Companion.printArray
-import ArrayHelper.Companion.removeColumn
-import ArrayHelper.Companion.removeRow
-import ArrayHelper.Companion.roundArray
+import com.example.matrix.main.other.ArrayHelper.Companion.cloneArray
+import com.example.matrix.main.other.ArrayHelper.Companion.printArray
+import com.example.matrix.main.other.ArrayHelper.Companion.removeColumn
+import com.example.matrix.main.other.ArrayHelper.Companion.removeRow
+import com.example.matrix.main.other.ArrayHelper.Companion.roundArray
 
 class ModifiedMatrixHandler {
     companion object {

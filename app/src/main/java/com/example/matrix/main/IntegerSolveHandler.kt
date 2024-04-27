@@ -1,10 +1,10 @@
 package com.example.matrix.main
 
-import ArrayHelper.Companion.addRow
-import ArrayHelper.Companion.addValueAtPosition
-import ArrayHelper.Companion.cloneArray
-import ArrayHelper.Companion.printArray
-import ArrayHelper.Companion.roundArray
+import com.example.matrix.main.other.ArrayHelper.Companion.addRow
+import com.example.matrix.main.other.ArrayHelper.Companion.addValueAtPosition
+import com.example.matrix.main.other.ArrayHelper.Companion.cloneArray
+import com.example.matrix.main.other.ArrayHelper.Companion.printArray
+import com.example.matrix.main.other.ArrayHelper.Companion.roundArray
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.Solve
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.Result
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.findXresults

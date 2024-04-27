@@ -1,7 +1,7 @@
 package com.example.matrix
 
-import ArrayHelper.Companion.printArray
-import ArrayHelper.Companion.roundArray
+import com.example.matrix.main.other.ArrayHelper.Companion.printArray
+import com.example.matrix.main.other.ArrayHelper.Companion.roundArray
 import com.example.matrix.main.MatrixHandler.Companion.getMatrixRank
 import com.example.matrix.main.MatrixHandler.Companion.inverseMatrix
 import com.example.matrix.main.MatrixHandler.Companion.solveLinearSystem

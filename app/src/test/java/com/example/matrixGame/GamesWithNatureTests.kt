@@ -1,6 +1,6 @@
 package com.example.matrixGame
 
-import ArrayHelper.Companion.printArray
+import com.example.matrix.main.other.ArrayHelper.Companion.printArray
 import com.example.matrix.main.games.GamesWithNature.Companion.solveByAbrahamWald
 import com.example.matrix.main.games.GamesWithNature.Companion.solveByAbrahamWaldMaxMax
 import com.example.matrix.main.games.GamesWithNature.Companion.solveByAdolfHurwitz

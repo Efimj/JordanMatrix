@@ -1,6 +1,6 @@
 package com.example.matrix.main.games
 
-import ArrayHelper.Companion.printArray
+import com.example.matrix.main.other.ArrayHelper.Companion.printArray
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.XYPositions
 import kotlin.random.Random
 

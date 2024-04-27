@@ -1,8 +1,5 @@
 package com.example.matrix.main.games
 
-import ArrayHelper.Companion.printArray
-import kotlin.math.sign
-
 class GamesWithNature {
     companion object {
         fun solveByAbrahamWald(matrix: Array<Array<Double>>): Int {

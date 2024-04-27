@@ -1,4 +1,5 @@
-import kotlin.math.round
+package com.example.matrix.main.other
+
 import kotlin.random.Random
 
 class ArrayHelper {

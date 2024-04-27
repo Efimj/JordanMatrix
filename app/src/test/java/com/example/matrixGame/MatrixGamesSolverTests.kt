@@ -1,7 +1,7 @@
 package com.example.matrixGame
 
-import ArrayHelper.Companion.printArray
-import ArrayHelper.Companion.roundArray
+import com.example.matrix.main.other.ArrayHelper.Companion.printArray
+import com.example.matrix.main.other.ArrayHelper.Companion.roundArray
 import com.example.matrix.main.games.MatrixGamesSolver.Companion.solveMatrixGame
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.XYPositions
 import com.example.matrix.main.games.MatrixGameSimulation.Companion.printSimulation

@@ -1,6 +1,6 @@
 package com.example.matrix
 
-import ArrayHelper.Companion.printArray
+import com.example.matrix.main.other.ArrayHelper.Companion.printArray
 import com.example.matrix.main.ModifiedMatrixHandler
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.findXresults
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.searchOptimalSolveMaximum

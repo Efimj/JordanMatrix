@@ -1,9 +1,9 @@
 package com.example.matrix.viewModel
 
-import ArrayHelper.Companion.arrayToString
-import ArrayHelper.Companion.fillTwoDimArrayRandomly
-import ArrayHelper.Companion.generateTwoDimArray
-import ArrayHelper.Companion.roundArray
+import com.example.matrix.main.other.ArrayHelper.Companion.arrayToString
+import com.example.matrix.main.other.ArrayHelper.Companion.fillTwoDimArrayRandomly
+import com.example.matrix.main.other.ArrayHelper.Companion.generateTwoDimArray
+import com.example.matrix.main.other.ArrayHelper.Companion.roundArray
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel

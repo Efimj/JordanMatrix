@@ -1,8 +1,7 @@
 package com.example.matrix.main
 
-import ArrayHelper.Companion.arrayToString
-import ArrayHelper.Companion.cloneArray
-import ArrayHelper.Companion.roundArray
+import com.example.matrix.main.other.ArrayHelper.Companion.arrayToString
+import com.example.matrix.main.other.ArrayHelper.Companion.cloneArray
 
 class MatrixHandler {
     companion object {

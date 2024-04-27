@@ -1,6 +1,6 @@
 package com.example.matrix
 
-import ArrayHelper.Companion.printArray
+import com.example.matrix.main.other.ArrayHelper.Companion.printArray
 import com.example.matrix.main.DualSimplexSolver.Companion.findDualResultsFor
 import com.example.matrix.main.DualSimplexSolver.Companion.findResultsFor
 import com.example.matrix.main.ModifiedMatrixHandler
