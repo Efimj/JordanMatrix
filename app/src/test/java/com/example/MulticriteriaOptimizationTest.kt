@@ -1,6 +1,6 @@
 package com.example
 
-import com.example.matrix.main.MulticriteriaOptimization.Companion.findCompromiseSolution
+import com.example.matrix.main.MO.Companion.findCompromiseSolution
 import org.junit.Test
 
 class MulticriteriaOptimizationTest() {
