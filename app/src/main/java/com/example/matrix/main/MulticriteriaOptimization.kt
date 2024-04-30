@@ -8,6 +8,7 @@ import com.example.matrix.main.ModifiedMatrixHandler.Companion.XYPositions
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.Result.NoSolve
 import com.example.matrix.main.ModifiedMatrixHandler.Companion.findXresults
 import com.example.matrix.main.other.ArrayHelper.Companion.printArray
+import kotlin.math.abs
 
 
 class MulticriteriaOptimization() {
@@ -34,30 +35,53 @@ class MulticriteriaOptimization() {
             cMatrix: Array<Array<Double>>,
             xMatrix: Array<Array<Double>>
         ) {
-            for (row in coefficients.indices) {
-                for (col in coefficients.first().indices) {
-                    var cx1 = 0.0
-                    for (index in cMatrix.indices) {
-                        cx1 += cMatrix[col][index] * xMatrix[row][index]
-                    }
+            println()
+            printArray(cMatrix)
+            println()
 
-                    var cx2 = 0.0
-                    for (index in cMatrix.indices) {
-                        cx2 += cMatrix[col][index] * xMatrix[col][index]
-                    }
+            for (j in coefficients.indices) {
+                val cjxj = MulticriteriaOptimization().sumCX(
+                    cMatrix = cMatrix,
+                    xMatrix = xMatrix,
+                    indexX = j,
+                    indexC = j
+                )
+                for (i in coefficients.first().indices) {
+                    val ixj = MulticriteriaOptimization().sumCX(
+                        cMatrix = cMatrix,
+                        xMatrix = xMatrix,
+                        indexX = i,
+                        indexC = j
+                    )
 
-                    val coefficient = (cx1 - cx2) / cx2
-
-                    coefficients[row][col] = coefficient
+                    coefficients[i][j] = abs(ixj / cjxj - 1.0)
                 }
             }
         }
+    }
+
+    private fun sumCX(
+        cMatrix: Array<Array<Double>>,
+        xMatrix: Array<Array<Double>>,
+        indexX: Int,
+        indexC: Int
+    ): Double {
+        var coefficient = 0.0
+
+        for (index in cMatrix.first().indices) {
+            coefficient += cMatrix[indexC][index] * xMatrix[indexX][index]
+        }
+
+        return coefficient
     }
 
     private fun findAllOptimalSolves(
         matrices: Array<Array<Array<Double>>>,
         optimalSolves: Array<Solve>
     ) {
+        println()
+        println("x results")
+
         for ((index, matrix) in matrices.withIndex()) {
             val input = XYPositions(
                 cols = Array(matrix.first().size - 1) { "x${it + 1}" },
@@ -79,5 +103,6 @@ class MulticriteriaOptimization() {
 
             optimalSolves[index] = optimalSolveResult
         }
+        println()
     }
 }
