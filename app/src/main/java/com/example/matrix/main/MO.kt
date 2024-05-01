@@ -42,8 +42,8 @@ class MO() {
 
     private fun findWeightingCoefficients(coefficients: Array<Array<Double>>): Array<Double> {
         val input = XYPositions(
-            cols = Array(coefficients.first().size ) { "x${it + 1}" },
-            rows = Array(coefficients.size ) { "y${it + 1}" }
+            cols = Array(coefficients.first().size) { "x${it + 1}" },
+            rows = Array(coefficients.size) { "y${it + 1}" }
         )
         val solution = solveMatrixGame(matrix = coefficients, xyPositions = input)
 
@@ -153,16 +153,21 @@ class MO() {
                 xy = referenceSolve.xyPos
             )
 
-            println("___________________")
+            println("_______________________________")
+            println("#${index + 1} simplex")
+            println("# rows")
             printArray(optimalSolveResult.xyPos.rows)
             println()
+            println("# cols")
             printArray(optimalSolveResult.xyPos.cols)
             println()
+            println("# end matrix")
             printArray(optimalSolveResult.matrix!!)
-            println("___________________")
-
             println()
+            println("# solve")
             printArray(findResultsFor(optimalSolveResult))
+            println()
+            println("_______________________________")
             println()
 
             optimalSolves[index] = optimalSolveResult
