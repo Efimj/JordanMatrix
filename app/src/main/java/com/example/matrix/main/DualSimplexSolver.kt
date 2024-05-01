@@ -32,8 +32,9 @@ class DualSimplexSolver {
                 if (output.xyPos.rows[index].startsWith("x")) {
                     val digitAfterX = output.xyPos.rows[index].substringAfter("x")
                     try {
-                        val result = digitAfterX.toInt()
-                        res[result - 1] = output.matrix?.get(index)?.last()!!
+                        val elementIndex = digitAfterX.toInt()
+                        if(elementIndex <= res.size)
+                            res[elementIndex - 1] = output.matrix?.get(index)?.last()!!
                     } catch (e: NumberFormatException) {
                         println("NumberFormatException")
                     }

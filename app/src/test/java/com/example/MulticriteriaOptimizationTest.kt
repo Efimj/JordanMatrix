@@ -2,6 +2,7 @@ package com.example
 
 import com.example.matrix.main.MO.Companion.findCompromiseSolution
 import com.example.matrix.main.other.ArrayHelper.Companion.printArray
+import com.example.matrix.main.other.ArrayHelper.Companion.roundArray
 import org.junit.Assert
 import org.junit.Test
 
@@ -113,11 +114,13 @@ class MulticriteriaOptimizationTest() {
             zRows = arrayOf(t1z, t2z, t3z)
         )
 
+        roundArray(array = compromiseVector, decimalPlaces = 2)
+
         println("COMPROMISE VECTOR")
         printArray(compromiseVector)
         println()
 
-        val expected = arrayOf(1.45, 0.0, 0.0, 0.55)
+        val expected = arrayOf(0.0, 3.15, 2.64, 1.3)
 
         Assert.assertTrue(expected.contentDeepEquals(compromiseVector))
     }
