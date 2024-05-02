@@ -79,7 +79,7 @@ class DualSimplexSolverTests {
         println("U results")
         printArray(optimalSolveResultU)
         println()
-        println("minimum: -${correctOptimalSolve.last().last()}")
+        println("minimum: ${correctOptimalSolve.last().last()}")
         println()
 
         Assert.assertTrue(correctOptimalSolve.contentDeepEquals(optimalSolveResult.matrix))
