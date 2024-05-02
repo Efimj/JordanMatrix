@@ -165,7 +165,7 @@ class MO() {
             printArray(optimalSolveResult.matrix!!)
             println()
             println("# solve")
-            printArray(findResultsFor(optimalSolveResult))
+            printArray(findXresults(optimalSolveResult))
             println()
             println("_______________________________")
             println()

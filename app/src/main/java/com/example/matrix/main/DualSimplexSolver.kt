@@ -24,6 +24,7 @@ class DualSimplexSolver {
             return res
         }
 
+        @Deprecated(message = "not found all x")
         fun findResultsFor(
             output: ModifiedMatrixHandler.Companion.Solve,
         ): Array<Double> {
