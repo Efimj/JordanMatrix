@@ -4,6 +4,7 @@ import com.example.matrix.main.other.ArrayHelper.Companion.addColumn
 import com.example.matrix.main.other.ArrayHelper.Companion.addRow
 import com.example.matrix.main.other.ArrayHelper.Companion.cloneArray
 import com.example.matrix.main.other.ArrayHelper.Companion.printArray
+import kotlin.math.abs
 
 class TransportProblemSolver {
     companion object {
@@ -120,6 +121,9 @@ class TransportProblemSolver {
 //                return
 //            }
 
+            println("Cell to optimization = [${cellToOptimization.row}; ${cellToOptimization.col}]")
+            println()
+
             val path = findConnectedPath(baseArray, cellToOptimization)
 
             var minimum = baseArray[path[1].first][path[1].second]
@@ -165,23 +169,42 @@ class TransportProblemSolver {
                 intArrayOf(0, 1)   // right
             )
 
-            for (dir in directions) {
-                val newRow = row + dir[0]
-                val newCol = col + dir[1]
 
-                if (newRow < 0 || newRow >= numRows || newCol < 0 || newCol >= numCols || visited[newRow][newCol]) {
-                    continue
-                }
+            for (r in 0..numRows) {
+                for (c in 0..numCols) {
+                    for (dir in directions) {
+                        if (r == c) {
+                            continue
+                        }
 
-                if (matrix[newRow][newCol] > 0) {
-                    dfs(matrix, visited, newRow, newCol, path)
-                    return
+                        val newRow = row + dir[0] + r
+                        val newCol = col + dir[1] + c
+
+                        // eliminate diagonal transitions
+                        if (newRow != row && newCol != col) {
+                            continue
+                        }
+
+                        // so as not to go back along the way
+                        if (path.size > 1 && path[path.size - 2].first == newRow && path[path.size - 2].second == newCol) {
+                            continue
+                        }
+
+                        if (newRow < 0 || newRow >= numRows || newCol < 0 || newCol >= numCols || visited[newRow][newCol]) {
+                            continue
+                        }
+
+                        if (matrix[newRow][newCol] > 0) {
+                            dfs(matrix, visited, newRow, newCol, path)
+                            return
+                        }
+                    }
                 }
             }
         }
 
         fun findClosedPath(matrix: Array<Array<Double>>, startRow: Int, startCol: Int): List<Pair<Int, Int>> {
-            val visited = Array(matrix.size) { BooleanArray(matrix[0].size) }
+            val visited = Array(matrix.size) { BooleanArray(matrix.first().size) }
             val path = mutableListOf<Pair<Int, Int>>()
 
             dfs(matrix, visited, startRow, startCol, path)
@@ -189,14 +212,90 @@ class TransportProblemSolver {
             return path
         }
 
+        //        fun dfs(
+//            matrix: Array<Array<Double>>,
+//            visited: Array<Array<MutableList<Pair<Int, Int>>?>>,
+//            row: Int,
+//            col: Int,
+//            path: MutableList<Pair<Int, Int>>
+//        ) {
+//            val numRows = matrix.size
+//            val numCols = matrix[0].size
+//
+//            val directions = arrayOf(
+//                intArrayOf(-1, 0), // up
+//                intArrayOf(1, 0),  // down
+//                intArrayOf(0, -1), // left
+//                intArrayOf(0, 1)   // right
+//            )
+//
+//            for (r in 0..numRows) {
+//                for (c in 0..numCols) {
+//                    for (dir in directions) {
+//                        if (r == c) {
+//                            continue
+//                        }
+//
+//                        val newRow = row + dir[0] + r
+//                        val newCol = col + dir[1] + c
+//
+//                        // eliminate diagonal transitions
+//                        if (newRow != row && newCol != col) {
+//                            continue
+//                        }
+//
+//                        // so as not to go back along the way
+//                        if (path.size > 1 && path[path.size - 2].first == newRow && path[path.size - 2].second == newCol) {
+//                            continue
+//                        }
+//
+//                        if (newRow < 0 || newRow >= numRows || newCol < 0 || newCol >= numCols) {
+//                            continue
+//                        }
+//
+//                        val vs = visited[newRow][newCol]?.size
+//                        if (vs != null && vs > 3) {
+//                            return
+//                        }
+//
+//                        val isVisited = visited[newRow][newCol]?.any { it.first == dir[0] && it.second == dir[1] }
+//                        if (isVisited != null && isVisited) {
+//                            continue
+//                        }
+//
+//                        if (matrix[newRow][newCol] > 0) {
+//                            if (visited[row][col] == null) {
+//                                visited[row][col] = mutableListOf(Pair(dir[0], dir[1]))
+//                            } else {
+//                                visited[row][col]?.add(Pair(dir[0], dir[1]))
+//                            }
+//                            path.add(row to col)
+//
+//                            dfs(matrix, visited, newRow, newCol, path)
+//                            return
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        fun findClosedPath(matrix: Array<Array<Double>>, startRow: Int, startCol: Int): List<Pair<Int, Int>> {
+//            val visited = Array(matrix.size) { Array<MutableList<Pair<Int, Int>>?>(matrix[0].size) { null } }
+//            val path = mutableListOf<Pair<Int, Int>>()
+//
+//            dfs(matrix, visited, startRow, startCol, path)
+//
+//            return path
+//        }
+
         val res = findClosedPath(matrix, start.row, start.col)
         val resCut = removeIntermediatePathValues(res)
 
         println("Vertices")
-        println(resCut)
+        println(res)
         println()
 
-        return resCut
+        return res
     }
 
     private fun removeIntermediatePathValues(res: List<Pair<Int, Int>>): MutableList<Pair<Int, Int>> {
