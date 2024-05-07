@@ -45,6 +45,9 @@ class TransportProblemSolver {
 
 
             TransportProblemSolver().potentialStep(problem = problem, baseArray = referenceSolve)
+
+            val cost = TransportProblemSolver().findCost(problem = problem, solve = referenceSolve)
+            println("New cost = $cost")
         }
     }
 
@@ -52,6 +55,20 @@ class TransportProblemSolver {
         while (true) {
             val rowsPotential = Array(problem.rowsPossibility.size) { if (it == 0) 0.0 else Double.NaN }
             val colsPotential = Array(problem.colsNeed.size) { Double.NaN }
+
+            var countReferences = 0
+            for (row in baseArray.indices) {
+                for (col in baseArray.first().indices) {
+                    if (baseArray[row][col] > 0.0) {
+                        countReferences++
+                    }
+                }
+            }
+
+            if (rowsPotential.size + colsPotential.size - 1 != countReferences) {
+                println("Need to add reference point!")
+                return
+            }
 
             while (rowsPotential.any { it.isNaN() } || colsPotential.any { it.isNaN() }) {
                 for (row in baseArray.indices) {
@@ -66,6 +83,15 @@ class TransportProblemSolver {
                         }
                     }
                 }
+                println("baseArray")
+                printArray(baseArray)
+                println()
+                println("rowsPotential")
+                printArray(rowsPotential)
+                println()
+                println("colsPotential")
+                printArray(colsPotential)
+                println()
             }
 
             println()
@@ -145,6 +171,8 @@ class TransportProblemSolver {
             println("New base array")
             printArray(baseArray)
             println()
+            val cost = findCost(problem = problem, solve = baseArray)
+            println("New cost = $cost")
         }
     }
 
@@ -159,44 +187,67 @@ class TransportProblemSolver {
             val numRows = matrix.size
             val numCols = matrix[0].size
 
-            visited[row][col] = true
+            var needExit = false
+            var isColumn = false
+
             path.add(row to col)
 
-            val directions = arrayOf(
-                intArrayOf(-1, 0), // up
-                intArrayOf(1, 0),  // down
-                intArrayOf(0, -1), // left
-                intArrayOf(0, 1)   // right
-            )
+            while (needExit.not()) {
+                needExit = true
 
+                val currentRow = path.last().first
+                val currentCol = path.last().second
 
-            for (r in 0..numRows) {
-                for (c in 0..numCols) {
-                    for (dir in directions) {
-                        if (r == c) {
-                            continue
+                if (isColumn.not()) {
+                    if (visited[row][currentCol].not() && matrix[row][currentCol] > 0.0) {
+                        visited[row][currentCol] = true
+                        path.add(row to currentCol)
+                        break
+                    } else {
+                        for (r in 0 until numRows) {
+                            if (visited[r][currentCol]) continue
+                            if (matrix[r][currentCol] > 0.0) {
+                                var exec = false
+                                for (c in 0 until numCols) {
+                                    if (c == currentCol) continue
+                                    if (matrix[r][c] > 0.0) {
+                                        exec = true
+                                    }
+                                }
+                                if (exec) {
+                                    visited[r][currentCol] = true
+                                    path.add(r to currentCol)
+                                    isColumn = true
+                                    needExit = false
+                                    break
+                                }
+                            }
                         }
-
-                        val newRow = row + dir[0] + r
-                        val newCol = col + dir[1] + c
-
-                        // eliminate diagonal transitions
-                        if (newRow != row && newCol != col) {
-                            continue
-                        }
-
-                        // so as not to go back along the way
-                        if (path.size > 1 && path[path.size - 2].first == newRow && path[path.size - 2].second == newCol) {
-                            continue
-                        }
-
-                        if (newRow < 0 || newRow >= numRows || newCol < 0 || newCol >= numCols || visited[newRow][newCol]) {
-                            continue
-                        }
-
-                        if (matrix[newRow][newCol] > 0) {
-                            dfs(matrix, visited, newRow, newCol, path)
-                            return
+                    }
+                } else {
+                    if (visited[currentRow][col].not() && matrix[currentRow][col] > 0.0) {
+                        visited[currentRow][col] = true
+                        path.add(currentRow to col)
+                        break
+                    } else {
+                        for (c in 0 until numCols) {
+                            if (visited[currentRow][c]) continue
+                            if (matrix[currentRow][c] > 0.0) {
+                                var exec = false
+                                for (r in 0 until numRows) {
+                                    if (r == currentRow) continue
+                                    if (matrix[r][c] > 0.0) {
+                                        exec = true
+                                    }
+                                }
+                                if (exec) {
+                                    visited[currentRow][c] = true
+                                    path.add(currentRow to c)
+                                    isColumn = false
+                                    needExit = false
+                                    break
+                                }
+                            }
                         }
                     }
                 }
@@ -212,84 +263,7 @@ class TransportProblemSolver {
             return path
         }
 
-        //        fun dfs(
-//            matrix: Array<Array<Double>>,
-//            visited: Array<Array<MutableList<Pair<Int, Int>>?>>,
-//            row: Int,
-//            col: Int,
-//            path: MutableList<Pair<Int, Int>>
-//        ) {
-//            val numRows = matrix.size
-//            val numCols = matrix[0].size
-//
-//            val directions = arrayOf(
-//                intArrayOf(-1, 0), // up
-//                intArrayOf(1, 0),  // down
-//                intArrayOf(0, -1), // left
-//                intArrayOf(0, 1)   // right
-//            )
-//
-//            for (r in 0..numRows) {
-//                for (c in 0..numCols) {
-//                    for (dir in directions) {
-//                        if (r == c) {
-//                            continue
-//                        }
-//
-//                        val newRow = row + dir[0] + r
-//                        val newCol = col + dir[1] + c
-//
-//                        // eliminate diagonal transitions
-//                        if (newRow != row && newCol != col) {
-//                            continue
-//                        }
-//
-//                        // so as not to go back along the way
-//                        if (path.size > 1 && path[path.size - 2].first == newRow && path[path.size - 2].second == newCol) {
-//                            continue
-//                        }
-//
-//                        if (newRow < 0 || newRow >= numRows || newCol < 0 || newCol >= numCols) {
-//                            continue
-//                        }
-//
-//                        val vs = visited[newRow][newCol]?.size
-//                        if (vs != null && vs > 3) {
-//                            return
-//                        }
-//
-//                        val isVisited = visited[newRow][newCol]?.any { it.first == dir[0] && it.second == dir[1] }
-//                        if (isVisited != null && isVisited) {
-//                            continue
-//                        }
-//
-//                        if (matrix[newRow][newCol] > 0) {
-//                            if (visited[row][col] == null) {
-//                                visited[row][col] = mutableListOf(Pair(dir[0], dir[1]))
-//                            } else {
-//                                visited[row][col]?.add(Pair(dir[0], dir[1]))
-//                            }
-//                            path.add(row to col)
-//
-//                            dfs(matrix, visited, newRow, newCol, path)
-//                            return
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//
-//        fun findClosedPath(matrix: Array<Array<Double>>, startRow: Int, startCol: Int): List<Pair<Int, Int>> {
-//            val visited = Array(matrix.size) { Array<MutableList<Pair<Int, Int>>?>(matrix[0].size) { null } }
-//            val path = mutableListOf<Pair<Int, Int>>()
-//
-//            dfs(matrix, visited, startRow, startCol, path)
-//
-//            return path
-//        }
-
         val res = findClosedPath(matrix, start.row, start.col)
-        val resCut = removeIntermediatePathValues(res)
 
         println("Vertices")
         println(res)
