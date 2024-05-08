@@ -19,16 +19,21 @@ class TransportProblemSolver {
             val matrix: Array<Array<Double>>
         )
 
-        fun solveTransportProblem(input: TransportProblem) {
+        data class TransportSolve(
+            val solve: Array<Array<Double>>,
+            val price: Double
+        )
+
+        fun solveTransportProblem(input: TransportProblem): TransportSolve {
             var problem = TransportProblemSolver().cloneInput(input)
             if (TransportProblemSolver().checkIsClosedProblem(input).not()) {
                 val quantitativePossibilitySum = input.rowsPossibility.sum()
                 val quantitativeNeed = input.colsNeed.sum()
                 val difference = quantitativePossibilitySum - quantitativeNeed
-                if (difference > 0) {
-                    problem = TransportProblemSolver().makeNewNeed(matrix = problem, difference = difference)
+                problem = if (difference > 0) {
+                    TransportProblemSolver().makeNewNeed(matrix = problem, difference = difference)
                 } else {
-                    problem = TransportProblemSolver().makeNewPossibility(matrix = problem, difference = difference)
+                    TransportProblemSolver().makeNewPossibility(matrix = problem, difference = difference)
                 }
             }
 
@@ -40,14 +45,22 @@ class TransportProblemSolver {
             )
             if (check1.not()) {
                 println("Count base cells error")
-                return
+                return TransportSolve(
+                    price = 0.0,
+                    solve = referenceSolve
+                )
             }
-
 
             TransportProblemSolver().potentialStep(problem = problem, baseArray = referenceSolve)
 
             val cost = TransportProblemSolver().findCost(problem = problem, solve = referenceSolve)
+
             println("New cost = $cost")
+
+            return TransportSolve(
+                price = cost,
+                solve = referenceSolve
+            )
         }
     }
 
@@ -190,6 +203,7 @@ class TransportProblemSolver {
             var needExit = false
             var isColumn = false
 
+            // Add start point
             path.add(row to col)
 
             while (needExit.not()) {
@@ -198,19 +212,28 @@ class TransportProblemSolver {
                 val currentRow = path.last().first
                 val currentCol = path.last().second
 
+                // If we're moving by rows
                 if (isColumn.not()) {
+
+                    // if we reach the right row
                     if (visited[row][currentCol].not() && matrix[row][currentCol] > 0.0) {
                         visited[row][currentCol] = true
                         path.add(row to currentCol)
                         break
                     } else {
+
+                        // Moving by rows
                         for (r in 0 until numRows) {
+                            // Skip visited
                             if (visited[r][currentCol]) continue
                             if (matrix[r][currentCol] > 0.0) {
                                 var exec = false
+                                // Moving by cols
                                 for (c in 0 until numCols) {
+                                    // Skip current
                                     if (c == currentCol) continue
                                     if (matrix[r][c] > 0.0) {
+                                        // Need add to path
                                         exec = true
                                     }
                                 }
@@ -225,15 +248,21 @@ class TransportProblemSolver {
                         }
                     }
                 } else {
+
+                    // if we reach the right column
                     if (visited[currentRow][col].not() && matrix[currentRow][col] > 0.0) {
                         visited[currentRow][col] = true
                         path.add(currentRow to col)
                         break
                     } else {
+
+                        // Moving by columns
                         for (c in 0 until numCols) {
+                            // Skip visited
                             if (visited[currentRow][c]) continue
                             if (matrix[currentRow][c] > 0.0) {
                                 var exec = false
+                                // Moving by rows
                                 for (r in 0 until numRows) {
                                     if (r == currentRow) continue
                                     if (matrix[r][c] > 0.0) {

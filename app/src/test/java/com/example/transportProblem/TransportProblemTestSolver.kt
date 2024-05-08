@@ -3,11 +3,15 @@ package com.example.transportProblem
 import com.example.matrix.main.TransportProblemSolver.Companion.TransportProblem
 import com.example.matrix.main.TransportProblemSolver.Companion.solveTransportProblem
 import com.example.matrix.main.other.ArrayHelper.Companion.printArray
+import org.junit.Assert
 import org.junit.Test
 
 class TransportProblemTestSolver {
     @Test
     fun transportProblemTestSolverTest1() {
+        println()
+        println("________ Test 1 _________")
+
         val input = TransportProblem(
             rowsPossibility = arrayOf(30.0, 20.0, 50.0),
             colsNeed = arrayOf(10.0, 65.0, 25.0),
@@ -18,18 +22,31 @@ class TransportProblemTestSolver {
             ),
         )
 
-        solveTransportProblem(input)
+        val result = solveTransportProblem(input)
 
+        println("Result plan")
+        printArray(result.solve)
+        println()
+        println("Cost by plan")
+        println(result.price)
 
-//        ArrayHelper.printArray(solve)
-//        println()
-//        ArrayHelper.printArray(problem.rowsPossibility)
-//        println()
-//        ArrayHelper.printArray(problem.colsNeed)
+        val expectedResult = arrayOf(
+            arrayOf(0.0, 30.0, 0.0),
+            arrayOf(0.0, 20.0, 0.0),
+            arrayOf(10.0, 15.0, 25.0)
+        )
+
+        val expectedCost = 225.0
+
+        Assert.assertTrue(expectedResult.contentDeepEquals(result.solve))
+        Assert.assertTrue(expectedCost == result.price)
     }
 
     @Test
     fun transportProblemTestSolverTest2() {
+        println()
+        println("________ Test 2 _________")
+
         val input = TransportProblem(
             rowsPossibility = arrayOf(120.0, 100.0, 80.0),
             colsNeed = arrayOf(90.0, 90.0, 120.0),
@@ -40,18 +57,28 @@ class TransportProblemTestSolver {
             ),
         )
 
-        solveTransportProblem(input)
+        val result = solveTransportProblem(input)
 
+        println("Result plan")
+        printArray(result.solve)
+        println()
+        println("Cost by plan")
+        println(result.price)
 
-//        ArrayHelper.printArray(solve)
-//        println()
-//        ArrayHelper.printArray(problem.rowsPossibility)
-//        println()
-//        ArrayHelper.printArray(problem.colsNeed)
+        val expectedResult = arrayOf(
+            arrayOf(0.0, 10.0, 110.0),
+            arrayOf(90.0, 0.0, 10.0),
+            arrayOf(0.0, 80.0, 0.0)
+        )
+
+        val expectedCost = 1060.0
+
+        Assert.assertTrue(expectedResult.contentDeepEquals(result.solve))
+        Assert.assertTrue(expectedCost == result.price)
     }
 
     @Test
-    fun transportProblemTestSolverTest3() {
+    fun transportProblemTestSolverTestVariant() {
         val input = TransportProblem(
             rowsPossibility = arrayOf(105.0, 135.0, 125.0),
             colsNeed = arrayOf(85.0, 125.0, 105.0, 50.0),
@@ -63,12 +90,5 @@ class TransportProblemTestSolver {
         )
 
         solveTransportProblem(input)
-
-
-//        ArrayHelper.printArray(solve)
-//        println()
-//        ArrayHelper.printArray(problem.rowsPossibility)
-//        println()
-//        ArrayHelper.printArray(problem.colsNeed)
     }
 }
