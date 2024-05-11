@@ -206,12 +206,29 @@ class TransportProblemSolver {
             // Add start point
             path.add(row to col)
 
+            // Easy square path
+            for (r in matrix.indices) {
+                if (r != row && matrix[r][col] > 0.0) {
+                    for (c in matrix.first().indices) {
+                        if (c != col && matrix[row][c] > 0.0) {
+                            if (matrix[r][c] > 0.0) {
+                                path.add(r to col)
+                                path.add(r to c)
+                                path.add(row to c)
+                                return
+                            }
+                        }
+                    }
+                }
+            }
+
             while (needExit.not()) {
                 needExit = true
 
                 val currentRow = path.last().first
                 val currentCol = path.last().second
 
+                // Golden hammer
                 // If we're moving by rows
                 if (isColumn.not()) {
 
