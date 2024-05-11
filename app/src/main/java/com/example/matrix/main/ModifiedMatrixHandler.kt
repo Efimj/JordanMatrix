@@ -223,6 +223,14 @@ class ModifiedMatrixHandler {
 
                 val minimalPositiveRow = minimalPositiveRow(newMatrix, elementColumn)!!
 
+                if (elementColumn >= newMatrix.first().size - 1) {
+                    return Solve(
+                        matrix = newMatrix,
+                        result = Result.Solved,
+                        xyPos = xyPos
+                    )
+                }
+
                 val result = modifiedJordanEliminationStep(
                     matrix = newMatrix,
                     row = minimalPositiveRow,
@@ -233,7 +241,6 @@ class ModifiedMatrixHandler {
                         result = Result.NoSolve,
                         xyPos = xyPos
                     )
-
 
                 switchXAfterwordElimination(xyPos, minimalPositiveRow, elementColumn)
 
@@ -344,7 +351,6 @@ class ModifiedMatrixHandler {
                 println()
 
                 if (currentIndependentIndex == -1) {
-                    println("wss")
                     return SolveWithIndependentVariables(
                         solve = Solve(
                             matrix = newMatrix,
@@ -389,8 +395,8 @@ class ModifiedMatrixHandler {
                     resultString += value
                 }
 
-                val singleValue = (newMatrix[row][newMatrix[row].size-1])
-                resultString += if(singleValue>0) "+${singleValue}" else singleValue.toString()
+                val singleValue = (newMatrix[row][newMatrix[row].size - 1])
+                resultString += if (singleValue > 0) "+${singleValue}" else singleValue.toString()
 
                 arrayToHandleX = arrayToHandleX.plus(resultString)
 
