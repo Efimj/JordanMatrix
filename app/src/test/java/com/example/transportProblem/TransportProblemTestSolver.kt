@@ -205,7 +205,7 @@ class TransportProblemTestSolver {
             arrayOf(0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 135.0),
             arrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 125.0),
             arrayOf(-1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -85.0),
-            arrayOf(0.0, -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, -120.0),
+            arrayOf(0.0, -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, -125.0),
             arrayOf(0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, -105.0),
             arrayOf(0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0, -50.0),
             arrayOf(9.0, 4.0, 6.0, 9.0, 7.0, 5.0, 7.0, 9.0, 5.0, 6.0, 4.0, 8.0, 0.0)
@@ -240,7 +240,7 @@ class TransportProblemTestSolver {
         printArray(resultAfterOptimal.matrix!!)
         println()
 
-        val expectedCost = 1920.0
+        val expectedCost = 1945.0
 
         Assert.assertTrue(expectedCost == abs(resultAfterOptimal.matrix!!.last().last()))
     }
