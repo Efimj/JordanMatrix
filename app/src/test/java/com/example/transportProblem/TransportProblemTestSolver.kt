@@ -242,6 +242,9 @@ class TransportProblemTestSolver {
 
         val expectedCost = 1945.0
 
+        println("Plan cost")
+        println(abs(resultAfterOptimal.matrix!!.last().last()))
+
         Assert.assertTrue(expectedCost == abs(resultAfterOptimal.matrix!!.last().last()))
     }
 }
