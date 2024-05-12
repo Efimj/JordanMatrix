@@ -111,6 +111,16 @@ class ArrayHelper {
             return newArray
         }
 
+        fun cloneArray(array: Array<Array<Int>>): Array<Array<Int>> {
+            val newArray = generateTwoDimArray(rows = array.size, cols = array[array.size - 1].size, 0)
+            for (i in array.indices) {
+                for (j in array[i].indices) {
+                    newArray[i][j] = array[i][j]
+                }
+            }
+            return newArray
+        }
+
         fun cloneArray(array: Array<Int>): Array<Int> {
             val newArray = Array(array.size) { 0 }
             for (i in array.indices) {
