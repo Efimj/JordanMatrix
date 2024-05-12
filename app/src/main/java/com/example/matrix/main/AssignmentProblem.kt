@@ -1,7 +1,6 @@
 package com.example.matrix.main
 
 import com.example.matrix.main.other.ArrayHelper.Companion.cloneArray
-import com.example.matrix.main.other.ArrayHelper.Companion.printArray
 
 class AssignmentProblem {
     companion object {
