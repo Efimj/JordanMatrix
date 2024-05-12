@@ -32,4 +32,29 @@ class AssignmentProblemTest {
 
         Assert.assertTrue(expectedCost == result.cost)
     }
+
+    @Test
+    fun assignmentProblemTest2() {
+        println()
+        println("________ Test 2 _________")
+
+        val input = arrayOf(
+            arrayOf(2, 10, 9, 7),
+            arrayOf(15, 4, 14, 8),
+            arrayOf(13, 14, 16, 11),
+            arrayOf(4, 15, 13, 19),
+        )
+
+        val result = AssignmentProblem.solveAssignmentProblem(input)
+
+        println("Assignments matrix")
+        ArrayHelper.printArray(result.assignments)
+        println()
+        println("Cost by matrix")
+        println(result.cost)
+
+        val expectedCost = 28
+
+        Assert.assertTrue(expectedCost == result.cost)
+    }
 }

@@ -1,6 +1,7 @@
 package com.example.matrix.main
 
 import com.example.matrix.main.other.ArrayHelper.Companion.cloneArray
+import com.example.matrix.main.other.ArrayHelper.Companion.printArray
 
 class AssignmentProblem {
     companion object {
@@ -17,7 +18,6 @@ class AssignmentProblem {
             AssignmentProblem().handleRemoveZeroCells(matrix)
             val assignmentMatrix = AssignmentProblem().findAssignments(matrix)
             val cost = findAssignmentCost(assignmentMatrix = assignmentMatrix, inputMatrix = inputMatrix)
-
             return AssignmentProblemSolve(
                 assignments = assignmentMatrix,
                 cost = cost
@@ -46,14 +46,28 @@ class AssignmentProblem {
         val assignmentMatrix = Array(matrix.size) { Array(matrix.size) { 0 } }
 
         while (assignments.size < matrix.size) {
+            var rowWithOneZero: Int? = null
+            var colWithOneZero: Int? = null
+
             for (r in matrix.indices) {
+                var countZeros = 0
                 for (c in matrix.indices) {
                     if (assignments.any { it.first == r || it.second == c }) continue
                     if (matrix[r][c] == 0) {
-                        assignments.add(Pair(r, c))
+                        colWithOneZero = c
+                        countZeros++
                     }
                 }
+                if (countZeros == 1) {
+                    rowWithOneZero = r
+                    break
+                }
             }
+
+            if (rowWithOneZero != null && colWithOneZero != null) {
+                assignments.add(Pair(rowWithOneZero, colWithOneZero))
+            }
+
         }
 
         assignments.forEach {
@@ -67,7 +81,8 @@ class AssignmentProblem {
         var removedRowIndices = mutableListOf<Int>()
         var removedColIndices = mutableListOf<Int>()
 
-        while (removedRowIndices.size + removedColIndices.size != matrix.size) {
+        while (removedRowIndices.size + removedColIndices.size < matrix.size) {
+
             removedRowIndices = mutableListOf()
             removedColIndices = mutableListOf()
 
@@ -90,7 +105,7 @@ class AssignmentProblem {
             }
 
             if (minElement == null) {
-                println("ERROR: minElement == ZERO")
+                println("Do not have minimum element")
                 return
             }
 
@@ -130,7 +145,15 @@ class AssignmentProblem {
                 // if row removed
                 if (r in removedRowIndices) continue
 
-                val countZeros = matrix[r].count { it == 0 }
+                var countZeros = 0
+
+                for (c in matrix.indices) {
+                    // if column removed
+                    if (c in removedColIndices) continue
+
+                    if (matrix[r][c] != 0) continue
+                    countZeros++
+                }
                 if (countZeros > countRowZeros) {
                     rowIndexWithMaxZeros = r
                     countRowZeros = countZeros
@@ -143,6 +166,9 @@ class AssignmentProblem {
 
                 var countZeros = 0
                 for (r in matrix.indices) {
+                    // if row removed
+                    if (r in removedRowIndices) continue
+
                     if (matrix[r][c] == 0) {
                         countZeros++
                     }
