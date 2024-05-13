@@ -195,7 +195,7 @@ class ModifiedMatrixHandler {
                     }
                 }
 
-                if (negativeSingleElementRow < 0) {
+                if (negativeSingleElementRow < 0 || negativeSingleElementRow == newMatrix.size - 1) {
                     roundArray(newMatrix, 2)
                     return Solve(
                         matrix = newMatrix,

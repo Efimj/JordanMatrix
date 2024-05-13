@@ -126,6 +126,10 @@ class AssignmentProblemTest {
 
         val resultAfterReference = ModifiedMatrixHandler.searchReferenceSolution(input, xy)
 
+        println("___ reference ___")
+        ArrayHelper.printArray(resultAfterReference.matrix!!)
+        println()
+
         val resultAfterOptimal =
             ModifiedMatrixHandler.searchOptimalSolveMaximum(resultAfterReference.matrix!!, resultAfterReference.xyPos)
 
