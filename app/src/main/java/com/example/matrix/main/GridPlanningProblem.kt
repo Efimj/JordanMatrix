@@ -11,7 +11,7 @@ class GridPlanningProblem {
             /**
              * Tasks that need to be completed before.
              */
-            val previousTasks: List<Int>,
+            val previousTasks: List<Int> = emptyList(),
 
             /**
              * Duration of task.
@@ -27,13 +27,13 @@ class GridPlanningProblem {
              * This is the date from which a given task can begin as soon as possible,
              * taking into account all connections with previous tasks and their duration.
              */
-            val earlyStart: Int,
+            val earlyStart: Int = 0,
 
             /**
              * It is the latest date that the task can be completed
              * without affecting the entire duration of the project.
              */
-            val lateFinish: Int,
+            val lateFinish: Int = 0,
         ) {
             /**
              * Early finish = Early start + duration.
@@ -55,16 +55,45 @@ class GridPlanningProblem {
         }
 
         fun findOptimalSolution(tasksList: List<Task>) {
-            val tasks = GridPlanningProblem().deepCopyTasks(tasksList)
+            val tasks = GridPlanningProblem().makeStartTasksList(tasksList)
 
 
         }
     }
 
-    private fun deepCopyTasks(tasksList: List<Task>): List<Task> {
+    private fun makeStartTasksList(tasksList: List<Task>): List<Task> {
+        val startTask = Task(
+            taskId = findUniqueInt(tasksList),
+            previousTasks = emptyList(),
+            duration = 0,
+            resources = 0,
+        )
+
+        val tasks = deepCopyTasks(tasksList).map { task ->
+            if (task.previousTasks.isEmpty()) {
+                task.copy(previousTasks = listOf(startTask.taskId))
+            } else {
+                task
+            }
+        }
+
+        return listOf(startTask) + tasks
+    }
+
+    private fun findUniqueInt(tasks: List<Task>): Int {
+        var id = -1
+        while (true) {
+            if (tasks.any { it.taskId == id }.not()) {
+                return id
+            }
+            id++
+        }
+    }
+
+    private fun deepCopyTasks(tasks: List<Task>): List<Task> {
         val copiedTasks = mutableListOf<Task>()
 
-        for (task in tasksList) {
+        for (task in tasks) {
             val taskCopy = Task(
                 taskId = task.taskId,
                 previousTasks = task.previousTasks.toList(),
