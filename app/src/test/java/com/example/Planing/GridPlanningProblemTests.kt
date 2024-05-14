@@ -7,6 +7,7 @@ import com.example.matrix.main.planing.GridPlanningProblem.Companion.findOptimal
 import com.example.matrix.main.planing.Task
 import org.junit.Assert
 import org.junit.Test
+import kotlin.math.abs
 
 class GridPlanningProblemTests {
     @Test
@@ -24,7 +25,18 @@ class GridPlanningProblemTests {
             Task(taskId = 7, previous = listOf(4, 5, 6), duration = 4, resources = 2),
         )
 
-        findOptimalSolution(input)
+        val resultTasks = findOptimalSolution(input)
+
+        GridPlanningProblem().printTaskList(resultTasks)
+
+        val expectedChain = listOf(1, 2, 5, 7)
+        val expectedProjectDuration = 24
+
+        val outputCriticalChain = GridPlanningProblem().getCriticalTaskChain(resultTasks).map { it.taskId }
+        val projectDuration = GridPlanningProblem().findProjectDuration(resultTasks)
+
+        Assert.assertTrue(expectedChain == outputCriticalChain)
+        Assert.assertTrue(expectedProjectDuration == projectDuration)
     }
 
     @Test
@@ -41,10 +53,19 @@ class GridPlanningProblemTests {
             Task(taskId = 6, previous = listOf(3), duration = 2, resources = 3),
             Task(taskId = 7, previous = listOf(4, 5), duration = 4, resources = 2),
             Task(taskId = 8, previous = listOf(6, 7), duration = 3, resources = 2),
-            )
+        )
 
         val resultTasks = findOptimalSolution(input)
 
         GridPlanningProblem().printTaskList(resultTasks)
+
+        val expectedChain = listOf(1, 2, 4, 7, 8)
+        val expectedProjectDuration = 19
+
+        val outputCriticalChain = GridPlanningProblem().getCriticalTaskChain(resultTasks).map { it.taskId }
+        val projectDuration = GridPlanningProblem().findProjectDuration(resultTasks)
+
+        Assert.assertTrue(expectedChain == outputCriticalChain)
+        Assert.assertTrue(expectedProjectDuration == projectDuration)
     }
 }

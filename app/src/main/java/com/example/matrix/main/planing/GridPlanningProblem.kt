@@ -27,7 +27,7 @@ class GridPlanningProblem {
             println()
         }
 
-        val criticalTasks = getTaskChain(tasksList.filter { it.reserveTime == 0 })
+        val criticalTasks = getCriticalTaskChain(tasksList)
 
         var criticalTasksPath = ""
         criticalTasks.forEach {
@@ -40,7 +40,11 @@ class GridPlanningProblem {
         println(criticalTasks.maxOfOrNull { it.earlyFinish })
     }
 
-    private fun getTaskChain(tasks: List<Task>): List<Task> {
+    fun getCriticalTaskChain(tasks: List<Task>): List<Task> {
+        return sortTaskChain(tasks.filter { it.reserveTime == 0 })
+    }
+
+    fun sortTaskChain(tasks: List<Task>): List<Task> {
         val visitedTasks = mutableListOf<Task>()
         while (visitedTasks.size != tasks.size) {
             for (i in tasks.indices) {
@@ -56,6 +60,10 @@ class GridPlanningProblem {
         }
 
         return visitedTasks.reversed()
+    }
+
+    fun findProjectDuration(tasks: List<Task>): Int {
+        return tasks.maxOfOrNull { it.earlyFinish } ?: 0
     }
 
     private fun calculateLateFinishes(tasks: MutableList<Task>) {
