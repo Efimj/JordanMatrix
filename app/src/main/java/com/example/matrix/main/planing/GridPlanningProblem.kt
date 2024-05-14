@@ -27,7 +27,7 @@ class GridPlanningProblem {
             println()
         }
 
-        val criticalTasks = reverseTaskChain(tasksList.filter { it.reserveTime == 0 }).reversed()
+        val criticalTasks = getTaskChain(tasksList.filter { it.reserveTime == 0 })
 
         var criticalTasksPath = ""
         criticalTasks.forEach {
@@ -40,7 +40,7 @@ class GridPlanningProblem {
         println(criticalTasks.maxOfOrNull { it.earlyFinish })
     }
 
-    private fun reverseTaskChain(tasks: List<Task>): List<Task> {
+    private fun getTaskChain(tasks: List<Task>): List<Task> {
         val visitedTasks = mutableListOf<Task>()
         while (visitedTasks.size != tasks.size) {
             for (i in tasks.indices) {
@@ -55,7 +55,7 @@ class GridPlanningProblem {
             }
         }
 
-        return visitedTasks
+        return visitedTasks.reversed()
     }
 
     private fun calculateLateFinishes(tasks: MutableList<Task>) {
