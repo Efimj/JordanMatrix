@@ -26,24 +26,31 @@ class MatrixGamesSolver {
         )
 
         fun solveMatrixGame(matrix: Array<Array<Double>>, xyPositions: XYPositions): MatrixGameSolution {
-            val minGamePrice = MatrixGamesSolver().findMinGamePrice(matrix = matrix)
-            val maxGamePrice = MatrixGamesSolver().findMaxGamePrice(matrix = matrix)
+            val handledMatrix = cloneArray(matrix)
+            val minimumValue = MatrixGamesSolver().removeNegativeValues(matrix = handledMatrix)
+
+            val minGamePrice = MatrixGamesSolver().findMinGamePrice(matrix = handledMatrix)
+            val maxGamePrice = MatrixGamesSolver().findMaxGamePrice(matrix = handledMatrix)
 
             // If saddle point founded.
             if (minGamePrice == maxGamePrice) {
-                return MatrixGamesSolver().findSolveInPureStrategies(matrix = matrix, xyPositions = xyPositions)
+                return MatrixGamesSolver().findSolveInPureStrategies(matrix = handledMatrix, xyPositions = xyPositions)
             }
 
-            return MatrixGamesSolver().findSolveInMixedStrategies(matrix = matrix, xyPositions = xyPositions)
+            return MatrixGamesSolver().findSolveInMixedStrategies(
+                matrix = handledMatrix,
+                minimumValue = minimumValue,
+                xyPositions = xyPositions
+            )
         }
     }
 
     private fun findSolveInMixedStrategies(
         matrix: Array<Array<Double>>,
+        minimumValue: Double,
         xyPositions: XYPositions
     ): MatrixGameSolution {
         var handledMatrix = cloneArray(matrix)
-        val minimumValue = removeNegativeValues(matrix = handledMatrix)
         handledMatrix = MatrixGamesSolver().generateSimplexMatrix(handledMatrix)
 
         val referenceSolve = ModifiedMatrixHandler.searchReferenceSolution(matrix = handledMatrix, xy = xyPositions)

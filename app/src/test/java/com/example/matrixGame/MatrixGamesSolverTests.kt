@@ -498,7 +498,7 @@ class MatrixGamesSolverTests {
         println()
 
         val simulationResult = simulateMatrixGame(
-            matrix = inputMatrix,
+            matrix = solution.outputMatrix,
             firstPlayersOdds = solution.firstPlayersSolution,
             secondPlayersOdds = solution.secondPlayersSolution
         )
