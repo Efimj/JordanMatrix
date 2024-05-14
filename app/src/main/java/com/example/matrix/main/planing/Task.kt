@@ -32,6 +32,11 @@ data class Task(
      * without affecting the entire duration of the project.
      */
     val lateFinish: Int = 0,
+
+    /**
+     * Needed to build a graph but not displayed.
+     */
+    val isVirtual:Boolean = false
 ) {
     /**
      * Early finish = Early start + duration.

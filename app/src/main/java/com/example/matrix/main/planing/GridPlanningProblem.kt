@@ -8,7 +8,6 @@ class GridPlanningProblem {
             GridPlanningProblem().calculateEarlyStarts(tasks)
             GridPlanningProblem().calculateLateFinishes(tasks)
 
-
             tasks.sortBy { it.taskId }
             tasks.forEach { task ->
                 println("TASK ${task.taskId}")
@@ -26,31 +25,34 @@ class GridPlanningProblem {
     private fun calculateLateFinishes(tasks: MutableList<Task>) {
         val visitedTasksId = mutableListOf<Int>()
         while (visitedTasksId.size != tasks.size) {
-            val task = tasks.find { task -> task.taskId !in visitedTasksId } ?: break
-            val nextTasks = tasks.filter { task.taskId in it.previous }
+            for (i in tasks.indices) {
+                val task = tasks[i]
+                if (task.taskId in visitedTasksId) break
 
-            // if the next ones have not yet been solved.
-            if (visitedTasksId.containsAll(nextTasks.map { it.taskId }).not()) continue
-            val taskIndex = tasks.indexOfFirst { it.taskId == task.taskId }
-            visitedTasksId.add(task.taskId)
+                val nextTasks = tasks.filter { it.previous.contains(task.taskId) }
 
-            // if no tasks after
-            if (nextTasks.isEmpty()) {
-                tasks[taskIndex] = task.copy(lateFinish = task.earlyFinish)
-                continue
+                // if the next ones have not yet been solved.
+                if (visitedTasksId.containsAll(nextTasks.map { it.taskId }).not()) continue
+                visitedTasksId.add(task.taskId)
+
+                // if no tasks after
+                if (nextTasks.isEmpty()) {
+                    tasks[i] = task.copy(lateFinish = task.earlyFinish)
+                    continue
+                }
+
+                // for handle tasks after
+                val lateFinish = nextTasks.minOfOrNull { it.lateStart } ?: 0
+
+//                println("Task ${task.taskId}")
+//                println("Next")
+//                println(nextTasks.filter { t -> task.previous.contains(t.taskId) })
+//                println("Late finish")
+//                println(lateFinish)
+//                println()
+
+                tasks[i] = task.copy(lateFinish = lateFinish)
             }
-
-            // for handle tasks after
-            val lateFinish = nextTasks.minOfOrNull { it.earlyFinish } ?: 0
-
-            println("Task ${task.taskId}")
-            println("Next")
-            println(nextTasks.filter { t -> task.previous.contains(t.taskId) })
-            println("Late finish")
-            println(lateFinish)
-            println()
-
-            tasks[taskIndex] = task.copy(lateFinish = lateFinish)
         }
     }
 
@@ -102,6 +104,7 @@ class GridPlanningProblem {
                 previous = emptyList(),
                 duration = 0,
                 resources = 0,
+                isVirtual = true
             )
 
             tasks.forEachIndexed { index, task ->
@@ -128,6 +131,7 @@ class GridPlanningProblem {
                 previous = endTasks,
                 duration = 0,
                 resources = 0,
+                isVirtual = true
             )
 
             tasks = (tasks + listOf(endTask)).toMutableList()
