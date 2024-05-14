@@ -36,8 +36,16 @@ class GridPlanningProblem {
             }
 
             // for handle tasks before
-            val earlyStart = tasks.filter { t -> task.previous.contains(t.taskId) }.map { it.lateStart }.max()
-            tasks[taskIndex] = task.copy(earlyStart = earlyStart, )
+            val earlyStart = tasks.filter { t -> task.previous.contains(t.taskId) }.maxOfOrNull { it.earlyFinish } ?: 0
+
+//            println("Task ${task.taskId}")
+//            println("Previous")
+//            println(tasks.filter { t -> task.previous.contains(t.taskId) })
+//            println("Early start")
+//            println(earlyStart)
+//            println()
+
+            tasks[taskIndex] = task.copy(earlyStart = earlyStart)
         }
     }
 

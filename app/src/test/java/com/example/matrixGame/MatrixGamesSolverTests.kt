@@ -497,6 +497,14 @@ class MatrixGamesSolverTests {
         println(solution.gamePrice)
         println()
 
+        val simulationResult = simulateMatrixGame(
+            matrix = inputMatrix,
+            firstPlayersOdds = solution.firstPlayersSolution,
+            secondPlayersOdds = solution.secondPlayersSolution
+        )
+        printSimulation(simulation = simulationResult, xyPositions = inputXYPositions)
+        printSimulationResult(simulation = simulationResult, xyPositions = inputXYPositions)
+
         Assert.assertTrue(correctFirstPlayerSolution.contentDeepEquals(solution.firstPlayersSolution))
         Assert.assertTrue(correctSecondPlayerSolution.contentDeepEquals(solution.secondPlayersSolution))
     }
