@@ -2,6 +2,7 @@ package com.example.Planing
 
 import com.example.matrix.main.AssignmentProblem
 import com.example.matrix.main.other.ArrayHelper
+import com.example.matrix.main.planing.GridPlanningProblem
 import com.example.matrix.main.planing.GridPlanningProblem.Companion.findOptimalSolution
 import com.example.matrix.main.planing.Task
 import org.junit.Assert
@@ -42,6 +43,8 @@ class GridPlanningProblemTests {
             Task(taskId = 8, previous = listOf(6, 7), duration = 3, resources = 2),
             )
 
-        findOptimalSolution(input)
+        val resultTasks = findOptimalSolution(input)
+
+        GridPlanningProblem().printTaskList(resultTasks)
     }
 }

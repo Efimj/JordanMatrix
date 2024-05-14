@@ -2,24 +2,60 @@ package com.example.matrix.main.planing
 
 class GridPlanningProblem {
     companion object {
-        fun findOptimalSolution(tasksList: List<Task>) {
+        fun findOptimalSolution(tasksList: List<Task>): MutableList<Task> {
             val tasks = GridPlanningProblem().makeStartTasksList(tasksList)
 
             GridPlanningProblem().calculateEarlyStarts(tasks)
             GridPlanningProblem().calculateLateFinishes(tasks)
 
-            tasks.sortBy { it.taskId }
-            tasks.forEach { task ->
-                println("TASK ${task.taskId}")
-                println("Duration     ${task.duration}")
-                println("Early start  ${task.earlyStart}")
-                println("Early finish ${task.earlyFinish}")
-                println()
-                println("Late start   ${task.lateStart}")
-                println("Late finish  ${task.lateFinish}")
-                println()
+            return tasks
+        }
+    }
+
+    fun printTaskList(tasksList: List<Task>) {
+        tasksList.toMutableList().sortBy { it.taskId }
+        println("______ TASKS ______")
+        tasksList.forEach { task ->
+            println("TASK ${task.taskId}")
+            println("Duration     ${task.duration}")
+            println("Resources    ${task.resources}")
+            println("Early start  ${task.earlyStart}")
+            println("Early finish ${task.earlyFinish}")
+            println("Late start   ${task.lateStart}")
+            println("Late finish  ${task.lateFinish}")
+            println("Reserve time ${task.reserveTime}")
+            println()
+        }
+
+        val criticalTasks = reverseTaskChain(tasksList.filter { it.reserveTime == 0 }).reversed()
+
+        var criticalTasksPath = ""
+        criticalTasks.forEach {
+            criticalTasksPath += "${it.taskId} - "
+        }
+        criticalTasksPath = criticalTasksPath.substring(0, criticalTasksPath.length - 3)
+        println("Critical path")
+        println(criticalTasksPath)
+        println("Project duration")
+        println(criticalTasks.maxOfOrNull { it.earlyFinish })
+    }
+
+    private fun reverseTaskChain(tasks: List<Task>): List<Task> {
+        val visitedTasks = mutableListOf<Task>()
+        while (visitedTasks.size != tasks.size) {
+            for (i in tasks.indices) {
+                val task = tasks[i]
+                if (task.taskId in visitedTasks.map { it.taskId }) break
+
+                val nextTasks = tasks.filter { it.previous.contains(task.taskId) }
+
+                // if the next ones have not yet been solved.
+                if (visitedTasks.map { it.taskId }.containsAll(nextTasks.map { it.taskId }).not()) continue
+                visitedTasks.add(task)
             }
         }
+
+        return visitedTasks
     }
 
     private fun calculateLateFinishes(tasks: MutableList<Task>) {
