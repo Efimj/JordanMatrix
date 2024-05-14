@@ -95,21 +95,23 @@ class GridPlanningProblem {
     private fun calculateEarlyStarts(tasks: MutableList<Task>) {
         val visitedTasksId = mutableListOf<Int>()
         while (visitedTasksId.size != tasks.size) {
-            val task = tasks.find { task -> task.taskId !in visitedTasksId } ?: break
+            for (i in tasks.indices) {
+                val task = tasks[i]
+                if (task.taskId in visitedTasksId) break
 
-            // if the previous ones have not yet been solved.
-            if (visitedTasksId.containsAll(task.previous).not()) continue
-            val taskIndex = tasks.indexOfFirst { it.taskId == task.taskId }
-            visitedTasksId.add(task.taskId)
+                // if the previous ones have not yet been solved.
+                if (visitedTasksId.containsAll(task.previous).not()) continue
+                visitedTasksId.add(task.taskId)
 
-            // if no tasks before
-            if (task.previous.isEmpty()) {
-                tasks[taskIndex] = task.copy(earlyStart = 0)
-                continue
-            }
+                // if no tasks before
+                if (task.previous.isEmpty()) {
+                    tasks[i] = task.copy(earlyStart = 0)
+                    continue
+                }
 
-            // for handle tasks before
-            val earlyStart = tasks.filter { t -> task.previous.contains(t.taskId) }.maxOfOrNull { it.earlyFinish } ?: 0
+                // for handle tasks before
+                val earlyStart =
+                    tasks.filter { t -> task.previous.contains(t.taskId) }.maxOfOrNull { it.earlyFinish } ?: 0
 
 //            println("Task ${task.taskId}")
 //            println("Previous")
@@ -118,7 +120,8 @@ class GridPlanningProblem {
 //            println(earlyStart)
 //            println()
 
-            tasks[taskIndex] = task.copy(earlyStart = earlyStart)
+                tasks[i] = task.copy(earlyStart = earlyStart)
+            }
         }
     }
 
