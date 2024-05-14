@@ -458,4 +458,46 @@ class MatrixGamesSolverTests {
         printSimulation(simulation = simulationResult, xyPositions = inputXYPositions)
         printSimulationResult(simulation = simulationResult, xyPositions = inputXYPositions)
     }
+
+    @Test
+    fun matrixGameSolutionTest14() {
+        println()
+        println("_______ Variant 14 ______")
+
+        val inputMatrix = arrayOf(
+            arrayOf(5.0, 3.0, -6.0),
+            arrayOf(3.0, 5.0, -1.0),
+            arrayOf(-1.0, -2.0, -3.0)
+        )
+
+        val inputXYPositions = XYPositions(
+            cols = arrayOf("x1", "x2", "x3"),
+            rows = arrayOf("y1", "y2", "y3")
+        )
+
+        val correctFirstPlayerSolution = arrayOf(0.0, 1.0, 0.0)
+        val correctSecondPlayerSolution = arrayOf(0.0, 0.0, 1.0)
+
+        val solution = solveMatrixGame(matrix = inputMatrix, xyPositions = inputXYPositions)
+
+        println()
+        println("Output")
+        printArray(solution.outputMatrix)
+        println()
+        println("Solution")
+        println(solution.strategyType.name)
+        println()
+        println("First player solve")
+        printArray(solution.firstPlayersSolution)
+        println()
+        println("Second player solve")
+        printArray(solution.secondPlayersSolution)
+        println()
+        println("Game price")
+        println(solution.gamePrice)
+        println()
+
+        Assert.assertTrue(correctFirstPlayerSolution.contentDeepEquals(solution.firstPlayersSolution))
+        Assert.assertTrue(correctSecondPlayerSolution.contentDeepEquals(solution.secondPlayersSolution))
+    }
 }
