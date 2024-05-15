@@ -32,7 +32,7 @@ class GridPlanningProblemTests {
         val expectedChain = listOf(1, 2, 5, 7)
         val expectedProjectDuration = 24
 
-        val outputCriticalChain = GridPlanningProblem().getCriticalTaskChain(resultTasks).map { it.taskId }
+        val outputCriticalChain = GridPlanningProblem().getCriticalTaskChain(resultTasks).filter { it.isVirtual.not() }.map { it.taskId }
         val projectDuration = GridPlanningProblem().findProjectDuration(resultTasks)
 
         Assert.assertTrue(expectedChain == outputCriticalChain)
@@ -62,7 +62,7 @@ class GridPlanningProblemTests {
         val expectedChain = listOf(1, 2, 4, 7, 8)
         val expectedProjectDuration = 19
 
-        val outputCriticalChain = GridPlanningProblem().getCriticalTaskChain(resultTasks).map { it.taskId }
+        val outputCriticalChain = GridPlanningProblem().getCriticalTaskChain(resultTasks).filter { it.isVirtual.not() }.map { it.taskId }
         val projectDuration = GridPlanningProblem().findProjectDuration(resultTasks)
 
         Assert.assertTrue(expectedChain == outputCriticalChain)
@@ -92,10 +92,11 @@ class GridPlanningProblemTests {
 
         GridPlanningProblem().printTaskList(resultTasks)
 
-        val expectedChain = listOf(1, 2, 4, 7, 8)
-        val expectedProjectDuration = 19
+        val expectedChain = listOf(2, 7, 8, 9, 10)
+        val expectedProjectDuration = 38
 
-        val outputCriticalChain = GridPlanningProblem().getCriticalTaskChain(resultTasks).map { it.taskId }
+        val outputCriticalChain =
+            GridPlanningProblem().getCriticalTaskChain(resultTasks).filter { it.isVirtual.not() }.map { it.taskId }
         val projectDuration = GridPlanningProblem().findProjectDuration(resultTasks)
 
         Assert.assertTrue(expectedChain == outputCriticalChain)
