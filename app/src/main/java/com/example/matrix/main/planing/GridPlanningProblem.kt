@@ -35,7 +35,9 @@ class GridPlanningProblem {
 
         var criticalTasksPath = ""
         criticalTasks.forEach {
-            criticalTasksPath += "${it.taskId} - "
+            if (it.isVirtual.not()) {
+                criticalTasksPath += "${it.taskId} - "
+            }
         }
         criticalTasksPath = criticalTasksPath.substring(0, criticalTasksPath.length - 3)
         println("Critical path")
