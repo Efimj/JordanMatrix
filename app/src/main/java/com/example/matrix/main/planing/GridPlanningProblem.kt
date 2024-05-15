@@ -1,5 +1,7 @@
 package com.example.matrix.main.planing
 
+import android.util.Range
+
 class GridPlanningProblem {
     companion object {
         fun findOptimalSolution(tasksList: List<Task>): MutableList<Task> {
@@ -53,11 +55,13 @@ class GridPlanningProblem {
         val timeToLoad = mutableListOf<Pair<Int, Int>>()
 
         for (time in 0..maxWidth) {
-            val fitTasks = tasks.filter { it.earlyStart <= time && time < it.earlyFinish }
+            val fitTasks = tasks.filter {
+                time in it.earlyStart until it.earlyFinish
+            }
             val load = fitTasks.sumOf { it.resources }
 
             println("Time: $time Load: $load Tasks: $fitTasks")
-            Thread.sleep(200)
+            Thread.sleep(100)
             timeToLoad.add(Pair(time, load))
         }
 
@@ -71,7 +75,7 @@ class GridPlanningProblem {
         // Print chart by rows
         for (height in maxHeight downTo 0) {
             for ((_, dayHeight) in timeToLoad) {
-                if (dayHeight >= height) {
+                if (dayHeight > height) {
                     print("*".padEnd(maxLabelLength + 1, ' '))
                 } else {
                     print(" ".repeat(maxLabelLength + 1))
