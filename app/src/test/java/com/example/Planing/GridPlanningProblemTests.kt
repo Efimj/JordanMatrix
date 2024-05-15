@@ -28,6 +28,7 @@ class GridPlanningProblemTests {
         val resultTasks = findOptimalSolution(input)
 
         GridPlanningProblem().printTaskList(resultTasks)
+        GridPlanningProblem().printLoadChart(resultTasks)
 
         val expectedChain = listOf(1, 2, 5, 7)
         val expectedProjectDuration = 24
@@ -58,6 +59,7 @@ class GridPlanningProblemTests {
         val resultTasks = findOptimalSolution(input)
 
         GridPlanningProblem().printTaskList(resultTasks)
+        GridPlanningProblem().printLoadChart(resultTasks)
 
         val expectedChain = listOf(1, 2, 4, 7, 8)
         val expectedProjectDuration = 19
@@ -91,6 +93,7 @@ class GridPlanningProblemTests {
         val resultTasks = findOptimalSolution(input)
 
         GridPlanningProblem().printTaskList(resultTasks)
+        GridPlanningProblem().printLoadChart(resultTasks)
 
         val expectedChain = listOf(2, 7, 8, 9, 10)
         val expectedProjectDuration = 38
@@ -102,4 +105,5 @@ class GridPlanningProblemTests {
         Assert.assertTrue(expectedChain == outputCriticalChain)
         Assert.assertTrue(expectedProjectDuration == projectDuration)
     }
+
 }

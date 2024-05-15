@@ -46,6 +46,44 @@ class GridPlanningProblem {
         println(criticalTasks.maxOfOrNull { it.earlyFinish })
     }
 
+    fun printLoadChart(tasksList: List<Task>) {
+        val tasks = tasksList.filter { it.isVirtual.not() }
+        val maxWidth = tasks.maxOfOrNull { it.earlyFinish } ?: 0
+
+        val timeToLoad = mutableListOf<Pair<Int, Int>>()
+
+        for (time in 0..maxWidth) {
+            val load = tasks.filter { it.earlyStart <= time && it.earlyFinish >= time }.sumOf { it.resources }
+            timeToLoad.add(Pair(time, load))
+        }
+
+        val maxHeight = timeToLoad.maxOfOrNull { it.second } ?: 0
+
+        println("_____ Load chart _____")
+
+        val maxLabelLength = timeToLoad.maxOfOrNull { it.first.toString().length } ?: 0
+        val labelFormat = "%${maxLabelLength}s "
+
+        // Print chart by rows
+        for (height in maxHeight downTo 0) {
+            for ((_, dayHeight) in timeToLoad) {
+                if (dayHeight >= height) {
+                    print("*".padEnd(maxLabelLength + 1, ' '))
+                } else {
+                    print(" ".repeat(maxLabelLength + 1))
+                }
+            }
+            println()
+        }
+
+        // Print axis
+        for ((day, _) in timeToLoad) {
+            print(labelFormat.format(day))
+        }
+        println()
+    }
+
+
     fun getCriticalTaskChain(tasks: List<Task>): List<Task> {
         return sortTaskChain(tasks.filter { it.reserveTime == 0 })
     }
