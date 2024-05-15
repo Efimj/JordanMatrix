@@ -4,9 +4,13 @@ class GridPlanningProblem {
     companion object {
         fun findOptimalSolution(tasksList: List<Task>): MutableList<Task> {
             val tasks = GridPlanningProblem().makeStartTasksList(tasksList)
+            println("Constructed list of starting tasks")
 
             GridPlanningProblem().calculateEarlyStarts(tasks)
+            println("Calculated early starts")
+
             GridPlanningProblem().calculateLateFinishes(tasks)
+            println("Calculated late finishes")
 
             return tasks
         }
@@ -71,7 +75,7 @@ class GridPlanningProblem {
         while (visitedTasksId.size != tasks.size) {
             for (i in tasks.indices) {
                 val task = tasks[i]
-                if (task.taskId in visitedTasksId) break
+                if (task.taskId in visitedTasksId) continue
 
                 val nextTasks = tasks.filter { it.previous.contains(task.taskId) }
 
@@ -88,10 +92,11 @@ class GridPlanningProblem {
                 // for handle tasks after
                 val lateFinish = nextTasks.minOfOrNull { it.lateStart } ?: 0
 
+//                Thread.sleep(500)
 //                println("Task ${task.taskId}")
-//                println("Next")
-//                println(nextTasks.filter { t -> task.previous.contains(t.taskId) })
-//                println("Late finish")
+//                println("Previous")
+//                println(tasks.filter { t -> task.previous.contains(t.taskId) })
+//                println("Early start")
 //                println(lateFinish)
 //                println()
 
@@ -121,12 +126,13 @@ class GridPlanningProblem {
                 val earlyStart =
                     tasks.filter { t -> task.previous.contains(t.taskId) }.maxOfOrNull { it.earlyFinish } ?: 0
 
-//            println("Task ${task.taskId}")
-//            println("Previous")
-//            println(tasks.filter { t -> task.previous.contains(t.taskId) })
-//            println("Early start")
-//            println(earlyStart)
-//            println()
+//                Thread.sleep(200)
+//                println("Task ${task.taskId}")
+//                println("Previous")
+//                println(tasks.filter { t -> task.previous.contains(t.taskId) })
+//                println("Early start")
+//                println(earlyStart)
+//                println()
 
                 tasks[i] = task.copy(earlyStart = earlyStart)
             }
@@ -145,7 +151,7 @@ class GridPlanningProblem {
 
         // Add first task is needed
         if (firstTasks.size > 1) {
-            val startTaskId = findUniqueInt(tasksList)
+            val startTaskId = findUniqueInt(tasks)
             val startTask = Task(
                 taskId = startTaskId,
                 previous = emptyList(),
@@ -172,7 +178,7 @@ class GridPlanningProblem {
         }
 
         if (endTasks.size > 1) {
-            val endTaskId = findUniqueInt(tasksList)
+            val endTaskId = findUniqueInt(tasks)
             val endTask = Task(
                 taskId = endTaskId,
                 previous = endTasks,
