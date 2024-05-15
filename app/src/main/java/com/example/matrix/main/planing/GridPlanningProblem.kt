@@ -53,7 +53,11 @@ class GridPlanningProblem {
         val timeToLoad = mutableListOf<Pair<Int, Int>>()
 
         for (time in 0..maxWidth) {
-            val load = tasks.filter { it.earlyStart <= time && it.earlyFinish >= time }.sumOf { it.resources }
+            val fitTasks = tasks.filter { it.earlyStart <= time && time < it.earlyFinish }
+            val load = fitTasks.sumOf { it.resources }
+
+            println("Time: $time Load: $load Tasks: $fitTasks")
+            Thread.sleep(200)
             timeToLoad.add(Pair(time, load))
         }
 

@@ -15,14 +15,24 @@ class GridPlanningProblemTests {
         println()
         println("________ Test 1 _________")
 
+//        val input = listOf(
+//            Task(taskId = 1, previous = listOf(), duration = 5, resources = 2),
+//            Task(taskId = 2, previous = listOf(1), duration = 8, resources = 3),
+//            Task(taskId = 3, previous = listOf(1), duration = 3, resources = 2),
+//            Task(taskId = 4, previous = listOf(1), duration = 6, resources = 2),
+//            Task(taskId = 5, previous = listOf(2), duration = 7, resources = 3),
+//            Task(taskId = 6, previous = listOf(2, 3), duration = 6, resources = 2),
+//            Task(taskId = 7, previous = listOf(4, 5, 6), duration = 4, resources = 2),
+//        )
+
         val input = listOf(
-            Task(taskId = 1, previous = listOf(), duration = 5, resources = 2),
-            Task(taskId = 2, previous = listOf(1), duration = 8, resources = 3),
-            Task(taskId = 3, previous = listOf(1), duration = 3, resources = 2),
-            Task(taskId = 4, previous = listOf(1), duration = 6, resources = 2),
-            Task(taskId = 5, previous = listOf(2), duration = 7, resources = 3),
+            Task(taskId = 1, previous = listOf(), duration = 5, resources = 3),
+            Task(taskId = 2, previous = listOf(1), duration = 8, resources = 2),
+            Task(taskId = 3, previous = listOf(1), duration = 3, resources = 4),
+            Task(taskId = 4, previous = listOf(1), duration = 6, resources = 3),
+            Task(taskId = 5, previous = listOf(2), duration = 7, resources = 2),
             Task(taskId = 6, previous = listOf(2, 3), duration = 6, resources = 2),
-            Task(taskId = 7, previous = listOf(4, 5, 6), duration = 4, resources = 2),
+            Task(taskId = 7, previous = listOf(4, 5, 6), duration = 4, resources = 5),
         )
 
         val resultTasks = findOptimalSolution(input)
